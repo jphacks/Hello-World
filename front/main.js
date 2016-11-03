@@ -1,35 +1,36 @@
 import angular from 'angular';
 import uirouter from 'angular-ui-router';
-import home from './components/home/home.html';
-import driver from './components/driver/driver.html';
-import driverController from './components/driver/driver.controller.js';
 
-var myApp = angular
+import fileReadDirective from './components/room/fileRead.directive.js';
+
+import root from './components/main/root.html';
+import main from './components/main/main.html';
+import rootController from './components/main/root.controller.js';
+
+import room from './components/room/room.html';
+import roomController from './components/room/room.controller.js';
+
+angular
   .module('myApp', [uirouter])
+  .directive('onReadFile', fileReadDirective)
   .config(function ($stateProvider, $urlRouterProvider) {
     $urlRouterProvider.otherwise("/main");
 
     // Now set up the states
     $stateProvider
-      .state('index', {
-        templateUrl: "view/index.html",
-        controller: 'indexController',
-        controllerAs: 'indexCtrl'
+      .state('root', {
+        template: root,
+        controller: rootController,
+        controllerAs: 'rootCtrl'
       })
-      .state('index.main', {
+      .state('root.main', {
         url: "/main",
-        templateUrl: "view/main.html"
+        template: main
       })
-      .state('index.teacher', {
-        url: "/teacher",
-        templateUrl: "view/teacher.html",
-        controller: 'teacherController',
-        controllerAs: 'teacherCtrl'
-      })
-      .state('index.student', {
-        url: "/student",
-        templateUrl: "view/student.html",
-        controller: 'studentController',
-        controllerAs: 'studentCtrl'
+      .state('root.room', {
+        url: "/room",
+        template: room,
+        controller: roomController,
+        controllerAs: 'roomCtrl'
       })
 	});

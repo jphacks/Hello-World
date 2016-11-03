@@ -1,9 +1,7 @@
 body {background: #F0F0F0;}
-
 h2 {
   margin-left: 55px;
 }
-
 pre{
   padding : 0px;
 }
@@ -30,12 +28,10 @@ textarea {
   padding: 5px 8px;
   transition: background-color 0.2s ease 0s;
 }
-
 textarea:focus {
     background: none repeat scroll 0 0 #FFFFFF;
     outline-width: 0;
 }
-
 .setting{
     position: relative;
     padding: 20px;
@@ -48,5 +44,6 @@ textarea:focus {
     cursor: default;
     z-index: 1000;
 }
-
-.menu{ background-image:url('./coding.jpg') }
+.menu{
+  /*background-image:url('./coding.jpg') */
+}
