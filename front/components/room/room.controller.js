@@ -27,7 +27,7 @@ export default class roomController {
     roomCtrl.peer = new Peer({
       // Set API key for cloud server (you don't need this if you're running your
       // own.
-      key: 'fcf65b78-fe22-4ba2-b0d7-77987ac06760'
+      key: '91f325de-7cf5-4036-be2b-8ebd0a5a5e17'
     });
 
     // Show this peer's ID.
@@ -37,6 +37,7 @@ export default class roomController {
       navigator.getUserMedia({audio: true, video: false}, function(stream){
           // Set your video displays
           window.localStream = stream;
+          console.dir(stream);
 
           console.log(roomCtrl.roomName,"に接続します")
           roomCtrl.room = roomCtrl.peer.joinRoom(roomCtrl.roomName, {mode: 'sfu', stream: stream});
