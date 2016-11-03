@@ -22,6 +22,15 @@ export default class roomController {
       roomCtrl.room.send(roomCtrl.content);
     };
 
+    //save code
+    roomCtrl.save = function(){
+	var link = document.createElement('a');
+	link.download = "test.txt";
+	link.href = 'data:text,\uFEFF' + roomCtrl.content;
+	document.body.appendChild(link);
+	link.click();
+	document.body.removeChild(link);
+    };
     // Connect to SkyWay, have server assign an ID instead of providing one
     // Showing off some of the configs available with SkyWay :).
     roomCtrl.peer = new Peer({
