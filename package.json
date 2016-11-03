@@ -2,10 +2,13 @@
   "name": "CodingEverybody",
   "version": "1.0.0",
   "description": "Powerful Web IDE with real time communication over webRTC",
-  "scripts": {},
+  "scripts": {
+    "dep": "rm front/public/js/build.js & webpack"
+  },
   "dependencies": {
     "angular": "^1.5.8",
     "angular-ui-router": "^0.3.1",
+    "angular-sanitize": "^1.5.8",
     "codemirror": "^5.20.2"
   },
   "repository": {
@@ -18,11 +21,12 @@
     "babel-loader": "^6.2.5",
     "babel-polyfill": "^6.13.0",
     "babel-preset-es2015": "^6.14.0",
-    "css-loader": "^0.23.1",
     "file-loader": "^0.9.0",
     "html-loader": "^0.4.3",
     "image-webpack-loader": "^2.0.0",
     "json-loader": "^0.5.4",
+    "ng-annotate-loader": "0.0.10",
+    "uglify-save-license": "~0.4.1",
     "webpack": "^1.13.2",
     "webpack-dev-server": "^1.14.1"
   }

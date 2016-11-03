@@ -1,12 +1,23 @@
 'use strict';
+const webpack = require("webpack");
 
 const config = {
   entry: ['babel-polyfill', './front/main.js'],
   output: {
-    path: __dirname+ '/front/build/',
-    publicPath: 'build/',
-    filename: 'app.bundle.js'
+    path: __dirname+ '/front/public/js/',
+    publicPath: 'public/js/',
+    filename: 'build.js'
   },
+  plugins: [
+    new webpack.optimize.UglifyJsPlugin({
+        minimize: true,
+        sourceMap: true,
+        compress: {
+          drop_console: false
+        },
+        mangle: false
+    })
+  ],
   module: {
     loaders: [
 		{

@@ -1,0 +1,17 @@
+<div class="container">
+	<h1 class="alert alert-info">Room : {{roomCtrl.roomName}}</h1>
+	<h4>Select file</h4>
+	<button class="mdl-button mdl-js-button mdl-button--raised">
+	<input type="file" on-read-file="roomCtrl.showContent($fileContent)" />
+	</button>
+	<button ng-click="roomCtrl.new()" class="mdl-button mdl-js-button mdl-button--raised mdl-button--colored">
+	create new file
+	</button>
+	<div>
+	    <h2>editor</h2>
+	    <textarea ng-model="roomCtrl.content" ng-change="roomCtrl.change()"></textarea>
+	</div>
+	<hr>
+	<!-- Audio area -->
+	<div id="their-audios"></div>
+</div>
