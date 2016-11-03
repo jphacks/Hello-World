@@ -1,0 +1,15 @@
+<div class="container">
+	<h1 class="alert alert-info">Room : {{studentCtrl.roomName}}</h1>
+	<div>
+	    <h2>teacher's code</h2>
+		<div hljs hljs-source="studentCtrl.content"></div>
+
+	    <button ng-click="teacherCtrl.save(studentCtrl.content)" class="mdl-button mdl-js-button mdl-button--raised mdl-button--colored">
+		Save
+		</button>
+
+	</div>
+	<hr>
+	<!-- Audio area -->
+	<div id="their-audios" class="row"></div>
+</div>
