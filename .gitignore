@@ -1,6 +1,4 @@
-# Created by https://www.gitignore.io/api/mac,macos,emacs,node,sublimetext
-
-#!! ERROR: mac is undefined. Use list command to see defined gitignore types !!#
+# Created by https://www.gitignore.io/api/macos,go,node,emacs,vim,sublimetext
 
 ### macOS ###
 *.DS_Store
@@ -27,49 +25,38 @@ Temporary Items
 .apdisk
 
 
-### Emacs ###
-# -*- mode: gitignore; -*-
-*~
-\#*\#
-/.emacs.desktop
-/.emacs.desktop.lock
-*.elc
-auto-save-list
-tramp
-.\#*
+### Go ###
+# Compiled Object files, Static and Dynamic libs (Shared Objects)
+*.o
+*.a
+*.so
 
-# Org-mode
-.org-id-locations
-*_archive
+# Folders
+_obj
+_test
 
-# flymake-mode
-*_flymake.*
+# Architecture specific extensions/prefixes
+*.[568vq]
+[568vq].out
 
-# eshell files
-/eshell/history
-/eshell/lastdir
+*.cgo1.go
+*.cgo2.c
+_cgo_defun.c
+_cgo_gotypes.go
+_cgo_export.*
 
-# elpa packages
-/elpa/
+_testmain.go
 
-# reftex files
-*.rel
+*.exe
+*.test
+*.prof
 
-# AUCTeX auto folder
-/auto/
+# Output of the go coverage tool, specifically when used with LiteIDE
+*.out
 
-# cask packages
-.cask/
-dist/
+# external packages folder
+vendor/
 
-# Flycheck
-flycheck_*.el
-
-# server auth directory
-/server/
-
-# projectiles files
-.projectile
 
 ### Node ###
 # Logs
@@ -116,6 +103,62 @@ jspm_packages
 
 # Output of 'npm pack'
 *.tgz
+
+
+### Emacs ###
+# -*- mode: gitignore; -*-
+*~
+\#*\#
+/.emacs.desktop
+/.emacs.desktop.lock
+*.elc
+auto-save-list
+tramp
+.\#*
+
+# Org-mode
+.org-id-locations
+*_archive
+
+# flymake-mode
+*_flymake.*
+
+# eshell files
+/eshell/history
+/eshell/lastdir
+
+# elpa packages
+/elpa/
+
+# reftex files
+*.rel
+
+# AUCTeX auto folder
+/auto/
+
+# cask packages
+.cask/
+dist/
+
+# Flycheck
+flycheck_*.el
+
+# server auth directory
+/server/
+
+# projectiles files
+.projectile
+
+### Vim ###
+# swap
+[._]*.s[a-w][a-z]
+[._]s[a-w][a-z]
+# session
+Session.vim
+# temporary
+.netrwhist
+# auto-generated tag files
+tags
 
 
 ### SublimeText ###
