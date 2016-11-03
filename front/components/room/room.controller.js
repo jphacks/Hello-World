@@ -22,6 +22,12 @@ export default class roomController {
       roomCtrl.room.send(roomCtrl.content);
     };
 
+    roomCtrl.editorOptions = {
+        lineWrapping : true,
+        lineNumbers: true,
+        mode: 'javascript',
+    };
+
     // Connect to SkyWay, have server assign an ID instead of providing one
     // Showing off some of the configs available with SkyWay :).
     roomCtrl.peer = new Peer({
