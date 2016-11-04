@@ -13,6 +13,8 @@
 					<h2>editor</h2>
 					<textarea ui-codemirror ui-codemirror-opts="roomCtrl.editorOptions" ng-model="roomCtrl.content" ng-change="roomCtrl.change()"></textarea>
 			</div>
+			<button ng-click="roomCtrl.run('js',roomCtrl.content)">run</button>
+			<button ng-click="roomCtrl.save(roomCtrl.content)">save</button>
 		</div>
 		<div class="col s4">
 			<!-- Audio and Video area -->
