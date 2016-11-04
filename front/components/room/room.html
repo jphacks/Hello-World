@@ -11,6 +11,16 @@
 			</button>
 			<div>
 					<h2>editor</h2>
+					<div class="input-field">
+						<label>Language Select</label><br><br>
+						<select class="browser-default" ng-model="roomCtrl.mode">
+						    <option ng-selected="{{mode == roomCtrl.mode}}"
+						            ng-repeat="mode in roomCtrl.modes"
+						            value="{{mode}}">
+						      {{mode.lang}}
+						    </option>
+						</select>
+					</div><br>
 					<textarea ui-codemirror ui-codemirror-opts="roomCtrl.editorOptions" ng-model="roomCtrl.content" ng-change="roomCtrl.change()"></textarea>
 			</div>
 			<button ng-click="roomCtrl.run('js',roomCtrl.content)">run</button>

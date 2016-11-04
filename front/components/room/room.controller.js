@@ -4,10 +4,16 @@ export default class roomController {
     this.$scope = $scope;
     this.$http = $http;
     this.roomName = $scope.rootCtrl.roomName;
+    this.modes = [
+      {"lang" : "javascript", "ex" : "js"},
+      {"lang" : "python", "ex" : "py"},
+      {"lang" : "ruby", "ex" : "rb"}
+    ];
+    this.mode = {"lang" : "javascript", "ex" : "js"};
     this.editorOptions = {
         lineWrapping : true,
         lineNumbers: true,
-        mode: 'javascript',
+        mode: this.mode.lang
     };
     // Connect to SkyWay, have server assign an ID instead of providing one
     // Showing off some of the configs available with SkyWay :).
@@ -121,7 +127,7 @@ export default class roomController {
 
   save(data){
     var link = document.createElement('a');
-    link.download = "save."+"js"; //filename
+    link.download = "save."+this.mode.ex; //filename
     link.href = 'data:text,\uFEFF' + data; //content
     document.body.appendChild(link);
     link.click();
