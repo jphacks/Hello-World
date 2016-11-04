@@ -1,0 +1,295 @@
+/* Custom Stylesheet */
+/**
+ * Use this file to override Materialize files so you can update
+ * the core Materialize files in the future
+ *
+ * Made By MaterializeCSS.com
+ */
+
+ #index-banner {
+     min-height: 50vh;
+     position: relative;
+     // background-color: #3498db;
+ }
+
+#ent {
+  color: black;
+  font-size: 12px;
+}
+#key {
+  background-color: rgba( 214, 255, 250, 0.30 );
+  color:black;
+  font-size: 20x;
+}
+nav ul a,
+nav .brand-logo {
+  color: #444;
+}
+
+p {
+  line-height: 2rem;
+}
+
+.button-collapse {
+  color: #26a69a;
+}
+
+h1 {
+  //color: blue;
+}
+
+//　入力部
+.botton {
+  background-color: green;
+}
+.mat-label {
+  display: block;
+  font-size: 16px;
+  transform: translateY(25px);
+  color: #e2e2e2;
+  transition: all 0.5s;
+}
+
+.mat-input {
+  position: relative;
+  background: transparent;
+  width: 100%;
+  border: none;
+  outline: none;
+  padding: 8px 0;
+  font-size: 16px;
+}
+
+.mat-div {
+  padding: 30px 0 0 0;
+  position: relative;
+}
+
+.mat-div:after, .mat-div:before {
+  content: "";
+  position: absolute;
+  display: block;
+  width: 100%;
+  height: 2px;
+  background-color: #e2e2e2;
+  bottom: 0;
+  left: 0;
+  transition: all 0.5s;
+}
+
+.mat-div::after {
+  background-color: #8E8DBE;
+  transform: scaleX(0);
+}
+
+.is-active::after {
+  transform: scaleX(1);
+}
+
+.is-active .mat-label {
+  color: #8E8DBE;
+}
+
+.is-completed .mat-label {
+  font-size: 12px;
+  transform: translateY(0);
+}
+
+button {
+  background-color: #93E1D8;
+  border: none;
+  display: block;
+  margin: 35px auto;
+  padding: 15px 30px;
+  border-radius: 10px;
+  cursor: pointer;
+}
+
+
+.parallax-container {
+  min-height: 380px;
+  line-height: 0;
+  height: auto;
+  color: rgba(255,255,255,.9);
+}
+.parallax-container {
+  height: 95vh;
+}
+  .parallax-container .section {
+    width: 100%;
+    /*height: 95vh;*/
+  }
+
+
+  .cd-headline.type .cd-words-wrapper {
+      vertical-align: top;
+      overflow: hidden;
+  }
+
+  .cd-headline.type .cd-words-wrapper::after {
+      /* vertical bar */
+      content: '';
+      position: absolute;
+      right: 0;
+      //top: 50%;
+      bottom: auto;
+      -webkit-transform: translateY(-50%);
+      -moz-transform: translateY(-50%);
+      -ms-transform: translateY(-50%);
+      -o-transform: translateY(-50%);
+      transform: translateY(-50%);
+      //height: 90%;
+      width: 1px;
+      background-color: #aebcb9;
+  }
+
+  .cd-headline.type .cd-words-wrapper.waiting::after {
+      -webkit-animation: cd-pulse 1s infinite;
+      -moz-animation: cd-pulse 1s infinite;
+      animation: cd-pulse 1s infinite;
+  }
+  .cd-headline.type .cd-words-wrapper.selected {
+      background-color: #FFF;
+  }
+
+  .cd-headline.type .cd-words-wrapper.selected::after {
+      visibility: hidden;
+  }
+
+  .cd-headline.type .cd-words-wrapper.selected b {
+      color: #3498db;
+      //color: #aebcb9;
+  }
+
+  .cd-headline.type b {
+      visibility: hidden;
+  }
+
+  .cd-headline.type b.is-visible {
+      visibility: visible;
+  }
+
+  .cd-headline.type i {
+      position: absolute;
+      visibility: hidden;
+  }
+  .cd-headline.type i.in {
+      position: relative;
+      visibility: visible;
+  }
+
+  @-webkit-keyframes cd-pulse {
+      0% {
+          -webkit-transform: translateY(-50%) scale(1);
+          opacity: 1;
+      }
+      40% {
+          -webkit-transform: translateY(-50%) scale(0.9);
+          opacity: 0;
+      }
+      100% {
+          -webkit-transform: translateY(-50%) scale(0);
+          opacity: 0;
+      }
+  }
+  @-moz-keyframes cd-pulse {
+      0% {
+          -moz-transform: translateY(-50%) scale(1);
+          opacity: 1;
+      }
+      40% {
+          -moz-transform: translateY(-50%) scale(0.9);
+          opacity: 0;
+      }
+      100% {
+          -moz-transform: translateY(-50%) scale(0);
+          opacity: 0;
+      }
+  }
+
+  @keyframes cd-pulse {
+      0% {
+          -webkit-transform: translateY(-50%) scale(1);
+          -moz-transform: translateY(-50%) scale(1);
+          -ms-transform: translateY(-50%) scale(1);
+          -o-transform: translateY(-50%) scale(1);
+          transform: translateY(-50%) scale(1);
+          opacity: 1;
+      }
+      40% {
+          -webkit-transform: translateY(-50%) scale(0.9);
+          -moz-transform: translateY(-50%) scale(0.9);
+          -ms-transform: translateY(-50%) scale(0.9);
+          -o-transform: translateY(-50%) scale(0.9);
+          transform: translateY(-50%) scale(0.9);
+          opacity: 0;
+      }
+      100% {
+          -webkit-transform: translateY(-50%) scale(0);
+          -moz-transform: translateY(-50%) scale(0);
+          -ms-transform: translateY(-50%) scale(0);
+          -o-transform: translateY(-50%) scale(0);
+          transform: translateY(-50%) scale(0);
+          opacity: 0;
+      }
+  }
+
+
+  /* Preloader */
+  #preloader {
+      position: fixed;
+      top:0;
+      left:0;
+      right:0;
+      bottom:0;
+      background-color:#fff; /* change if the mask should have another color then white */
+      z-index:1200; /* makes sure it stays on top */
+  }
+
+  #status {
+      width:200px;
+      height:200px;
+      position:absolute;
+      left:50%; /* centers the loading animation horizontally one the screen */
+      top:50%; /* centers the loading animation vertically one the screen */
+      background-image:url(../img/status.gif); /* path to your loading animation */
+      background-repeat:no-repeat;
+      background-position:center;
+      margin:-100px 0 0 -100px; /* is width and height divided by two */
+  }
+
+@media only screen and (max-width : 992px) {
+  .parallax-container .section {
+    position: absolute;
+    /*top: 40%;*/
+  }
+  #index-banner .section {
+    top: 10%;
+  }
+}
+
+@media only screen and (max-width : 600px) {
+  #index-banner .section {
+    top: 0;
+  }
+}
+
+.icon-block {
+  padding: 0 15px;
+}
+.icon-block .material-icons {
+  font-size: inherit;
+}
+footer {
+  background-color: #3498db;
+}
+footer.page-footer {
+  margin: 0;
+  padding: 5px 12px;
+  background-color: #3498db;
+  text-align-last: right;
+}
+footer-copyright {
+  background-color: red;
+  padding: 30px;
+}

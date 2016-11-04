@@ -1,20 +1,32 @@
 export default class roomController {
-  constructor($scope) {
+  constructor($scope,$http) {
     navigator.getUserMedia = navigator.getUserMedia || navigator.webkitGetUserMedia || navigator.mozGetUserMedia;
 		var roomCtrl = this;
     roomCtrl.$scope = $scope;
+    roomCtrl.$http = $http;
+
     roomCtrl.roomName = $scope.rootCtrl.roomName;
 
-    roomCtrl.showContent = function($fileContent){
-      roomCtrl.content = $fileContent;
-      console.log("send code!");
-      roomCtrl.room.send(roomCtrl.content);
+    roomCtrl.run = function(type,data){
+      console.log({
+        "language" : type,
+        "data" :  JSON.stringify(data)
+      });
     };
 
     roomCtrl.new = function(){
       roomCtrl.content = "";
       console.log("send code!");
       roomCtrl.room.send("");
+    };
+
+    roomCtrl.save = function(data){
+    	var link = document.createElement('a');
+      link.download = "save."+"js"; //filename
+      link.href = 'data:text,\uFEFF' + data; //content
+    	document.body.appendChild(link);
+    	link.click();
+    	document.body.removeChild(link);
     };
 
     roomCtrl.change = function(){
@@ -112,11 +124,20 @@ export default class roomController {
 
 
     }
+
     // Make sure things clean up properly.
     window.onunload = window.onbeforeunload = function(e) {
       if (!!roomCtrl.peer && !roomCtrl.peer.destroyed) {
         roomCtrl.peer.destroy();
       }
     };
+
   };
+
+  showContent($fileContent){
+    this.content = $fileContent;
+    console.log("send code!");
+    this.room.send(this.content);
+  };
+
 };
