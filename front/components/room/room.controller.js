@@ -9,7 +9,7 @@ export default class roomController {
       {"lang" : "python", "ex" : "py"},
       {"lang" : "ruby", "ex" : "rb"}
     ];
-    this.mode = {"lang" : "javascript", "ex" : "js"};
+    this.mode = this.modes[0];
     this.editorOptions = {
         lineWrapping : true,
         lineNumbers: true,
