@@ -13,11 +13,14 @@ class onReadFile {
   // optional link function
   link(scope, element, attrs) {
 		var fn = this.$parse(attrs.onReadFile);
-		element.on('change', function(onChangeEvent) {
+		element.on('change', (onChangeEvent) => {
 			var reader = new FileReader();
 			reader.onload = function(onLoadEvent) {
 				scope.$apply(function() {
-					fn(scope, {$fileContent:onLoadEvent.target.result});
+					fn(scope, {$fileContent:{
+            "name" : onChangeEvent.target.files[0].name,
+            "content" : onLoadEvent.target.result
+          }});
 				});
 			};
 			reader.readAsText((onChangeEvent.srcElement || onChangeEvent.target).files[0]);

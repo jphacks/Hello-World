@@ -4,16 +4,23 @@ export default class roomController {
     this.$scope = $scope;
     this.$http = $http;
     this.roomName = $scope.rootCtrl.roomName;
+    this.code = {
+      "name" : "new file",
+      "content" : ""
+    }
     this.modes = [
       {"lang" : "javascript", "ex" : "js"},
       {"lang" : "python", "ex" : "py"},
       {"lang" : "ruby", "ex" : "rb"}
     ];
+    this.themes = ["neo","midnight","eclipse"];
+    this.theme = this.themes[0];
     this.mode = this.modes[0];
     this.editorOptions = {
         lineWrapping : true,
         lineNumbers: true,
-        mode: this.mode.lang
+        mode: this.mode.lang,
+        theme: this.theme
     };
     // Connect to SkyWay, have server assign an ID instead of providing one
     // Showing off some of the configs available with SkyWay :).
@@ -56,6 +63,16 @@ export default class roomController {
 
   };
 
+  settingChange(){
+    console.log("setting Changed!");
+    this.editorOptions = {
+        lineWrapping : true,
+        lineNumbers: true,
+        mode: this.mode.lang,
+        theme: this.theme
+    };
+  };
+
   // Handle a connection object.
   connect() {
     console.log("roomに参加できました。")
@@ -63,7 +80,7 @@ export default class roomController {
     this.room.on('data', (message) => {
       console.log(message.src + "からのデータ：",message)
       this.$scope.$apply(() => {
-        this.content = message.data;
+        this.code.content = message.data;
       });
     });
 
@@ -108,9 +125,10 @@ export default class roomController {
   };
 
   showContent($fileContent){
-    this.content = $fileContent;
+    this.code.name = $fileContent.name;
+    this.code.content = $fileContent.content;
     console.log("send code!");
-    this.room.send(this.content);
+    this.room.send(this.code.content);
   };
 
   run(type,data){
@@ -121,8 +139,9 @@ export default class roomController {
   };
 
   new(){
-    this.content = "";
-    this.room.send(this.content);
+    this.code.name = "new file";
+    this.code.content = "";
+    this.room.send(this.code.content);
   };
 
   save(data){
@@ -136,7 +155,7 @@ export default class roomController {
 
   change(){
     console.log("changed! send code!");
-    this.room.send(this.content);
+    this.room.send(this.code.content);
   };
 
 };
