@@ -14,3 +14,6 @@ run:
 
 clean:
 	rm server
+
+migrate:
+	rm -rf ./public && cp ../front/public
