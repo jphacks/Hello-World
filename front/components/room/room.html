@@ -13,13 +13,7 @@
 					<h2>editor</h2>
 					<div class="input-field">
 						<label>Language Select</label><br><br>
-						<select class="browser-default" ng-model="roomCtrl.mode">
-						    <option ng-selected="{{mode == roomCtrl.mode}}"
-						            ng-repeat="mode in roomCtrl.modes"
-						            value="{{mode}}">
-						      {{mode.lang}}
-						    </option>
-						</select>
+						<select class="browser-default" ng-model="roomCtrl.mode" ng-options="mode as mode.lang for mode in roomCtrl.modes"></select>
 					</div><br>
 					<textarea ui-codemirror ui-codemirror-opts="roomCtrl.editorOptions" ng-model="roomCtrl.content" ng-change="roomCtrl.change()"></textarea>
 			</div>
