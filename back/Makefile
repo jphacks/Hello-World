@@ -13,7 +13,7 @@ run:
 	make build && ./server
 
 clean:
-	rm server
+	[ -e ./server ] && rm server || find ./public && rm -rf ./public
 
 migrate:
-	rm -rf ./public && cp ../front/public
+	cp -rf ../front/public ./public
