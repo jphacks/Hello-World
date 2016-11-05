@@ -1,9 +1,8 @@
 export default class roomController {
-  constructor($scope,$http,jsDiff) {
+  constructor($scope,$http) {
     navigator.getUserMedia = navigator.getUserMedia || navigator.webkitGetUserMedia || navigator.mozGetUserMedia;
     this.$scope = $scope;
     this.$http = $http;
-    this.jsDiff = jsDiff;
     this.roomName = $scope.rootCtrl.roomName;
     this.code = {
       "name" : "new file",
@@ -26,8 +25,6 @@ export default class roomController {
     };
     this.former = "";
     this.pastCursor = {"line": 0, "ch": 0};
-    // Connect to SkyWay, have server assign an ID instead of providing one
-    // Showing off some of the configs available with SkyWay :).
     this.peer = new Peer({
       // Set API key for cloud server (you don't need this if you're running your
       // own.
@@ -57,7 +54,6 @@ export default class roomController {
     this.peer.on('error', (err) => {
       console.log(err);
     });
-
     // Make sure things clean up properly.
     window.onunload = window.onbeforeunload = (e) => {
       if (!!this.peer && !this.peer.destroyed) {
@@ -65,15 +61,22 @@ export default class roomController {
       }
     };
   };
-
   codemirrorLoaded(_editor){
     this.editor = _editor;
     this.editor.on("cursorActivity", ()=>{
       this.pastCursor = this.editor.getDoc().getCursor()
       console.log("update cursor",this.pastCursor);
     });
+    this.editor.on("change", (codemirror,changeObj)=>{
+      console.log("change! codemirror,changeObj : ",codemirror,changeObj);
+    });
+    this.editor.on("changes", (codemirror,changes)=>{
+      console.log("changes! codemirror,changes : ",codemirror,changes);
+    });
+    this.editor.on("beforeChange", (codemirror,changeObj)=>{
+      console.log("beforeChange! codemirror,changeObj : ",codemirror,changeObj);
+    });
   }
-
   update(data){
     this.pastCursor = angular.element('.CodeMirror')[0].CodeMirror.getDoc().getCursor()
     var newCursor = this.pastCursor;
@@ -225,9 +228,16 @@ export default class roomController {
   };
 
   run(type,data){
-    console.log({
+    console.log("sended data : ",JSON.stringify({
       "language" : type,
-      "code" :  JSON.stringify(data).slice(1, -1)
+      "code" :  data
+    }));
+    return this.$http.post("http://104.198.125.87/exec",JSON.stringify({
+      "language" : type,
+      "code" :  data
+    }))
+    .then((response) => {
+      console.log("response : ",response);
     });
   };
 
@@ -239,8 +249,8 @@ export default class roomController {
 
   save(data){
     var link = document.createElement('a');
-    link.download = "save."+this.mode.ex; //filename
-    link.href = 'data:text,\uFEFF' + data; //content
+    link.download = this.code.name + "." + this.mode.ex; //filename
+    link.href = 'data:text,\uFEFF' + escape(data); //content
     document.body.appendChild(link);
     link.click();
     document.body.removeChild(link);
