@@ -1,28 +1,30 @@
 <div class="container">
 	<div class="row">
 		<div class="col s8">
-			<h1>Room : {{roomCtrl.roomName}}</h1>
-			<h4>Select file</h4>
+			<div class="caption center-align">
+        <h3>Room : {{roomCtrl.roomName}}</h3>
+        <h5 class="light grey-text text-lighten-3">参加者現在1名</h5>
+      </div>
 			<button>
 				<input type="file" on-read-file="roomCtrl.showContent($fileContent)"/>
 			</button>
 			<button ng-click="roomCtrl.new()">
-			create new file
+				create new file
 			</button>
 
 			<div>
-					<h2>editor</h2>
-					<div class="input-field">
-						<label>Language Select</label><br><br>
-						<select class="browser-default" ng-change="roomCtrl.settingChange()" ng-model="roomCtrl.mode" ng-options="mode as mode.lang for mode in roomCtrl.modes"></select>
-					</div><br>
-					<div class="input-field">
-						<label>Theme Select</label><br><br>
-						<select class="browser-default" ng-change="roomCtrl.settingChange()" ng-model="roomCtrl.theme" ng-options="theme for theme in roomCtrl.themes"></select>
-					</div><br>
+				<h2>editor</h2>
+				<div class="input-field">
+					<label>Language Select</label><br><br>
+					<select class="browser-default" ng-change="roomCtrl.settingChange()" ng-model="roomCtrl.mode" ng-options="mode as mode.lang for mode in roomCtrl.modes"></select>
+				</div><br>
+				<div class="input-field">
+					<label>Theme Select</label><br><br>
+					<select class="browser-default" ng-change="roomCtrl.settingChange()" ng-model="roomCtrl.theme" ng-options="theme for theme in roomCtrl.themes"></select>
+				</div><br>
 
-					<label>{{roomCtrl.code.name}}</label>
-					<textarea ui-codemirror ui-codemirror-opts="roomCtrl.editorOptions" ng-model="roomCtrl.code.content" ng-change="roomCtrl.change()"></textarea>
+				<span><input ng-model="roomCtrl.code.name"/></span>
+				<textarea id="editor" ui-codemirror ui-codemirror-opts="roomCtrl.editorOptions" ng-model="roomCtrl.code.content" ng-change="roomCtrl.change()"></textarea>
 			</div>
 			<button ng-click="roomCtrl.run('js',roomCtrl.code.content)">run</button>
 			<button ng-click="roomCtrl.save(roomCtrl.code.content)">save</button>
