@@ -14,6 +14,7 @@ func main() {
 	r := gin.Default()
 	c := &controller.Handler{}
 	e := &controller.Executor{}
+	s := &controller.Searcher{}
 
 	// Hosting public directory on server root
 	dir, err := filepath.Abs(filepath.Dir(os.Args[0]))
@@ -29,6 +30,7 @@ func main() {
 	// Routing
 	r.GET("/ping", c.Pong)
 	r.POST("/exec", e.Handle)
+	r.POST("/search", s.Search)
 
 	// Listening
 	r.Run(":8080")

@@ -20,14 +20,17 @@ def search_with_google(lang, code, data):
     data = [line.strip() for line in data.split('\n')]
     error_status = " ".join([sentence for sentence in data if ('Error' in sentence or sentence in code)])
     query = error_status + ' developer'
-    
+
     keyword = lang + " " + query
     target_title, target_url = "", ""
-    for url in search(keyword, stop=1, lang="en"):
-        soup = BeautifulSoup(urllib.urlopen(url))
-        target_title = soup.find("title").text
-        target_url = url
-        break
+    try:
+        for url in search(keyword, stop=1, lang="ja"):
+            soup = BeautifulSoup(urllib.urlopen(url))
+            target_title = soup.find("title").text
+            target_url = url
+            break
+    except Exception as e:
+        target_url, target_title = "", ""
     return target_title, target_url
 
 def search_in_stackoverflow(lang, code, data):
@@ -46,7 +49,7 @@ def search_in_stackoverflow(lang, code, data):
     query = ";".join(query)
     errorname = [q for q in query.split(';') if 'Error' in q or 'error' in q]
     lang = data.split()[0]
-    
+
     url = "https://api.stackexchange.com/2.2/search/advanced?order=desc&sort=activity&body={body}&tagged={tags}&title={title}&site=stackoverflow"
     result = requests.get(url.format(body=errorname,tags=lang,title=query)).text
     output = json.loads(result)
@@ -66,7 +69,7 @@ def search_error(code, data):
       - lang:
       - code: code written by user
       - data: error status by system
-    output: 
+    output:
       - title: Website title
       - url: the URL
     """
