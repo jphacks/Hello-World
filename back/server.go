@@ -6,6 +6,7 @@ import (
 
 	"github.com/Tamrin007/contrib/static"
 	"github.com/jphacks/KB_1608/back/controller"
+	"gopkg.in/gin-contrib/cors.v1"
 	"gopkg.in/gin-gonic/gin.v1"
 )
 
@@ -21,6 +22,10 @@ func main() {
 		return
 	}
 	r.Use(static.Serve("/", static.LocalFile(dir+"/public", true)))
+
+	config := cors.DefaultConfig()
+	config.AllowOrigins = []string{"http://jphacks.github.io", "http://localhost:8888"}
+	r.Use(cors.New(config))
 
 	// Routing
 	r.GET("/ping", c.Pong)

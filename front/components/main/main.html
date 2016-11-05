@@ -1,13 +1,27 @@
-<center style="width:100vw;height:100vh;" class="menu">
-	<div class="setting">
-		<h2>enter your room number</h2>
-		<form>
-		  <div class="mdl-textfield mdl-js-textfield">
-		    <input class="mdl-textfield__input" type="text" id="detail" ng-model="rootCtrl.roomName">
-		  </div>
-		</form>
-		<button class="mdl-button mdl-js-button mdl-button--raised mdl-button--colored" ui-sref="root.room">
-		  ENTER
-		</button>
-	</div>
-</center>
+<div class="preloader"></div>
+<main id="top" class="mainBack" role="main" style="height : 100vh;">
+
+	<div class="container" style="height : 100vh;">
+		<div class="logo"></div>
+
+		<h1>Let's start <strong>programming</strong></h1><br>
+		<h5>Create a room for <strong>video chat</strong> room and invite your friends or students.</h5>
+		<div class="init">
+			<div class="row">
+				<form class="formstyle">
+						<div>
+							<input type="text" placeholder="{{rootCtrl.placeholder}}"
+							data-validate="validate(required, text)" required="required" ng-model="rootCtrl.roomName">
+						</div>
+						<div>
+							<button ng-click="rootCtrl.clear()" ui-sref="root.room({roomKey: rootCtrl.roomName})" class="btn btn-success btn-lg">GET EARLY ACCESS</button>
+						</div>
+				</form>
+			</div>
+				<h6>
+					You can share your source codes, edit and also run them immediately.<br><br>
+				  The video chat by WebRTC will help your programming education.
+				</h6>
+			</div>
+	</div><!--/container -->
+</main><!--/main -->
