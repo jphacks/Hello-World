@@ -173,7 +173,7 @@ func startContainer(containerID string) (string, string, error) {
 	scanner := bufio.NewScanner(fp)
 	var time string
 	if scanner.Scan() {
-		time = scanner.Text()
+		time = scanner.Text() + "s"
 	}
 	if err := scanner.Err(); err != nil {
 		return "", "", fmt.Errorf("scan time: %v", err)
