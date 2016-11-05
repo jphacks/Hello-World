@@ -1,13 +1,30 @@
-<center style="width:100vw;height:100vh;" class="menu">
-	<div class="setting">
-		<h2>enter your room number</h2>
-		<form>
-		  <div class="mdl-textfield mdl-js-textfield">
-		    <input class="mdl-textfield__input" type="text" id="detail" ng-model="rootCtrl.roomName">
-		  </div>
-		</form>
-		<button class="mdl-button mdl-js-button mdl-button--raised mdl-button--colored" ui-sref="root.room">
-		  ENTER
-		</button>
-	</div>
-</center>
+<div class="preloader"></div>
+<main id="top" class="masthead" role="main" style="100vh;">
+
+	<div class="container" style="100vh;">
+		 <div class="logo"><img src="./logo9.png" alt="logo" height="100"><!-- Phosphate font-->
+		</div>
+
+		<h1>
+			Start <strong>programming</strong> study now.</h1>
+			<h3>Create a room for <strong>video chat</strong> study room and invite up to <strong>5 people</strong>.</h3>
+
+		<div class="row">
+			<div class="col-md-6 col-sm-12 col-md-offset-3 subscribe" >
+				<form class="form-horizontal" role="form" action="subscribe.php" id="subscribeForm" method="POST">
+					<div class="form-group" ng-controller="placeCtrl">
+						<div class="col-md-7 col-sm-6 col-sm-offset-1 col-md-offset-0">
+							<input class="form-control input-lg" name="email" type="text" id="address" placeholder="{{enter}}"
+							data-validate="validate(required, text)" required="required" ng-model="rootCtrl.roomName">
+						</div>
+						<div class="col-md-5 col-sm-4">
+							<button ui-sref="root.room" class="btn btn-success btn-lg">GET EARLY ACCESS</button>
+						</div>
+					</div>
+				</form>
+				 </div>
+			</div>
+			<h6>You can share your source codes, edit and also run them immediately.<br><br>
+			The video chat by WebRTC will help your programming education.</h6>
+	</div><!--/container -->
+</main><!--/main -->
