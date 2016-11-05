@@ -239,7 +239,7 @@ export default class roomController {
     }))
     .then((response) => {
       console.log("response : ",response);
-      roomCtrl.result = response;
+      this.result = response;
     });
   };
 
