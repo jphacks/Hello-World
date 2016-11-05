@@ -1,8 +1,9 @@
 export default class roomController {
-  constructor($scope,$http) {
+  constructor($scope,$http,$stateParams) {
     navigator.getUserMedia = navigator.getUserMedia || navigator.webkitGetUserMedia || navigator.mozGetUserMedia;
     this.$scope = $scope;
     this.$http = $http;
+    this.$stateParams = $stateParams;
     this.roomName = $scope.rootCtrl.roomName;
     this.code = {
       "name" : "new file",
@@ -238,6 +239,7 @@ export default class roomController {
     }))
     .then((response) => {
       console.log("response : ",response);
+      roomCtrl.result = response;
     });
   };
 
