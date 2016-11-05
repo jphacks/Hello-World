@@ -7,20 +7,22 @@ export default class roomController {
     this.code = {
       "name" : "new file",
       "content" : ""
-    }
+    };
     this.modes = [
       {"lang" : "javascript", "ex" : "js"},
       {"lang" : "python", "ex" : "py"},
       {"lang" : "ruby", "ex" : "rb"}
     ];
-    this.themes = ["neo","midnight","eclipse"];
+    this.themes = ["midnight","neo","eclipse"];
     this.theme = this.themes[0];
     this.mode = this.modes[0];
+    this.editor = angular.element('#editor');
     this.editorOptions = {
         lineWrapping : true,
         lineNumbers: true,
         mode: this.mode.lang,
-        theme: this.theme
+        theme: this.theme,
+        extraKeys: {"Ctrl-Space":"autocomplete"}
     };
     // Connect to SkyWay, have server assign an ID instead of providing one
     // Showing off some of the configs available with SkyWay :).
@@ -60,9 +62,7 @@ export default class roomController {
         this.peer.destroy();
       }
     };
-
   };
-
   settingChange(){
     console.log("setting Changed!");
     this.editorOptions = {
@@ -155,6 +155,10 @@ export default class roomController {
 
   change(){
     console.log("changed! send code!");
+    var cm = $('.CodeMirror')[0].CodeMirror;
+    var doc = cm.getDoc();
+    var cursor = doc.getCursor();
+    console.log(cursor);
     this.room.send(this.code.content);
   };
 
