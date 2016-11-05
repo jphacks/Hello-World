@@ -66,33 +66,52 @@ export default class roomController {
     };
   };
 
+  codemirrorLoaded(_editor){
+    this.editor = _editor;
+    this.editor.on("cursorActivity", ()=>{
+      this.pastCursor = this.editor.getDoc().getCursor()
+      console.log("update cursor",this.pastCursor);
+    });
+  }
+
   update(data){
-    var newCursor = angular.element('.CodeMirror')[0].CodeMirror.getDoc().getCursor();
+    this.pastCursor = angular.element('.CodeMirror')[0].CodeMirror.getDoc().getCursor()
+    var newCursor = this.pastCursor;
     this.$scope.$apply(() => {
-      //this.code.contentとdataをうまく比較してrememberから修正を加えて、cursorの位置を更新
+      /*
+        this.code.contentとdataをうまく比較してrememberから修正を加えて、cursorの位置を更新
+        後日アルゴリズムの詳細に関してコメントを追加する
+      */
       console.log("before update",this.code.content);
       console.log("recieved data is : ",data);
+      console.log("data.pastCursor,newCursor : ",data.pastCursor,newCursor);
       if(data.pastCursor == newCursor){
         newCursor = data.newCursor;
-      }else if(data.pastCursor.line < newCursor.line || (data.pastCursor.line == newCursor.line && data.pastCursor.ch == newCursor.ch)){
+      }else if(data.pastCursor.line < newCursor.line || (data.pastCursor.line == newCursor.line && data.pastCursor.ch < newCursor.ch)){
         var behindString = this.code.content.slice(this.cursorIndex(this.code.content,angular.element('.CodeMirror')[0].CodeMirror.getDoc().getCursor()));
+        console.log("behindString",behindString);
         var duplicated_length = 0;
         for(var i = 0;i < behindString.length;i++){
           if(this.code.content[this.code.content.length - i] != behindString[behindString.length -i]){
             break;
-          };
-          duplicated_length++;
+          }else{
+            duplicated_length++;
+          }
         };
+        console.log("duplicated_length",duplicated_length);
         newCursor = this.indexCursor(data.newString, data.newString.length - duplicated_length);
       }else{
-        var beforeString = this.code.content.slice(0,this.cursorIndex(this.code.content,angular.element('.CodeMirror')[0].CodeMirror.getDoc().getCursor()) - 1);
+        var beforeString = this.code.content.slice(0,this.cursorIndex(this.code.content,angular.element('.CodeMirror')[0].CodeMirror.getDoc().getCursor()));
+        console.log("beforeString",beforeString);
         var duplicated_length = 0;
         for(var i = 0;i < beforeString.length;i++){
           if(this.code.content[i] != beforeString[i]){
             break;
-          };
-          duplicated_length++;
+          }else{
+            duplicated_length++;
+          }
         };
+        console.log("duplicated_length",duplicated_length);
         newCursor = this.indexCursor(data.newString, duplicated_length);
       };
       this.code.content = data.newString;
@@ -103,28 +122,30 @@ export default class roomController {
   };
 
   indexCursor(string,index){
-    var beforeCursor = string.slice(0,index - 1);
+    console.log("indexCursor function with string : ",string," index : ",index);
+    var beforeCursor = string.slice(0,index);
+    console.log("beforeCursor string : ",beforeCursor);
     var lines = beforeCursor.split("\n");
     return {
-      "line" : lines.length,
+      "line" : lines.length-1,
       "ch" : lines[lines.length-1].length
     };
   };
 
   cursorIndex(string,cursor){
-    console.log(typeof string);
     var lines = string.split("\n");
     var result = 0;
-    for(var i = 0;i < cursor.line;i++){
-      result+=lines[0].length;
+    for(var i = 0;i < cursor.line;i++,result++){
+      result+=lines[i].length;
     };
     result+=cursor.ch;
-    result++;
     return result;
   };
 
   test(){
-    console.log(this.code.content.slice(this.cursorIndex(this.code.content,angular.element('.CodeMirror')[0].CodeMirror.getDoc().getCursor())),this.code.content.slice(this.cursorIndex(this.code.content,angular.element('.CodeMirror')[0].CodeMirror.getDoc().getCursor())).length);
+    var cursorIndex = this.cursorIndex(this.code.content,angular.element('.CodeMirror')[0].CodeMirror.getDoc().getCursor());
+    console.log(cursorIndex);
+    console.log(this.code.content.slice(cursorIndex));
   }
 
   setTofirst(){
