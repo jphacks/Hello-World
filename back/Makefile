@@ -28,4 +28,5 @@ deploy:
 	git pull origin master
 	go build server.go
 	make migrate
+	export GIN_MODE=release
 	nohup ./server &
