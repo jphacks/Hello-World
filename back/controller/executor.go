@@ -69,18 +69,18 @@ func (e *Executor) Exec(request Executor) (Result, error) {
 	// コンテナにユーザコードをコピー
 	err = copyToContainer(request.Code, filename, containerID)
 	if err != nil {
-		return execResult, err
+		return execResult, fmt.Errorf("copy to container: %v", err)
 	}
 
 	// ユーザコードの実行
 	execResult.Output, execResult.RunTime, err = startContainer(containerID)
 	if err != nil {
-		return execResult, err
+		return execResult, fmt.Errorf("exec user code: %v", err)
 	}
 
 	err = removeContainer(containerID)
 	if err != nil {
-		return execResult, err
+		return execResult, fmt.Errorf("remove container: %v", err)
 	}
 
 	return execResult, nil
@@ -106,11 +106,11 @@ func createDocker(execCmd string) (string, error) {
 	fmt.Println("exec: ", dockerCmd)
 	cmd, err := shellwords.Parse(dockerCmd)
 	if err != nil {
-		return "", err
+		return "", fmt.Errorf("parse dockerCmd: %v", err)
 	}
 	output, err := exec.Command(cmd[0], cmd[1:]...).Output()
 	if err != nil {
-		return "", err
+		return "", fmt.Errorf("create docker: %v", err)
 	}
 
 	return string(output), err
@@ -118,23 +118,23 @@ func createDocker(execCmd string) (string, error) {
 
 func copyToContainer(code string, filename string, containerID string) error {
 	exec.Command("rm", "-rf", "/tmp/workspace").Run()
-	err := exec.Command("mkdir", "-rf", "/tmp/workspace").Run()
+	err := exec.Command("mkdir", "/tmp/workspace").Run()
 	if err != nil {
-		return err
+		return fmt.Errorf("make directory: %v", err)
 	}
 	err = exec.Command("chmod", "777", "/tmp/workspace").Run()
 	if err != nil {
-		return err
+		return fmt.Errorf("chmod: %v", err)
 	}
 	dockerCmd := `docker cp /tmp/workspace ` + containerID + ":/"
 	fmt.Println("exec: ", dockerCmd)
 	cmd, err := shellwords.Parse(dockerCmd)
 	if err != nil {
-		return err
+		return fmt.Errorf("parse dockerCmd: %v", err)
 	}
 	err = exec.Command(cmd[0], cmd[1:]...).Run()
 	if err != nil {
-		return err
+		return fmt.Errorf("cp to docker: %v", err)
 	}
 	return nil
 }
@@ -144,21 +144,21 @@ func startContainer(containerID string) (string, string, error) {
 	fmt.Println("exec: ", dockerCmd)
 	cmd, err := shellwords.Parse(dockerCmd)
 	if err != nil {
-		return "", "", err
+		return "", "", fmt.Errorf("parse dockerCmd: %v", err)
 	}
 	output, err := exec.Command(cmd[0], cmd[1:]...).Output()
 	if err != nil {
-		return "", "", err
+		return "", "", fmt.Errorf("start container: %v", err)
 	}
 	dockerCmd = `docker cp ` + containerID + `:/time.txt /tmp/time.txt`
 	fmt.Println("exec: ", dockerCmd)
 	cmd, err = shellwords.Parse(dockerCmd)
 	if err != nil {
-		return "", "", err
+		return "", "", fmt.Errorf("parse dockerCmd: %v", err)
 	}
 	err = exec.Command(cmd[0], cmd[1:]...).Run()
 	if err != nil {
-		return "", "", err
+		return "", "", fmt.Errorf("cp to host: %v", err)
 	}
 	fp, err := os.Open("/tmp/time.txt")
 	scanner := bufio.NewScanner(fp)
@@ -167,7 +167,7 @@ func startContainer(containerID string) (string, string, error) {
 		time = scanner.Text()
 	}
 	if err := scanner.Err(); err != nil {
-		return "", "", err
+		return "", "", fmt.Errorf("scan time: %v", err)
 	}
 	return string(output), time, nil
 }
@@ -177,11 +177,11 @@ func removeContainer(containerID string) error {
 	fmt.Println("exec: ", dockerCmd)
 	cmd, err := shellwords.Parse(dockerCmd)
 	if err != nil {
-		return err
+		return fmt.Errorf("parse dockerCmd: %v", err)
 	}
 	err = exec.Command(cmd[0], cmd[1:]...).Run()
 	if err != nil {
-		return err
+		return fmt.Errorf("remove container: %v", err)
 	}
 
 	return nil
