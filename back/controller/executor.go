@@ -97,7 +97,7 @@ func createDocker(execCmd string) (string, error) {
 			`--ulimit fsize=1000000 ` +
 			`-w /workspace ` +
 			`exec-container ` +
-			`/usr/bin/time -q -f "%e" -o /time.txt ` +
+			`/usr/bin/time -p -f "%e" -o /time.txt ` +
 			`timeout 3 ` +
 			`su nobody -s /bin/bash -c "` +
 			execCmd +
