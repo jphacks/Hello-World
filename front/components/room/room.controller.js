@@ -64,6 +64,28 @@ export default class roomController {
       }
     };
   };
+
+  update(data){
+    var remember = angular.element('.CodeMirror')[0].CodeMirror.getDoc().getCursor()
+    this.$scope.$apply(() => {
+      //this.code.contentとdataをうまく比較してrememberから修正を加えて、cursorの位置を更新
+      console.log("diff : ",jsDiff.diffChars(this.code.content,data));
+      this.code.content = data;
+    });
+    angular.element('.CodeMirror')[0].CodeMirror.focus();
+    angular.element('.CodeMirror')[0].CodeMirror.getDoc().setCursor(remember);
+    console.log("remembered cursor position",remember);
+  };
+
+  setTofirst(){
+    angular.element('.CodeMirror')[0].CodeMirror.focus();
+    angular.element('.CodeMirror')[0].CodeMirror.getDoc().setCursor({line: 0, ch: 0})
+  }
+  getCursor(){
+    angular.element('.CodeMirror')[0].CodeMirror.focus();
+    console.log(angular.element('.CodeMirror')[0].CodeMirror.getDoc().getCursor());
+  }
+
   settingChange(){
     console.log("setting Changed!");
     this.editorOptions = {
@@ -80,9 +102,7 @@ export default class roomController {
 
     this.room.on('data', (message) => {
       console.log(message.src + "からのデータ：",message)
-      this.$scope.$apply(() => {
-        this.code.content = message.data;
-      });
+      this.update(message.data);
     });
 
     this.room.on('peerJoin', (peerId) => {
@@ -129,20 +149,20 @@ export default class roomController {
     this.code.name = $fileContent.name;
     this.code.content = $fileContent.content;
     console.log("send code!");
-    this.room.send(this.code.content);
+    this.input();
   };
 
   run(type,data){
     console.log({
       "language" : type,
-      "data" :  JSON.stringify(data).slice(1, -1)
+      "code" :  JSON.stringify(data).slice(1, -1)
     });
   };
 
   new(){
     this.code.name = "new file";
     this.code.content = "";
-    this.room.send(this.code.content);
+    this.input();
   };
 
   save(data){
@@ -156,13 +176,9 @@ export default class roomController {
 
   input(){
     console.log("changed! send code!");
-    this.editor = angular.element('.CodeMirror')[0].CodeMirror;
-    console.log(this.editor);
-    this.cursor = this.editor.getDoc().getCursor();
-    console.log(this.cursor);
-    console.log(this.jsDiff.diffChars(this.former,this.code.content));
+    console.log(angular.element('.CodeMirror')[0].CodeMirror);
+    console.log(angular.element('.CodeMirror')[0].CodeMirror.getDoc().getCursor());
     this.room.send(this.code.content);
-    this.former = this.code.content;
   };
 
 };
