@@ -23,7 +23,7 @@ func main() {
 	r.Use(static.Serve("/", static.LocalFile(dir+"/public", true)))
 
 	config := cors.DefaultConfig()
-	config.AllowOrigins = []string{"http://jphacks.github.io"}
+	config.AllowOrigins = []string{"http://jphacks.github.io", "http://localhost:8888"}
 	r.Use(cors.New(config))
 
 	// Routing
