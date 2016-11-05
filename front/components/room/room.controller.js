@@ -18,11 +18,11 @@ export default class roomController {
     this.theme = this.themes[0];
     this.mode = this.modes[0];
     this.editorOptions = {
-        lineWrapping : true,
-        lineNumbers: true,
-        mode: this.mode.lang,
-        theme: this.theme,
-        extraKeys: {"Ctrl-Space":"autocomplete"}
+        "lineWrapping" : true,
+        "lineNumbers": true,
+        "mode": this.mode.lang,
+        "theme": this.theme,
+        "extraKeys": {"Ctrl-Space":"autocomplete"}
     };
     this.former = "";
     this.pastCursor = {"line": 0, "ch": 0};
@@ -63,7 +63,7 @@ export default class roomController {
     };
   };
   codemirrorLoaded(_editor){
-    this.editor = _editor;
+    this.editor = angular.element('.CodeMirror')[0].CodeMirror;
     this.editor.on("cursorActivity", ()=>{
       this.pastCursor = this.editor.getDoc().getCursor()
       console.log("update cursor",this.pastCursor);
@@ -163,12 +163,13 @@ export default class roomController {
   }
 
   settingChange(){
-    console.log("setting Changed!");
+    console.log("setting Changed!",this.mode.lang,this.theme);
     this.editorOptions = {
-        lineWrapping : true,
-        lineNumbers: true,
-        mode: this.mode.lang,
-        theme: this.theme
+        "lineWrapping" : true,
+        "lineNumbers": true,
+        "mode": this.mode.lang,
+        "theme": this.theme,
+        "extraKeys": {"Ctrl-Space":"autocomplete"}
     };
   };
 
