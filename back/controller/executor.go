@@ -126,6 +126,14 @@ func copyToContainer(code string, filename string, containerID string) error {
 	if err != nil {
 		return fmt.Errorf("chmod: %v", err)
 	}
+
+	fp, err := os.Create("/tmp/workspace/" + filename)
+	if err != nil {
+		return fmt.Errorf("save usr code: %v", err)
+	}
+	defer fp.Close()
+	fp.Write([]byte(code))
+
 	dockerCmd := `docker cp /tmp/workspace ` + containerID + ":/"
 	fmt.Println("exec: ", dockerCmd)
 	cmd, err := shellwords.Parse(dockerCmd)
