@@ -8,7 +8,7 @@ body {
 	z-index:-9999999;
 	}
 .logo{
-  height: 12%;
+  height: 20%;
   background-image:url('../img/logo.png');
   background-size: contain;
   background-position: center;
@@ -16,7 +16,7 @@ body {
   display: block;
   margin-left: auto;
   margin-right: auto;
-  padding: 50px 0;
+  /*padding: 50px 0;*/
   /*margin-top: 20px;*/
 }
 .mainBack{
