@@ -1,8 +1,9 @@
 export default class roomController {
-  constructor($scope,$http) {
+  constructor($scope,$http,jsDiff) {
     navigator.getUserMedia = navigator.getUserMedia || navigator.webkitGetUserMedia || navigator.mozGetUserMedia;
     this.$scope = $scope;
     this.$http = $http;
+    this.jsDiff = jsDiff;
     this.roomName = $scope.rootCtrl.roomName;
     this.code = {
       "name" : "new file",
@@ -16,7 +17,6 @@ export default class roomController {
     this.themes = ["midnight","neo","eclipse"];
     this.theme = this.themes[0];
     this.mode = this.modes[0];
-    this.editor = angular.element('#editor');
     this.editorOptions = {
         lineWrapping : true,
         lineNumbers: true,
@@ -24,6 +24,7 @@ export default class roomController {
         theme: this.theme,
         extraKeys: {"Ctrl-Space":"autocomplete"}
     };
+    this.former = "";
     // Connect to SkyWay, have server assign an ID instead of providing one
     // Showing off some of the configs available with SkyWay :).
     this.peer = new Peer({
@@ -153,13 +154,15 @@ export default class roomController {
     document.body.removeChild(link);
   };
 
-  change(){
+  input(){
     console.log("changed! send code!");
-    var cm = $('.CodeMirror')[0].CodeMirror;
-    var doc = cm.getDoc();
-    var cursor = doc.getCursor();
-    console.log(cursor);
+    this.editor = angular.element('.CodeMirror')[0].CodeMirror;
+    console.log(this.editor);
+    this.cursor = this.editor.getDoc().getCursor();
+    console.log(this.cursor);
+    console.log(this.jsDiff.diffChars(this.former,this.code.content));
     this.room.send(this.code.content);
+    this.former = this.code.content;
   };
 
 };

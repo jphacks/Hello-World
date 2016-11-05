@@ -24,11 +24,12 @@
 				</div><br>
 
 				<span><input ng-model="roomCtrl.code.name"/></span>
-				<textarea id="editor" ui-codemirror ui-codemirror-opts="roomCtrl.editorOptions" ng-model="roomCtrl.code.content" ng-change="roomCtrl.change()"></textarea>
+				<textarea id="editor" ui-codemirror ui-codemirror-opts="roomCtrl.editorOptions" ng-model="roomCtrl.code.content" ng-change="roomCtrl.input()"></textarea>
 			</div>
 			<button ng-click="roomCtrl.run('js',roomCtrl.code.content)">run</button>
 			<button ng-click="roomCtrl.save(roomCtrl.code.content)">save</button>
 		</div>
+
 		<div class="col s4">
 			<!-- Audio and Video area -->
 			<div id="their-audios"></div>
