@@ -1,4 +1,5 @@
 setup:
+	which docker || brew cask install docker
 	which go || brew install go
 	which godep || go get github.com/tools/godep
 	godep restore
@@ -10,6 +11,7 @@ build:
 	go build server.go
 
 run:
+	docker run -i -t exec-container uname -a || docker build -t exec-container .
 	make build && ./server
 
 clean:
