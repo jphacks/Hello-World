@@ -17,11 +17,13 @@ type Executor struct {
 	Code     string `json:"code"`
 }
 
+// Result has response data.
 type Result struct {
 	RunTime string
 	Output  string
 }
 
+// Handle controller for Executing user code
 func (e *Executor) Handle(c *gin.Context) {
 	var request Executor
 	c.BindJSON(&request)
@@ -39,6 +41,7 @@ func (e *Executor) Handle(c *gin.Context) {
 	})
 }
 
+// Exec execute user code
 func (e *Executor) Exec(request Executor) (Result, error) {
 	var execResult Result
 	var (
@@ -55,8 +58,10 @@ func (e *Executor) Exec(request Executor) (Result, error) {
 	default:
 		execResult.Output = "Invalid language"
 		execResult.RunTime = "-ms"
+		return execResult, nil
 	}
 
+	// コンテナを作成
 	output, err := createDocker(execCmd)
 	if err != nil {
 		return execResult, nil
@@ -78,6 +83,7 @@ func (e *Executor) Exec(request Executor) (Result, error) {
 		return execResult, fmt.Errorf("exec user code: %v", err)
 	}
 
+	// コンテナを削除
 	err = removeContainer(containerID)
 	if err != nil {
 		return execResult, fmt.Errorf("remove container: %v", err)
@@ -104,6 +110,8 @@ func createDocker(execCmd string) (string, error) {
 			`"`
 
 	fmt.Println("exec: ", dockerCmd)
+
+	// コマンドと引数にパース
 	cmd, err := shellwords.Parse(dockerCmd)
 	if err != nil {
 		return "", fmt.Errorf("parse dockerCmd: %v", err)
