@@ -8,7 +8,7 @@ body {
 	z-index:-9999999;
 	}
 .logo{
-  height: 20%;
+  height: 15%;
   background-image:url('../img/logo.png');
   background-size: contain;
   background-position: center;
@@ -16,7 +16,7 @@ body {
   display: block;
   margin-left: auto;
   margin-right: auto;
-  /*padding: 50px 0;*/
+  padding-top: 50px 0;
   /*margin-top: 20px;*/
 }
 .mainBack{
@@ -45,40 +45,30 @@ body {
 .init {
   margin-top: 120px;
 }
-h1 {
-  height: 10%;
-  font-size:30px;
-  line-height:60px;
-  margin:25px 0;
-}
-h3 {
-  height: 25%;
-  font-size:18px;
-  margin:10px 0;
-  font-weight:200;
-  color;#fff;
-}
-h6 {
-  height: 17%;
-  padding-top: 30px;
-  margin-top:20px;
-  font-size:10px;
-  font-weight:100;
-  color:#fff;
-}
+
 form {
-  height: 20%;
-  padding: 30px;
+  height: 24%;
+  /*padding: 0 30px 30px;*/
 	border-radius:3px;
 	-webkit-box-shadow:none;
 	box-shadow:none;border:0;
 }
 .formstyle {
-  padding-top: 7px;
+  width:100%;
+  padding: 10px 30%;
   margin-top: 0;
   margin-bottom: 0;
   display: table;
 }
+input {
+  background: rgba(202,200,200,0.90);
+}
+input::-webkit-input-placeholder {
+  font-size: 20px;
+  color:    #fff;
+}
+
+
 loading *{
 	-webkit-animation:none!important;
 	-moz-animation:none!important;

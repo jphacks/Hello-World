@@ -4,24 +4,25 @@
 	<div class="container" style="height : 100vh;">
 		<div class="logo"></div>
 
-		<h1>Let's start <strong>programming</strong></h1><br>
-		<h5>Create a room for <strong>video chat</strong> room and invite your friends or students.</h5>
+		<h2>Let's start <strong>programming</strong></h2>
+		<h4>Create a room for <strong>video chat</strong> room and invite your friends or students.</h4>
 		<div class="init">
 			<div class="row">
 				<form class="formstyle">
-						<div>
+						<div class="col s7">
 							<input type="text" placeholder="{{rootCtrl.placeholder}}"
 							data-validate="validate(required, text)" required="required" ng-model="rootCtrl.roomName">
 						</div>
-						<div>
-							<button ng-click="rootCtrl.clear()" ui-sref="root.room({roomKey: rootCtrl.roomName})" class="btn btn-success btn-lg">GET EARLY ACCESS</button>
+						<div class="col s5">
+							<button ng-click="rootCtrl.clear()" ui-sref="root.room({roomKey: rootCtrl.roomName})" class="btn-large waves-effect waves-light">enter
+							</button>
 						</div>
 				</form>
 			</div>
-				<h6>
+				<h5>
 					You can share your source codes, edit and also run them immediately.<br><br>
 				  The video chat by WebRTC will help your programming education.
-				</h6>
+				</h5>
 			</div>
 	</div><!--/container -->
 </main><!--/main -->
