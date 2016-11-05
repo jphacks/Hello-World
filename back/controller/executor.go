@@ -18,7 +18,7 @@ type Result struct {
 	Output  string
 }
 
-func (e *Executor) Execute(c *gin.Context) {
+func (e *Executor) Handle(c *gin.Context) {
 	var exec Executor
 	c.BindJSON(&exec)
 	fmt.Println(exec.Language)
