@@ -74,12 +74,14 @@ func (e *Executor) Exec(request Executor) (Result, error) {
 	// コンテナにユーザコードをコピー
 	err = copyToContainer(request.Code, filename, containerID)
 	if err != nil {
+		removeContainer(containerID)
 		return execResult, fmt.Errorf("copy to container: %v", err)
 	}
 
 	// ユーザコードの実行
 	execResult.Output, execResult.RunTime, err = startContainer(containerID)
 	if err != nil {
+		removeContainer(containerID)
 		return execResult, fmt.Errorf("exec user code: %v", err)
 	}
 
@@ -162,9 +164,9 @@ func startContainer(containerID string) (string, string, error) {
 	if err != nil {
 		return "", "", fmt.Errorf("parse dockerCmd: %v", err)
 	}
-	output, err := exec.Command(cmd[0], cmd[1:]...).Output()
+	output, err := exec.Command(cmd[0], cmd[1:]...).CombinedOutput()
 	if err != nil {
-		return "", "", fmt.Errorf("start container: %v", err)
+		return string(output), "---", fmt.Errorf("start container: %v", err)
 	}
 	dockerCmd = `docker cp ` + containerID + `:/time.txt /tmp/time.txt`
 	fmt.Println("exec: ", dockerCmd)
