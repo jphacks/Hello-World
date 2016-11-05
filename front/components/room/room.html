@@ -24,12 +24,13 @@
 				</div><br>
 
 				<span><input ng-model="roomCtrl.code.name"/></span>
-				<textarea id="editor" ui-codemirror ui-codemirror-opts="roomCtrl.editorOptions" ng-model="roomCtrl.code.content" ng-change="roomCtrl.input()"></textarea>
+				<textarea id="editor" ui-codemirror="{ onLoad : roomCtrl.codemirrorLoaded }" ui-codemirror-opts="roomCtrl.editorOptions" ng-model="roomCtrl.code.content" ng-change="roomCtrl.input()"></textarea>
 			</div>
 			<button ng-click="roomCtrl.run('js',roomCtrl.code.content)">run</button>
 			<button ng-click="roomCtrl.save(roomCtrl.code.content)">save</button>
 			<button ng-click="roomCtrl.setTofirst()">setTofirst</button>
 			<button ng-click="roomCtrl.getCursor()">getCursor</button>
+			<button ng-click="roomCtrl.test()">test</button>
 		</div>
 
 		<div class="col s4">

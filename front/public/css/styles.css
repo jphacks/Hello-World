@@ -1,0 +1,23 @@
+.logo{
+  height:100px; /*height of your image*/
+  background-image:url('../img/logo.png');
+  background-repeat: no-repeat;
+  margin:0; /* If you want no margin */
+  padding:0; /*if your want to padding */
+}
+.mainBack{
+  position:relative;
+  /*padding:80px 15px;*/
+  color:#FFF;
+  text-align:center;
+  text-shadow:0 1px 0 rgba(0,0,0,.1);
+  background-color:#6883cc;
+  background-image:url("../img/back.png");
+  background-repeat:no-repeat;
+  background-position:center center;
+  background-attachment:fixed;
+  -webkit-background-size:cover;
+  -moz-background-size:cover;
+  -o-background-size:cover;
+  background-size:cover;
+}

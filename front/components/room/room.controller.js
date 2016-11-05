@@ -25,6 +25,7 @@ export default class roomController {
         extraKeys: {"Ctrl-Space":"autocomplete"}
     };
     this.former = "";
+    this.pastCursor = {"line": 0, "ch": 0};
     // Connect to SkyWay, have server assign an ID instead of providing one
     // Showing off some of the configs available with SkyWay :).
     this.peer = new Peer({
@@ -65,22 +66,93 @@ export default class roomController {
     };
   };
 
+  codemirrorLoaded(_editor){
+    this.editor = _editor;
+    this.editor.on("cursorActivity", ()=>{
+      this.pastCursor = this.editor.getDoc().getCursor()
+      console.log("update cursor",this.pastCursor);
+    });
+  }
+
   update(data){
-    var remember = angular.element('.CodeMirror')[0].CodeMirror.getDoc().getCursor()
+    this.pastCursor = angular.element('.CodeMirror')[0].CodeMirror.getDoc().getCursor()
+    var newCursor = this.pastCursor;
     this.$scope.$apply(() => {
-      //this.code.contentとdataをうまく比較してrememberから修正を加えて、cursorの位置を更新
-      console.log("diff : ",jsDiff.diffChars(this.code.content,data));
-      this.code.content = data;
+      /*
+        this.code.contentとdataをうまく比較してrememberから修正を加えて、cursorの位置を更新
+        後日アルゴリズムの詳細に関してコメントを追加する
+      */
+      console.log("before update",this.code.content);
+      console.log("recieved data is : ",data);
+      console.log("data.pastCursor,newCursor : ",data.pastCursor,newCursor);
+      if(data.pastCursor == newCursor){
+        newCursor = data.newCursor;
+      }else if(data.pastCursor.line < newCursor.line || (data.pastCursor.line == newCursor.line && data.pastCursor.ch < newCursor.ch)){
+        var behindString = this.code.content.slice(this.cursorIndex(this.code.content,angular.element('.CodeMirror')[0].CodeMirror.getDoc().getCursor()));
+        console.log("behindString",behindString);
+        var duplicated_length = 0;
+        for(var i = 0;i < behindString.length;i++){
+          if(this.code.content[this.code.content.length - i] != behindString[behindString.length -i]){
+            break;
+          }else{
+            duplicated_length++;
+          }
+        };
+        console.log("duplicated_length",duplicated_length);
+        newCursor = this.indexCursor(data.newString, data.newString.length - duplicated_length);
+      }else{
+        var beforeString = this.code.content.slice(0,this.cursorIndex(this.code.content,angular.element('.CodeMirror')[0].CodeMirror.getDoc().getCursor()));
+        console.log("beforeString",beforeString);
+        var duplicated_length = 0;
+        for(var i = 0;i < beforeString.length;i++){
+          if(this.code.content[i] != beforeString[i]){
+            break;
+          }else{
+            duplicated_length++;
+          }
+        };
+        console.log("duplicated_length",duplicated_length);
+        newCursor = this.indexCursor(data.newString, duplicated_length);
+      };
+      this.code.content = data.newString;
     });
     angular.element('.CodeMirror')[0].CodeMirror.focus();
-    angular.element('.CodeMirror')[0].CodeMirror.getDoc().setCursor(remember);
-    console.log("remembered cursor position",remember);
+    angular.element('.CodeMirror')[0].CodeMirror.getDoc().setCursor(newCursor);
+    console.log("newCursor position",newCursor);
   };
+
+  indexCursor(string,index){
+    console.log("indexCursor function with string : ",string," index : ",index);
+    var beforeCursor = string.slice(0,index);
+    console.log("beforeCursor string : ",beforeCursor);
+    var lines = beforeCursor.split("\n");
+    return {
+      "line" : lines.length-1,
+      "ch" : lines[lines.length-1].length
+    };
+  };
+
+  cursorIndex(string,cursor){
+    var lines = string.split("\n");
+    var result = 0;
+    for(var i = 0;i < cursor.line;i++,result++){
+      result+=lines[i].length;
+    };
+    result+=cursor.ch;
+    return result;
+  };
+
+  test(){
+    var cursorIndex = this.cursorIndex(this.code.content,angular.element('.CodeMirror')[0].CodeMirror.getDoc().getCursor());
+    console.log(cursorIndex);
+    console.log(this.code.content.slice(cursorIndex));
+  }
 
   setTofirst(){
     angular.element('.CodeMirror')[0].CodeMirror.focus();
     angular.element('.CodeMirror')[0].CodeMirror.getDoc().setCursor({line: 0, ch: 0})
   }
+
   getCursor(){
     angular.element('.CodeMirror')[0].CodeMirror.focus();
     console.log(angular.element('.CodeMirror')[0].CodeMirror.getDoc().getCursor());
@@ -178,7 +250,13 @@ export default class roomController {
     console.log("changed! send code!");
     console.log(angular.element('.CodeMirror')[0].CodeMirror);
     console.log(angular.element('.CodeMirror')[0].CodeMirror.getDoc().getCursor());
-    this.room.send(this.code.content);
+    //pastCursor,newString,newCursorを送る。
+    this.room.send({
+      "pastCursor" : this.pastCursor,
+      "newString" : this.code.content,
+      "newCursor" : angular.element('.CodeMirror')[0].CodeMirror.getDoc().getCursor()
+    });
+    this.pastCursor = angular.element('.CodeMirror')[0].CodeMirror.getDoc().getCursor()
   };
 
 };
