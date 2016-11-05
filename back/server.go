@@ -16,7 +16,7 @@ func main() {
 
 	// Routing
 	r.GET("/ping", c.Pong)
-	r.POST("/exec", e.Execute)
+	r.POST("/exec", e.Handle)
 
 	// Listening
 	r.Run(":8080")

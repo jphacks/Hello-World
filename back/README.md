@@ -46,10 +46,19 @@ status: 200(OK)
 - curl
 
 ```sh
+$ # correct syntax
 $ curl -i -X  POST http://localhost:8080/exec \
     -H "Accept: application/json" -H "Content-Type: application/json" \
-    -d '{ "language": "ruby", "code": "puts \"Hello World\\n\"" }'
+    -d '{ "language": "js", "code":"console.log(\"a\")" }'
 ```
+
+```sh
+$ # invalid syntax
+$ curl -i -X  POST http://localhost:8080/exec \
+    -H "Accept: application/json" -H "Content-Type: application/json" \
+    -d '{ "language": "js", "code":"consolelog(\"a\")" }'
+```
+
 
 ![curl](./example/curl.png)
 

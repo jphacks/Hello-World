@@ -11,7 +11,6 @@ build:
 	go build server.go
 
 run:
-	docker run -i -t exec-container uname -a || docker build -t exec-container .
 	make build && ./server
 
 clean:
@@ -19,3 +18,6 @@ clean:
 
 migrate:
 	cp -rf ../front/public ./public
+
+docker-build:
+	docker build -t exec-container .
