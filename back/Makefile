@@ -21,3 +21,11 @@ migrate:
 
 docker-build:
 	docker build -t exec-container .
+
+deploy:
+	sudo service nginx restart
+	killall server || true
+	git pull origin master
+	go build server.go
+	make migrate
+	nohup ./server &

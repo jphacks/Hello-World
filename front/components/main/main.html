@@ -14,7 +14,7 @@
 							data-validate="validate(required, text)" required="required" ng-model="rootCtrl.roomName">
 						</div>
 						<div>
-							<button ng-click="rootCtrl.clear()" ui-sref="root.room" class="btn-large waves-effect waves-light">GET EARLY ACCESS</button>
+							<button ng-click="rootCtrl.clear()" ui-sref="root.room({roomKey: rootCtrl.roomName})" class="btn btn-success btn-lg">GET EARLY ACCESS</button>
 						</div>
 				</form>
 			</div>
