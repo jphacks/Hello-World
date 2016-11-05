@@ -48,10 +48,10 @@ func (e *Executor) Exec(request Executor) (Result, error) {
 	switch request.Language {
 	case "ruby":
 		filename = "Main.rb"
-		execCmd = "ruby" + filename
+		execCmd = "ruby " + filename
 	case "js":
 		filename = "script.js"
-		execCmd = "node" + filename
+		execCmd = "node " + filename
 	default:
 		execResult.Output = "Invalid language"
 		execResult.RunTime = "-ms"
