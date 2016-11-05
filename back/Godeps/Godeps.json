@@ -26,6 +26,11 @@
 			"Rev": "ee05b128a739a0fb76c7ebd3ae4810c1de808d6d"
 		},
 		{
+			"ImportPath": "github.com/mattn/go-shellwords",
+			"Comment": "v1.0.0-1-g525bede",
+			"Rev": "525bedee691b5a8df547cb5cf9f86b7fb1883e24"
+		},
+		{
 			"ImportPath": "golang.org/x/net/context",
 			"Rev": "569280fa63be4e201b975e5411e30a92178f0118"
 		},
