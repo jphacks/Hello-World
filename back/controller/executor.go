@@ -161,6 +161,7 @@ func startContainer(containerID string) (string, string, error) {
 		return "", "", fmt.Errorf("cp to host: %v", err)
 	}
 	fp, err := os.Open("/tmp/time.txt")
+	defer fp.Close()
 	scanner := bufio.NewScanner(fp)
 	var time string
 	if scanner.Scan() {
