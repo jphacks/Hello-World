@@ -31,7 +31,7 @@ angular
         template: main
       })
       .state('root.room', {
-        url: "/room",
+        url: "/room/:roomKey",
         template: room,
         controller: roomController,
         controllerAs: 'roomCtrl'
