@@ -55,6 +55,9 @@ func (e *Executor) Exec(request Executor) (Result, error) {
 	case "js":
 		filename = "script.js"
 		execCmd = "node " + filename
+	case "python2":
+		filename = "Main.py"
+		execCmd = "python " + filename
 	default:
 		execResult.Output = "Invalid language"
 		execResult.RunTime = "-ms"
@@ -167,6 +170,13 @@ func startContainer(containerID string) (string, string, error) {
 	output, err := exec.Command(cmd[0], cmd[1:]...).CombinedOutput()
 	if err != nil {
 		return string(output), "---", fmt.Errorf("start container: %v", err)
+	}
+	_, err = os.Stat("/tmp/time.txt")
+	if err != nil {
+		_, err = os.Create("/tmp/time.txt")
+		if err != nil {
+			return "", "", fmt.Errorf("create /tmp/time.txt: %v", err)
+		}
 	}
 	dockerCmd = `docker cp ` + containerID + `:/time.txt /tmp/time.txt`
 	fmt.Println("exec: ", dockerCmd)
