@@ -4,6 +4,7 @@ export default class roomController {
     this.$scope = $scope;
     this.$http = $http;
     this.$stateParams = $stateParams;
+    this.roomMember = 1;
     this.roomName = $scope.rootCtrl.roomName;
     this.code = {
       "name" : "new file",
@@ -11,7 +12,7 @@ export default class roomController {
     };
     this.modes = [
       {"lang" : "javascript", "ex" : "js"},
-      {"lang" : "python", "ex" : "py"},
+      {"lang" : "python2", "ex" : "py"},
       {"lang" : "ruby", "ex" : "rb"}
     ];
     this.themes = ["midnight","neo","eclipse"];
@@ -202,6 +203,9 @@ export default class roomController {
     this.room.on('stream', (stream) =>{
       const streamURL = URL.createObjectURL(stream);
       const peerId = stream.peerId;
+      this.$scope.$apply(()=>{
+        this.roomMember++;
+      });
 
       $('.videos').append($(
           '<video id="video_' + peerId + '" class="videoBox" width="200" height="200" autoplay="autoplay" class="remoteVideos" src="' + streamURL + '" >'
@@ -210,6 +214,9 @@ export default class roomController {
     });
 
     this.room.on('removeStream', (removedStream) => {
+      this.$scope.$apply(()=>{
+        this.roomMember--;
+      });
       $('#video_' + removedStream.peerId).remove();
     });
 

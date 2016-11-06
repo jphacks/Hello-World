@@ -138,3 +138,8 @@ to {
 	-webkit-animation: arrowbounce 1s alternate infinite; /* Safari and Chrome */
 	-o-animation: arrowbounce 1s alternate infinite; /* Opera */
 }
+.videos{
+	position: fixed;
+	width : 100%;
+	height : 100vh;
+}
