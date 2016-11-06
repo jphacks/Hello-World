@@ -19,6 +19,7 @@ type Executor struct {
 
 // Result has response data.
 type Result struct {
+	isErr   bool
 	RunTime string
 	Output  string
 }
@@ -34,8 +35,8 @@ func (e *Executor) Handle(c *gin.Context) {
 		fmt.Println("ERROR!!!: ", err)
 	}
 
-	c.String(http.StatusOK, "%s", "ok")
 	c.JSON(http.StatusOK, gin.H{
+		"is_error": response.isErr,
 		"run_time": response.RunTime,
 		"output":   response.Output,
 	})
@@ -82,7 +83,7 @@ func (e *Executor) Exec(request Executor) (Result, error) {
 	}
 
 	// ユーザコードの実行
-	execResult.Output, execResult.RunTime, err = startContainer(containerID)
+	execResult.isErr, execResult.Output, execResult.RunTime, err = startContainer(containerID)
 	if err != nil {
 		removeContainer(containerID)
 		return execResult, fmt.Errorf("exec user code: %v", err)
@@ -160,33 +161,33 @@ func copyToContainer(code string, filename string, containerID string) error {
 	return nil
 }
 
-func startContainer(containerID string) (string, string, error) {
+func startContainer(containerID string) (bool, string, string, error) {
 	dockerCmd := `docker start -i ` + containerID
 	fmt.Println("exec: ", dockerCmd)
 	cmd, err := shellwords.Parse(dockerCmd)
 	if err != nil {
-		return "", "", fmt.Errorf("parse dockerCmd: %v", err)
+		return false, "", "", fmt.Errorf("parse dockerCmd: %v", err)
 	}
 	output, err := exec.Command(cmd[0], cmd[1:]...).CombinedOutput()
 	if err != nil {
-		return string(output), "---", fmt.Errorf("start container: %v", err)
+		return true, string(output), "---", fmt.Errorf("start container: %v", err)
 	}
 	_, err = os.Stat("/tmp/time.txt")
 	if err != nil {
 		_, err = os.Create("/tmp/time.txt")
 		if err != nil {
-			return "", "", fmt.Errorf("create /tmp/time.txt: %v", err)
+			return false, "", "", fmt.Errorf("create /tmp/time.txt: %v", err)
 		}
 	}
 	dockerCmd = `docker cp ` + containerID + `:/time.txt /tmp/time.txt`
 	fmt.Println("exec: ", dockerCmd)
 	cmd, err = shellwords.Parse(dockerCmd)
 	if err != nil {
-		return "", "", fmt.Errorf("parse dockerCmd: %v", err)
+		return false, "", "", fmt.Errorf("parse dockerCmd: %v", err)
 	}
 	err = exec.Command(cmd[0], cmd[1:]...).Run()
 	if err != nil {
-		return "", "", fmt.Errorf("cp to host: %v", err)
+		return false, "", "", fmt.Errorf("cp to host: %v", err)
 	}
 	fp, err := os.Open("/tmp/time.txt")
 	defer fp.Close()
@@ -196,9 +197,9 @@ func startContainer(containerID string) (string, string, error) {
 		time = scanner.Text() + "s"
 	}
 	if err := scanner.Err(); err != nil {
-		return "", "", fmt.Errorf("scan time: %v", err)
+		return false, "", "", fmt.Errorf("scan time: %v", err)
 	}
-	return string(output), time, nil
+	return false, string(output), time, nil
 }
 
 func removeContainer(containerID string) error {
