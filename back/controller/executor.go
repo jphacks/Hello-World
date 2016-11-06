@@ -53,7 +53,7 @@ func (e *Executor) Exec(request Executor) (Result, error) {
 	case "ruby":
 		filename = "Main.rb"
 		execCmd = "ruby " + filename
-	case "js":
+	case "javascript":
 		filename = "script.js"
 		execCmd = "node " + filename
 	case "python2":
