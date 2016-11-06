@@ -4,6 +4,7 @@ export default class roomController {
     this.$scope = $scope;
     this.$http = $http;
     this.$stateParams = $stateParams;
+    this.roomMember = 1;
     this.roomName = $scope.rootCtrl.roomName;
     this.code = {
       "name" : "new file",
@@ -11,18 +12,18 @@ export default class roomController {
     };
     this.modes = [
       {"lang" : "javascript", "ex" : "js"},
-      {"lang" : "python", "ex" : "py"},
+      {"lang" : "python2", "ex" : "py"},
       {"lang" : "ruby", "ex" : "rb"}
     ];
     this.themes = ["midnight","neo","eclipse"];
     this.theme = this.themes[0];
     this.mode = this.modes[0];
     this.editorOptions = {
-        lineWrapping : true,
-        lineNumbers: true,
-        mode: this.mode.lang,
-        theme: this.theme,
-        extraKeys: {"Ctrl-Space":"autocomplete"}
+        "lineWrapping" : true,
+        "lineNumbers": true,
+        "mode": this.mode.lang,
+        "theme": this.theme,
+        "extraKeys": {"Ctrl-Space":"autocomplete"}
     };
     this.former = "";
     this.pastCursor = {"line": 0, "ch": 0};
@@ -35,10 +36,17 @@ export default class roomController {
     this.peer.on('open', (id) => {
       console.log("peerはconnect")
       navigator.getUserMedia(
-        {audio: true, video: false},
+        {audio: true, video: true},
         (stream) => {
             // Set your video displays
             window.localStream = stream;
+            const streamURL = URL.createObjectURL(stream);
+            const myPeerId = id;
+
+            $('.videos').append($(
+                '<video id="video_' + myPeerId + '" class="videoBox" width="200" height="200" autoplay="autoplay" class="remoteVideos" src="' + streamURL + '" >'
+            ));
+
             console.log(this.roomName,"に接続します")
             this.room = this.peer.joinRoom(this.roomName, {mode: 'sfu', stream: stream});
             this.room.on('open', () => {
@@ -63,7 +71,8 @@ export default class roomController {
     };
   };
   codemirrorLoaded(_editor){
-    this.editor = _editor;
+    this.editor = angular.element('.CodeMirror')[0].CodeMirror;
+    console.log("codeMirror instance : this.editor :",this.editor);
     this.editor.on("cursorActivity", ()=>{
       this.pastCursor = this.editor.getDoc().getCursor()
       console.log("update cursor",this.pastCursor);
@@ -163,12 +172,13 @@ export default class roomController {
   }
 
   settingChange(){
-    console.log("setting Changed!");
+    console.log("setting Changed!",this.mode.lang,this.theme);
     this.editorOptions = {
-        lineWrapping : true,
-        lineNumbers: true,
-        mode: this.mode.lang,
-        theme: this.theme
+        "lineWrapping" : true,
+        "lineNumbers": true,
+        "mode": this.mode.lang,
+        "theme": this.theme,
+        "extraKeys": {"Ctrl-Space":"autocomplete"}
     };
   };
 
@@ -193,29 +203,21 @@ export default class roomController {
     this.room.on('stream', (stream) =>{
       const streamURL = URL.createObjectURL(stream);
       const peerId = stream.peerId;
+      this.$scope.$apply(()=>{
+        this.roomMember++;
+      });
 
-      $('#their-audios').append($(
-        '<div class="col-xs-8" id="control_' + peerId + '">' +
-        '<div class="panel panel-primary">'+
-        '<div class = "panel-heading">' +
-          '<h3 id="label_' + peerId + '" class="panel-title">' + 'Student ID :' + stream.peerId + '</h3>' +
-          '<audio autoplay="autoplay" class="remoteAudios" src="' + streamURL + '" id="audio_' + peerId + '">' +
-        '</div>' +
-        '<div class="panel-body">' +
-          '<button onclick="document.getElementById('+"'"+'audio_' + peerId  +"'"+').play()" class="mdl-button mdl-js-button mdl-button--raised">Play</button>' +
-          '<button onclick="document.getElementById('+"'"+'audio_' + peerId  +"'"+').pause()" class="mdl-button mdl-js-button mdl-button--raised">Pause</button>' +
-          '<button onclick="document.getElementById('+"'"+'audio_' + peerId  +"'"+').volume+=0.1" class="mdl-button mdl-js-button mdl-button--raised">Volume Up</button>' +
-          '<button onclick="document.getElementById('+"'"+'audio_' + peerId  +"'"+').volume-=0.1" class="mdl-button mdl-js-button mdl-button--raised">Volume Down</button>' +
-        '</div>' +
-        '</div>' +
-        '</div>'
-        ));
+      $('.videos').append($(
+          '<video id="video_' + peerId + '" class="videoBox" width="200" height="200" autoplay="autoplay" class="remoteVideos" src="' + streamURL + '" >'
+      ));
+
     });
 
     this.room.on('removeStream', (removedStream) => {
-      $('#audio_' + removedStream.peerId).remove();
-      $('#label_' + removedStream.peerId).remove();
-      $('#control_' + removedStream.peerId).remove();
+      this.$scope.$apply(()=>{
+        this.roomMember--;
+      });
+      $('#video_' + removedStream.peerId).remove();
     });
 
 
