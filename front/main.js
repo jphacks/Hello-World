@@ -17,7 +17,7 @@ angular
   .directive('uiCodemirror', uiCodemirrorDirective)
   .service('jsDiff', jsDiffService)
   .config(function ($stateProvider, $urlRouterProvider) {
-    $urlRouterProvider.otherwise("/main");
+    $urlRouterProvider.otherwise("/");
 
     // Now set up the states
     $stateProvider
@@ -27,11 +27,11 @@ angular
         controllerAs: 'rootCtrl'
       })
       .state('root.main', {
-        url: "/main",
+        url: "/",
         template: main
       })
       .state('root.room', {
-        url: "/room/:roomKey",
+        url: "/:roomKey",
         template: room,
         controller: roomController,
         controllerAs: 'roomCtrl'
