@@ -2,7 +2,7 @@
 
 ## 製品概要
 
-### Edu Tech
+### Education + Technology = Edu Tech
 
 ### 背景（製品開発のきっかけ、課題等）
 
