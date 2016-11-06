@@ -1,5 +1,10 @@
 export default class roomController {
   constructor($scope,$http,$stateParams,$state) {
+
+    String.prototype.unescapeHtml = function(){
+        return this.replace(/&amp;/g, "&").replace(/&lt;/g, "<").replace(/&gt;/g, ">").replace(/&quot;/g, "\"").replace(/&#39;/g, "\'");
+    };
+
     navigator.getUserMedia = navigator.getUserMedia || navigator.webkitGetUserMedia || navigator.mozGetUserMedia;
     this.$scope = $scope;
     this.$http = $http;
@@ -47,7 +52,7 @@ export default class roomController {
             const streamURL = URL.createObjectURL(stream);
             const myPeerId = id;
             $('.videos').append($(
-                '<video id="video_' + myPeerId + '" class="videoBox" width="200" height="200" autoplay="autoplay" class="remoteVideos" src="' + streamURL + '" > </video> <br>'
+                '<video id="video_' + myPeerId + '" class="videoBox" width="300" height="200" autoplay="autoplay" class="remoteVideos" src="' + streamURL + '" > </video> <br>'
             ));
             console.log(this.roomName,"に接続します")
             this.room = this.peer.joinRoom(this.roomName, {mode: 'sfu', stream: stream});
@@ -209,7 +214,7 @@ export default class roomController {
         this.roomMember++;
       });
       $('.videos').append($(
-          '<video id="video_' + peerId + '" class="videoBox" width="200" height="200" autoplay="autoplay" class="remoteVideos" src="' + streamURL + '" > </video> <br>'
+          '<video id="video_' + peerId + '" class="videoBox" width="300" height="200" autoplay="autoplay" class="remoteVideos" src="' + streamURL + '" > </video> <br>'
       ));
     });
     this.room.on('removeStream', (removedStream) => {
@@ -238,6 +243,9 @@ export default class roomController {
     }))
     .then((response) => {
       console.log("response : ",response);
+
+      this.searchResult = 0;
+
       this.result = response.data;
       if(this.result.is_error){
         this.search({
@@ -255,7 +263,7 @@ export default class roomController {
     .then((response) => {
       console.log("search response : ",response);
       this.searchResult = {
-        "title" : response.data.title,
+        "title" : response.data.title.unescapeHtml(),
         "url" : response.data.url
       };
     });
