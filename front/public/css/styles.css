@@ -1,6 +1,10 @@
 body {
   font-family:'Open Sans',Arial,sans-serif;
 }
+h2 {
+  height: 20%;
+  padding-top: 5%;
+}
 .preloader{
 	position:fixed;
 	width:100%;
@@ -25,7 +29,7 @@ body {
   text-align:center;
   text-shadow:0 1px 0 rgba(0,0,0,.1);
   background-color:#6883cc;
-  background-image:url("../img/back.png");
+  background-image:url("../img/back.jpg");
   background-repeat:no-repeat;
   background-position:center center;
   background-attachment:fixed;
@@ -62,6 +66,7 @@ form {
 }
 input {
   background: rgba(202,200,200,0.90);
+  font-size: 20px;
 }
 input::-webkit-input-placeholder {
   font-size: 20px;

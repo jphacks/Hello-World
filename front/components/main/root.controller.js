@@ -10,15 +10,20 @@ export default class rootController {
   update(){
     this.timeout_job = setTimeout(()=>{
       this.$scope.$apply(() => {
-        if(this.placeholderIndex >= this.placeholderData.length){
-          this.placeholder = "";
-          this.placeholderIndex = 0;
+        if (this.placeholderIndex < this.placeholderData.length) {
+          this.placeholder += this.placeholderData[this.placeholderIndex];
+          this.placeholderIndex++;
+        }
+        if(this.placeholderIndex == this.placeholderData.length){
+          // this.placeholderIndex = 0;
+          clearTimeout(this.timeout_job);
+          console.log(this.timeout_job);
+          this.timeout_job = null;
+          this.placeholder = "Enter your room key";
         };
-        this.placeholder += this.placeholderData[this.placeholderIndex];
-        this.placeholderIndex++;
-        return this.update();
       });
-    },400);
+      return this.update();
+    },100);
   };
   clear(){
     if(this.timeout_job !== null){
