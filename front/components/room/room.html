@@ -22,30 +22,32 @@
 
 			</div>
 
-			<form class="row">
+			<div class="row">
 
 				<label class="col s6">
 					<input ng-model="roomCtrl.code.name"/>
 				</label>
 
-				<div class="col s2 file-field input-field">
-					<div class="waves-effect waves-light btn">
-						<span>Load</span>
-						<input type="file">
+				<form>
+					<div class="col s2 file-field input-field">
+						<div class="waves-effect waves-light btn">
+							<span>Load</span>
+							<input type="file" on-read-file="roomCtrl.showContent($fileContent)">
+						</div>
+						<div class="file-path-wrapper">
+							<input type="file"/>
+						</div>
 					</div>
-					<div class="file-path-wrapper">
-						<input type="file" on-read-file="roomCtrl.showContent($fileContent)"/>
-					</div>
-				</div>
+				</form>
 
 				<div class="col s2 file-field input-field">
 					<div class="waves-effect waves-light btn" ng-click="roomCtrl.save(roomCtrl.code.content)">save</div>
 				</div>
 
-			</form>
+			</div>
 
 		    <div class="row">
-				<textarea id="editor" ui-codemirror="{ onLoad : roomCtrl.codemirrorLoaded }" ui-codemirror-opts="roomCtrl.editorOptions" ng-model="roomCtrl.code.content" ng-change="roomCtrl.input()"></textarea>
+				<textarea id="editor" ui-codemirror ui-codemirror-opts="roomCtrl.editorOptions" ng-model="roomCtrl.code.content" ng-change="roomCtrl.input()"></textarea>
 			</div>
 
 			<div class="row">

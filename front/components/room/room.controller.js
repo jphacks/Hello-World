@@ -246,7 +246,7 @@ export default class roomController {
 
   save(data){
     var link = document.createElement('a');
-    link.download = this.code.name + "." + this.mode.ex; //filename
+    link.download = this.code.name; //filename
     link.href = 'data:text,\uFEFF' + escape(data); //content
     document.body.appendChild(link);
     link.click();

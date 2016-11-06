@@ -17,7 +17,6 @@ export default class rootController {
         if(this.placeholderIndex == this.placeholderData.length){
           // this.placeholderIndex = 0;
           clearTimeout(this.timeout_job);
-          console.log(this.timeout_job);
           this.timeout_job = null;
           this.placeholder = "Enter your room key";
         };
