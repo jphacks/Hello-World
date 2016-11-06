@@ -1,18 +1,22 @@
 export default class roomController {
-  constructor($scope,$http,$stateParams) {
+  constructor($scope,$http,$stateParams,$state) {
     navigator.getUserMedia = navigator.getUserMedia || navigator.webkitGetUserMedia || navigator.mozGetUserMedia;
     this.$scope = $scope;
     this.$http = $http;
     this.$stateParams = $stateParams;
+    this.$state = $state;
     this.roomMember = 1;
     this.roomName = $scope.rootCtrl.roomName;
+    if(!$scope.rootCtrl.roomName){
+      $state.go('root.main');
+    }
     this.code = {
       "name" : "new file",
       "content" : ""
     };
     this.modes = [
       {"lang" : "javascript", "ex" : "js"},
-      {"lang" : "python2", "ex" : "py"},
+      {"lang" : "python", "ex" : "py"},
       {"lang" : "ruby", "ex" : "rb"}
     ];
     this.themes = ["midnight","neo","eclipse"];
@@ -235,8 +239,27 @@ export default class roomController {
     .then((response) => {
       console.log("response : ",response);
       this.result = response.data;
+      if(this.result.is_error){
+        this.search({
+          "language" : this.mode.lang,
+          "code" :  data,
+          "output" : this.result.output
+        });
+      }
     });
   };
+
+  search(query){
+    console.log("search now!")
+    return this.$http.post("http://104.198.125.87/search",JSON.stringify(query))
+    .then((response) => {
+      console.log("search response : ",response);
+      this.searchResult = {
+        "title" : response.data.title,
+        "url" : response.data.url
+      };
+    });
+  }
 
   clear(){
     this.code.name = "new file";
