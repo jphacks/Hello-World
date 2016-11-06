@@ -42,11 +42,9 @@ export default class roomController {
             window.localStream = stream;
             const streamURL = URL.createObjectURL(stream);
             const myPeerId = id;
-
             $('.videos').append($(
                 '<video id="video_' + myPeerId + '" class="videoBox" width="200" height="200" autoplay="autoplay" class="remoteVideos" src="' + streamURL + '" >'
             ));
-
             console.log(this.roomName,"に接続します")
             this.room = this.peer.joinRoom(this.roomName, {mode: 'sfu', stream: stream});
             this.room.on('open', () => {
@@ -206,21 +204,16 @@ export default class roomController {
       this.$scope.$apply(()=>{
         this.roomMember++;
       });
-
       $('.videos').append($(
           '<video id="video_' + peerId + '" class="videoBox" width="200" height="200" autoplay="autoplay" class="remoteVideos" src="' + streamURL + '" >'
       ));
-
     });
-
     this.room.on('removeStream', (removedStream) => {
       this.$scope.$apply(()=>{
         this.roomMember--;
       });
       $('#video_' + removedStream.peerId).remove();
     });
-
-
   };
 
   showContent($fileContent){
@@ -241,11 +234,11 @@ export default class roomController {
     }))
     .then((response) => {
       console.log("response : ",response);
-      this.result = response;
+      this.result = response.data;
     });
   };
 
-  new(){
+  clear(){
     this.code.name = "new file";
     this.code.content = "";
     this.input();
