@@ -56,7 +56,7 @@ func (e *Executor) Exec(request Executor) (Result, error) {
 	case "javascript":
 		filename = "script.js"
 		execCmd = "node " + filename
-	case "python2":
+	case "python":
 		filename = "Main.py"
 		execCmd = "python " + filename
 	default:
