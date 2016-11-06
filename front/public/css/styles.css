@@ -40,6 +40,7 @@ h2 {
   z-index: 1px;
 }
 .mainBack .container{
+  padding-top: 150px;
 	animation:fadein 2s;
 	-moz-animation:fadein 2s;
 	-webkit-animation:fadein 2s;
