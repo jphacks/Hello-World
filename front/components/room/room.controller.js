@@ -43,7 +43,7 @@ export default class roomController {
             const streamURL = URL.createObjectURL(stream);
             const myPeerId = id;
             $('.videos').append($(
-                '<video id="video_' + myPeerId + '" class="videoBox" width="200" height="200" autoplay="autoplay" class="remoteVideos" src="' + streamURL + '" >'
+                '<video id="video_' + myPeerId + '" class="videoBox" width="200" height="200" autoplay="autoplay" class="remoteVideos" src="' + streamURL + '" > </video> <br>'
             ));
             console.log(this.roomName,"に接続します")
             this.room = this.peer.joinRoom(this.roomName, {mode: 'sfu', stream: stream});
@@ -205,7 +205,7 @@ export default class roomController {
         this.roomMember++;
       });
       $('.videos').append($(
-          '<video id="video_' + peerId + '" class="videoBox" width="200" height="200" autoplay="autoplay" class="remoteVideos" src="' + streamURL + '" >'
+          '<video id="video_' + peerId + '" class="videoBox" width="200" height="200" autoplay="autoplay" class="remoteVideos" src="' + streamURL + '" > </video> <br>'
       ));
     });
     this.room.on('removeStream', (removedStream) => {
@@ -223,13 +223,13 @@ export default class roomController {
     this.input();
   };
 
-  run(type,data){
+  run(data){
     console.log("sended data : ",JSON.stringify({
-      "language" : type,
+      "language" : this.mode.lang,
       "code" :  data
     }));
     return this.$http.post("http://104.198.125.87/exec",JSON.stringify({
-      "language" : type,
+      "language" : this.mode.lang,
       "code" :  data
     }))
     .then((response) => {
