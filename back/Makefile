@@ -27,6 +27,7 @@ deploy:
 	killall server || true
 	git pull origin master
 	go build server.go
+	make clearn
 	make migrate
 	export GIN_MODE=release
 	nohup ./server &
