@@ -237,7 +237,7 @@ export default class roomController {
       "language" : this.mode.lang,
       "code" :  data
     }));
-    return this.$http.post("http://104.198.125.87/exec",JSON.stringify({
+    return this.$http.post("https://hello-world.moe/exec",JSON.stringify({
       "language" : this.mode.lang,
       "code" :  data
     }))
@@ -259,7 +259,7 @@ export default class roomController {
 
   search(query){
     console.log("search now!")
-    return this.$http.post("http://104.198.125.87/search",JSON.stringify(query))
+    return this.$http.post("https://hello-world.moe/search",JSON.stringify(query))
     .then((response) => {
       console.log("search response : ",response);
       this.searchResult = {
