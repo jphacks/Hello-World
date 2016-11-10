@@ -47,7 +47,7 @@
 			</div>
 
 		    <div class="row">
-				<textarea id="editor" ui-codemirror ui-codemirror-opts="roomCtrl.editorOptions" ng-model="roomCtrl.code.content" ng-change="roomCtrl.input()"></textarea>
+				<textarea id="editor" ui-codemirror="roomCtrl.uiCodemirrorConfig"  ng-model="roomCtrl.code.content" ng-change="roomCtrl.input()"></textarea>
 			</div>
 
 			<div class="row">

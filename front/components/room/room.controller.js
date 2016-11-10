@@ -5,7 +5,7 @@ export default class roomController {
   $scope,$http,$stateParams,$stateはこのroomControllerで使うためにinjectする必要のなるものであり、
   詳細はAngularJSを参照すること。
   */
-  constructor($scope,$http,$stateParams,$state) {
+  constructor($scope,$http,$stateParams,$state,uiCodemirrorConfig) {
 
     //おすすめサイトの名前を正しくstringに直すためにこの関数を具現した。
     String.prototype.unescapeHtml = function(){
@@ -18,6 +18,16 @@ export default class roomController {
     this.$http = $http;
     this.$stateParams = $stateParams;
     this.$state = $state;
+    //codeMirrorのOption
+    this.uiCodemirrorConfig = {
+        "onLoad" : this.codemirrorLoaded,
+        "lineWrapping" : true,
+        "lineNumbers": true,
+        "mode": "javascript",
+        "theme": "midnight",
+        "extraKeys": {"Ctrl-Space":"autocomplete"}
+    };
+    console.log("uiCodemirrorConfig",uiCodemirrorConfig)
     //現在のmember数
     this.roomMember = 1;
     /*
@@ -43,14 +53,6 @@ export default class roomController {
     this.themes = ["midnight","neo","eclipse"];
     //選択されたテーマの情報
     this.theme = this.themes[0];
-    //codeMirrorのOption
-    this.editorOptions = {
-        "lineWrapping" : true,
-        "lineNumbers": true,
-        "mode": this.mode.lang,
-        "theme": this.theme,
-        "extraKeys": {"Ctrl-Space":"autocomplete"}
-    };
     //これらはアルゴリズム実装のために必要
     this.former = "";
     this.pastCursor = {"line": 0, "ch": 0};
@@ -119,6 +121,8 @@ export default class roomController {
   */
   codemirrorLoaded(_editor){
     this.editor = angular.element('.CodeMirror')[0].CodeMirror;
+    this.editor.focus();
+
     console.log("codeMirror instance : this.editor :",this.editor);
     this.editor.on("cursorActivity", ()=>{
       this.pastCursor = this.editor.getDoc().getCursor()
@@ -204,14 +208,15 @@ export default class roomController {
   };
 
   settingChange(){
-    console.log("setting Changed!",this.mode.lang,this.theme);
-    this.editorOptions = {
+    this.uiCodemirrorConfig = {
+        "onLoad" : this.codemirrorLoaded,
         "lineWrapping" : true,
         "lineNumbers": true,
         "mode": this.mode.lang,
         "theme": this.theme,
         "extraKeys": {"Ctrl-Space":"autocomplete"}
     };
+    console.log("setting Changed!",this.uiCodemirrorConfig);
   };
 
   //自分がroomに参加したり、他の人たちがroomに参加したりする時のロジックをここに書く。
