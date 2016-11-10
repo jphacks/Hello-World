@@ -11,8 +11,10 @@ export default class roomController {
     this.$stateParams = $stateParams;
     this.$state = $state;
     this.roomMember = 1;
+    this.memberChanged = 0;
+    this.userName = $scope.rootCtrl.userName;
     this.roomName = $scope.rootCtrl.roomName;
-    if(!$scope.rootCtrl.roomName){
+    if(!($scope.rootCtrl.roomName)){
       $state.go('root.main');
     }
     this.code = {
@@ -51,8 +53,12 @@ export default class roomController {
             window.localStream = stream;
             const streamURL = URL.createObjectURL(stream);
             const myPeerId = id;
+            const myuserName = this.userName;
             $('.videos').append($(
-                '<video id="video_' + myPeerId + '" class="videoBox" width="300" height="200" autoplay="autoplay" class="remoteVideos" src="' + streamURL + '" > </video> <br>'
+                '<video id="video_' + myPeerId + '" class="videoBox" width="300" height="200" autoplay="autoplay" class="remoteVideos" src="' + streamURL + '" > </video> <br><br>'
+            ));
+            $('.welcome').append($(
+                '<script>Materialize.toast("Welcome to ' + this.roomName + '!", 3000)</script>'
             ));
             console.log(this.roomName,"に接続します")
             this.room = this.peer.joinRoom(this.roomName, {mode: 'sfu', stream: stream});
@@ -199,11 +205,16 @@ export default class roomController {
     });
 
     this.room.on('peerJoin', (peerId) => {
-      console.log(peerId + 'has joined the room');
+      console.log(peerId + ' has joined the room');
+      $('.hello').append($(
+          '<script id="toast_' + peerId + '" >Materialize.toast("Here is ' + peerId + '!", 4000)</script>'
+      ));
+      $('#toast_' + peerId).remove();
     });
 
+
     this.room.on('peerLeave', (peerId) => {
-      console.log(peerId + 'has left the room');
+      console.log(peerId + ' has left the room');
     });
 
     // Wait for stream on the call, then set peer video display
@@ -212,11 +223,15 @@ export default class roomController {
       const peerId = stream.peerId;
       this.$scope.$apply(()=>{
         this.roomMember++;
+        this.memberChanged = 1;
       });
+      console.log(this.userName + ' entered!')
       $('.videos').append($(
           '<video id="video_' + peerId + '" class="videoBox" width="300" height="200" autoplay="autoplay" class="remoteVideos" src="' + streamURL + '" > </video> <br>'
       ));
+
     });
+
     this.room.on('removeStream', (removedStream) => {
       this.$scope.$apply(()=>{
         this.roomMember--;
