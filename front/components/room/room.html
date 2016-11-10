@@ -4,12 +4,17 @@
 			<div class="caption center-align">
 				<div class="card-panel">
 					<h3 class="blue-text text-darken-2">{{roomCtrl.roomName}}</h3>
-					<h5 class="light grey-text text-darken-1">({{roomCtrl.roomMember}} users joined)</h5>
+					<h5 class="light grey-text text-darken-1">({{roomCtrl.roomMember}} users joinedd)</h5>
 				</div>
-	        </div>
+	    </div>
+			<div class="welcome">
+				<!-- Welcome to roomName -->
+			</div>
+			<div class="hello">
+				<!-- Here comes id -->
+			</div>
 
 			<div class="row">
-
 				<div class="col s6 input-field">
 					<label>Language Select</label><br><br>
 					<select class="browser-default" ng-change="roomCtrl.settingChange()" ng-model="roomCtrl.mode" ng-options="mode as mode.lang for mode in roomCtrl.modes"></select>
@@ -55,7 +60,7 @@
 					<div class="waves-effect waves-light btn" ng-click="roomCtrl.run(roomCtrl.code.content)">run</div>
 				</div>
 			</div>
-			
+
 			<div class="row">
 				<div class="col s12 card-panel teal lighten-5" ng-show="roomCtrl.result">
 					<h3 ng-show="roomCtrl.result.is_error" class="red-text text-darken-3">Error</h3>
