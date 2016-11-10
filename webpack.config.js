@@ -1,4 +1,13 @@
 'use strict';
+/*
+以下ではwebpackの設定を行う。
+main.jsが入り口であり、
+そのファイルからいろいろ必要な依存性のあるファイルをまとめ、
+build.jsでまとめて、/front/public/js/に下に置く。
+実際のアプリはこのbuildを読み込むこととなる。
+以下のpluginsでnew webpack.optimize.UglifyJsPluginを使うかどうかでminimizeするかどうかを決められる。
+angularJSとの互換性のためmangle: falseというオプションが必要である。
+*/
 const webpack = require("webpack");
 
 const config = {
@@ -9,14 +18,9 @@ const config = {
     filename: 'build.js'
   },
   plugins: [
-    new webpack.optimize.UglifyJsPlugin({
-        minimize: true,
-        sourceMap: true,
-        compress: {
-          drop_console: false
-        },
-        mangle: false
-    })
+    // new webpack.optimize.UglifyJsPlugin({
+    //     mangle: false
+    // })
   ],
   module: {
     loaders: [

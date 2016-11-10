@@ -1,3 +1,11 @@
+/*
+いろいろ依存性のあるファイルを読み込んでいる。
+angularを使うのでangularを読み込むとか、
+ui-routerを用いるので読み込むとか。
+新たなcomponentを作ったりすると、
+以下で新たに追加して読み込んで、
+以下で設定を行う必要がある。
+*/
 import angular from 'angular';
 import uirouter from 'angular-ui-router';
 import uiCodemirrorDirective from './components/room/room.uicodemirror.directive.js';
@@ -15,9 +23,12 @@ angular
   .directive('onReadFile', fileReadDirective)
   .directive('uiCodemirror', uiCodemirrorDirective)
   .config(function ($stateProvider, $urlRouterProvider) {
-    $urlRouterProvider.otherwise("/");
+    /*
+    以下でroutingルールを決める。
+    ui-router : https://github.com/angular-ui/ui-router
+    */
 
-    // Now set up the states
+    // statesの設定をする。
     $stateProvider
       .state('root', {
         template: root,
@@ -34,4 +45,5 @@ angular
         controller: roomController,
         controllerAs: 'roomCtrl'
       })
-	});
+
+  });
