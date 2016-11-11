@@ -45257,7 +45257,6 @@
 	    value: function run(data) {
 	      var _this4 = this;
 
-	      angular.element('#video-wrapper')[0].style.width = "355px";
 	      console.log("sended data : ", JSON.stringify({
 	        "language": this.mode.lang,
 	        "code": data
