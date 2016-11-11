@@ -1,3 +1,7 @@
+/*
+main state
+*/
+
 body {
   font-family:'Open Sans',Arial,sans-serif;
 }
@@ -143,4 +147,14 @@ to {
 	-moz-animation: arrowbounce 1s alternate infinite; /* Firefox */
 	-webkit-animation: arrowbounce 1s alternate infinite; /* Safari and Chrome */
 	-o-animation: arrowbounce 1s alternate infinite; /* Opera */
+}
+
+/*
+room state
+*/
+
+.videoBox{
+	padding-top: 10px;
+	padding-bottom: 10px;
+	width: inherit;
 }
