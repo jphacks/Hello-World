@@ -11,6 +11,7 @@ export default class roomController {
     String.prototype.unescapeHtml = function(){
         return this.replace(/&amp;/g, "&").replace(/&lt;/g, "<").replace(/&gt;/g, ">").replace(/&quot;/g, "\"").replace(/&#39;/g, "\'");
     };
+
     //ブラウザでカメラとマイクを使用するために必要なコードライン
     navigator.getUserMedia = navigator.getUserMedia || navigator.webkitGetUserMedia || navigator.mozGetUserMedia;
     //必要となる変数などをここで定義
@@ -53,7 +54,6 @@ export default class roomController {
     //選択されたテーマの情報
     this.theme = this.themes[0];
     //これらはアルゴリズム実装のために必要
-    this.former = "";
     this.pastCursor = {"line": 0, "ch": 0};
     //このpeerが通信を可能とするオブジェクト
     this.peer = new Peer({
@@ -98,11 +98,13 @@ export default class roomController {
         }
       );
     });
+
     // Await connections from others
     this.peer.on('connection', this.connect);
     this.peer.on('error', (err) => {
       console.log(err);
     });
+
     //アプリから抜ける時にcうあんと接続関連して、綺麗に片付けるためのコードライン
     window.onunload = window.onbeforeunload = (e) => {
       if (!!this.peer && !this.peer.destroyed) {
@@ -110,6 +112,8 @@ export default class roomController {
       }
     };
   };
+
+
   /*
   この関数は、codeMirrorが準備できてから呼ばれる関数である。
   ここでcodeMirrorのeditorのイベントに対して、callback関数を定義できる。
@@ -158,56 +162,61 @@ export default class roomController {
 
   //この関数はeditorに何らかのアップデートが生じた時に呼ぶように自分が作ったものではあるが、上でイベントハンドラをつける方がより良いので今後削除すると思う。
   update(data){
+    //mode, themeを同期化
     this.mode = data.mode;
     this.theme = data.theme;
     this.uiCodemirrorConfig.mode = data.mode.lang;
     this.uiCodemirrorConfig.theme = data.theme;
     console.log(this.uiCodemirrorConfig)
-    
-    this.pastCursor = angular.element('.CodeMirror')[0].CodeMirror.getDoc().getCursor()
-    var newCursor = this.pastCursor;
+
     this.$scope.$apply(() => {
       /*
         this.code.contentとdataをうまく比較してrememberから修正を加えて、cursorの位置を更新
-        後日アルゴリズムの詳細に関してコメントを追加する
       */
+      this.pastCursor = angular.element('.CodeMirror')[0].CodeMirror.getDoc().getCursor()
+      this.newCursor = this.pastCursor;
       console.log("before update",this.code.content);
       console.log("recieved data is : ",data);
-      console.log("data.pastCursor,newCursor : ",data.pastCursor,newCursor);
-      if(data.pastCursor == newCursor){
-        newCursor = data.newCursor;
-      }else if(data.pastCursor.line < newCursor.line || (data.pastCursor.line == newCursor.line && data.pastCursor.ch < newCursor.ch)){
-        var behindString = this.code.content.slice(this.cursorIndex(this.code.content,angular.element('.CodeMirror')[0].CodeMirror.getDoc().getCursor()));
+      console.log("data.pastCursor,this.newCursor : ",data.pastCursor,this.newCursor);
+
+      if((data.pastCursor.line == this.newCursor.line) && (data.pastCursor.ch == this.newCursor.ch)){
+        //変更の前にお互いのカーサーの位置が一緒の場合にはそのまま追いかければ良い。
+        this.newCursor = data.newCursor;
+        console.log("same",this.newCursor)
+      }else if(data.pastCursor.line < this.newCursor.line || ((data.pastCursor.line == this.newCursor.line) && (data.pastCursor.ch < this.newCursor.ch))){
+        //相手のカーサーが前にあった場合
+        var behindString = this.code.content.slice(this.cursorIndex(this.code.content,this.pastCursor));
         console.log("behindString",behindString);
         var duplicated_length = 0;
         for(var i = 0;i < behindString.length;i++){
-          if(this.code.content[this.code.content.length - i] != behindString[behindString.length -i]){
+          if(data.newString[data.newString.length - i] != behindString[behindString.length -i]){
             break;
           }else{
             duplicated_length++;
           }
         };
         console.log("duplicated_length",duplicated_length);
-        newCursor = this.indexCursor(data.newString, data.newString.length - duplicated_length);
+        this.newCursor = this.indexCursor(data.newString, data.newString.length - duplicated_length);
       }else{
         var beforeString = this.code.content.slice(0,this.cursorIndex(this.code.content,angular.element('.CodeMirror')[0].CodeMirror.getDoc().getCursor()));
         console.log("beforeString",beforeString);
         var duplicated_length = 0;
         for(var i = 0;i < beforeString.length;i++){
-          if(this.code.content[i] != beforeString[i]){
+          if(data.newString[i] != beforeString[i]){
             break;
           }else{
             duplicated_length++;
           }
         };
         console.log("duplicated_length",duplicated_length);
-        newCursor = this.indexCursor(data.newString, duplicated_length);
+        this.newCursor = this.indexCursor(data.newString, duplicated_length);
       };
       this.code.content = data.newString;
     });
+
     angular.element('.CodeMirror')[0].CodeMirror.focus();
-    angular.element('.CodeMirror')[0].CodeMirror.getDoc().setCursor(newCursor);
-    console.log("newCursor position",newCursor);
+    angular.element('.CodeMirror')[0].CodeMirror.getDoc().setCursor(this.newCursor);
+    console.log("newCursor position",this.newCursor);
   };
 
   indexCursor(string,index){
