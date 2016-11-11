@@ -125,6 +125,9 @@ export default class roomController {
               this.uiCodemirrorConfig.theme = message.data.theme;
               console.log(this.uiCodemirrorConfig)
 
+              //fileNameを同期化
+              this.code.name = message.data.fileName;
+
               //codeUpdate
               this.codeUpdate(message.data);
             });
@@ -196,7 +199,8 @@ export default class roomController {
       "newString" : this.code.content,
       "newCursor" : angular.element('.CodeMirror')[0].CodeMirror.getDoc().getCursor() || this.pastCursor,
       "mode" : this.mode,
-      "theme" : this.theme
+      "theme" : this.theme,
+      "fileName" : this.code.name
     });
 
     this.pastCursor = angular.element('.CodeMirror')[0].CodeMirror.getDoc().getCursor() || this.pastCursor
@@ -329,7 +333,7 @@ export default class roomController {
   //save機能
   save(data){
     var link = document.createElement('a');
-    link.download = this.code.name + this.mode.ex; //filename
+    link.download = this.code.name + '.' +this.mode.ex; //filename
     link.href = 'data:text,\uFEFF' + escape(data); //content
     document.body.appendChild(link);
     link.click();
