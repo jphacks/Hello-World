@@ -7,13 +7,14 @@ export default class roomController {
   */
   constructor($scope,$http,$stateParams,$state) {
 
+    //ブラウザでカメラとマイクを使用するために必要なコードライン
+    navigator.getUserMedia = navigator.getUserMedia || navigator.webkitGetUserMedia || navigator.mozGetUserMedia;
+
     //おすすめサイトの名前を正しくstringに直すためにこの関数を具現した。
     String.prototype.unescapeHtml = function(){
         return this.replace(/&amp;/g, "&").replace(/&lt;/g, "<").replace(/&gt;/g, ">").replace(/&quot;/g, "\"").replace(/&#39;/g, "\'");
     };
 
-    //ブラウザでカメラとマイクを使用するために必要なコードライン
-    navigator.getUserMedia = navigator.getUserMedia || navigator.webkitGetUserMedia || navigator.mozGetUserMedia;
     //必要となる変数などをここで定義
     this.$scope = $scope;
     this.$http = $http;
@@ -29,7 +30,7 @@ export default class roomController {
         "extraKeys": {"Ctrl-Space":"autocomplete"}
     };
     //現在のmember数
-    this.roomMember = 0;
+    this.roomMember = 1;
     /*
     room stateでroomNameを決めてきていたらそれがroomKeyとなる。
     もし、そうでないのなら、urlからroomKeyを読み取る。
@@ -64,7 +65,7 @@ export default class roomController {
     // もしこのCallback関数のことがわからないのなら、JSのことの勉強をすること。
     this.peer.on('open', (id) => {
       //debugをしやすくするためにこのように時々console.log()を用いてコンソルに出力している。
-      console.log("peerはconnect")
+      console.log("peerはconnect");
       /*
       以下はaudioとvideoをstreamにして、
       angular.elementでclassがvideoであるroom.htmlでのdivに(room.htmlを確認すること。)
@@ -77,32 +78,72 @@ export default class roomController {
         (stream) => {
             // Set your video displays
             window.localStream = stream;
-            const streamURL = URL.createObjectURL(stream);
-            const myPeerId = id;
-            angular.element('.videos').append(angular.element(
-                '<video id="video_' + myPeerId + '" class="videoBox" width="300" height="200" autoplay="autoplay" class="remoteVideos" src="' + streamURL + '" > </video> <br>'
-            ));
+            var streamURL = URL.createObjectURL(stream);
+            var myPeerId = id;
+            console.log("add my stream",stream,streamURL);
+            $('.videos').append(
+                '<p>user</p><video id="video_' + myPeerId + '" class="user videoBox col s12" width="300" height="200" autoplay="autoplay" class="remoteVideos" src="' + streamURL + '" > </video>'
+            );
             /*
             自分のvideoを表示できてから、roomに入る準備をする。
             ここでthis.roomNameが入ろうとするroomを特定するkeyとなる。
             */
-            console.log(this.roomName,"に接続します")
+            console.log(this.roomName,"に接続します");
             this.room = this.peer.joinRoom(this.roomName, {mode: 'sfu', stream: stream});
-            this.room.on('open', () => {
-              //openイベントの後connect関数を実行することで、roomに入る。
-              this.connect();
+            // 他のmemberのstreamを管理
+            this.room.on('stream', (stream) =>{
+              console.log("add other stream",stream);
+              var streamURL = URL.createObjectURL(stream);
+              var peerId = stream.peerId;
+              this.$scope.$apply(()=>{
+                this.roomMember++;
+              });
+              //div class="video"の中にvideoをappendしていく。
+              $('.videos').append(
+                  '<p>other</p><video id="video_' + peerId + '" class="otherUser videoBox col s12" width="300" height="200" autoplay="autoplay" class="remoteVideos" src="' + streamURL + '" > </video>'
+              );
+            });
+
+            //他のmemberがroomから離れる時は該当するvideoタグを除去
+            this.room.on('removeStream', (stream) => {
+              console.log("remove other stream",stream)
+              this.$scope.$apply(()=>{
+                this.roomMember--;
+              });
+              $('#video_' + stream.peerId).remove();
+            });
+
+            this.room.on('data', (message) => {
+              console.log(message.src + "からのデータ：",message)
+
+              //mode, themeを同期化
+              this.mode = message.data.mode;
+              this.theme = message.data.theme;
+              this.uiCodemirrorConfig.mode = message.data.mode.lang;
+              this.uiCodemirrorConfig.theme = message.data.theme;
+              console.log(this.uiCodemirrorConfig)
+
+              //codeUpdate
+              this.codeUpdate(message.data);
+            });
+
+            this.room.on('peerJoin', (peerId) => {
+              console.log(peerId + 'has joined the room');
+              this.input();
+            });
+
+            this.room.on('peerLeave', (peerId) => {
+              console.log(peerId + 'has left the room');
+            });
+
+            this.room.on('error', function(err) { 
+              console.log("error : ",err);
             });
         },
         (e) => {
-          console.error(e);
+          console.error("error",e);
         }
       );
-    });
-
-    // Await connections from others
-    this.peer.on('connection', this.connect);
-    this.peer.on('error', (err) => {
-      console.log(err);
     });
 
     //アプリから抜ける時にcうあんと接続関連して、綺麗に片付けるためのコードライン
@@ -112,7 +153,6 @@ export default class roomController {
       }
     };
   };
-
 
   /*
   この関数は、codeMirrorが準備できてから呼ばれる関数である。
@@ -152,23 +192,16 @@ export default class roomController {
     this.room.send({
       "pastCursor" : this.pastCursor,
       "newString" : this.code.content,
-      "newCursor" : angular.element('.CodeMirror')[0].CodeMirror.getDoc().getCursor(),
+      "newCursor" : angular.element('.CodeMirror')[0].CodeMirror.getDoc().getCursor() || this.pastCursor,
       "mode" : this.mode,
       "theme" : this.theme
     });
 
-    this.pastCursor = angular.element('.CodeMirror')[0].CodeMirror.getDoc().getCursor()
+    this.pastCursor = angular.element('.CodeMirror')[0].CodeMirror.getDoc().getCursor() || this.pastCursor
   };
 
-  //この関数はeditorに何らかのアップデートが生じた時に呼ぶように自分が作ったものではあるが、上でイベントハンドラをつける方がより良いので今後削除すると思う。
-  update(data){
-    //mode, themeを同期化
-    this.mode = data.mode;
-    this.theme = data.theme;
-    this.uiCodemirrorConfig.mode = data.mode.lang;
-    this.uiCodemirrorConfig.theme = data.theme;
-    console.log(this.uiCodemirrorConfig)
-
+  //この関数は自分以外のユーザがコードを書いた時にそれを自分のeditorに適切に反映させる関数
+  codeUpdate(data){
     this.$scope.$apply(() => {
       /*
         this.code.contentとdataをうまく比較してrememberから修正を加えて、cursorの位置を更新
@@ -189,7 +222,7 @@ export default class roomController {
         console.log("behindString",behindString);
         var duplicated_length = 0;
         for(var i = 0;i < behindString.length;i++){
-          if(data.newString[data.newString.length - i] != behindString[behindString.length -i]){
+          if(data.newString[data.newString.length - i - 1] != behindString[behindString.length - i - 1]){
             break;
           }else{
             duplicated_length++;
@@ -238,47 +271,6 @@ export default class roomController {
     };
     result+=cursor.ch;
     return result;
-  };
-
-  //自分がroomに参加したり、他の人たちがroomに参加したりする時のロジックをここに書く。
-  connect() {
-    //まずは自分が参加したときこの関数を始めて呼ぶ
-    console.log("roomに参加できました。")
-    this.$scope.$apply(()=>{
-      this.roomMember++;
-    });
-
-    this.room.on('data', (message) => {
-      console.log(message.src + "からのデータ：",message)
-      this.update(message.data);
-    });
-
-    this.room.on('peerJoin', (peerId) => {
-      console.log(peerId + 'has joined the room');
-      this.input();
-    });
-
-    this.room.on('peerLeave', (peerId) => {
-      console.log(peerId + 'has left the room');
-    });
-
-    // 他のmemberのstreamを管理
-    this.room.on('stream', (stream) =>{
-      const streamURL = URL.createObjectURL(stream);
-      const peerId = stream.peerId;
-      //div class="video"の中にvideoをappendしていく。
-      $('.videos').append($(
-          '<video id="video_' + peerId + '" class="videoBox" width="300" height="200" autoplay="autoplay" class="remoteVideos" src="' + streamURL + '" > </video> <br>'
-      ));
-    });
-
-    //他のmemberがroomから離れる時は該当するvideoタグを除去
-    this.room.on('removeStream', (removedStream) => {
-      this.$scope.$apply(()=>{
-        this.roomMember--;
-      });
-      $('#video_' + removedStream.peerId).remove();
-    });
   };
 
   //file load機能

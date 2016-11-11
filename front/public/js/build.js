@@ -44940,7 +44940,7 @@
 /* 307 */
 /***/ function(module, exports) {
 
-	module.exports = "<div class=\"container\">\n\t<div class=\"row\">\n\t\t<div class=\"col s8\">\n\t\t\t<div class=\"caption center-align\">\n\t\t\t\t<div class=\"card-panel\">\n\t\t\t\t\t<h3 class=\"blue-text text-darken-2\">{{roomCtrl.roomName}}</h3>\n\t\t\t\t\t<h5 class=\"light grey-text text-darken-1\">({{roomCtrl.roomMember}} users joined)</h5>\n\t\t\t\t</div>\n\t        </div>\n\n\t\t\t<div class=\"row\">\n\n\t\t\t\t<div class=\"col s6 input-field\">\n\t\t\t\t\t<label>Language Select</label><br><br>\n\t\t\t\t\t<select class=\"browser-default\" ng-change=\"roomCtrl.input()\" ng-model=\"roomCtrl.mode\" ng-options=\"mode as mode.lang for mode in roomCtrl.modes\"></select>\n\t\t\t\t</div>\n\n\t\t\t\t<div class=\"col s6 input-field\">\n\t\t\t\t\t<label>Theme Select</label><br><br>\n\t\t\t\t\t<select class=\"browser-default\" ng-change=\"roomCtrl.input()\" ng-model=\"roomCtrl.theme\" ng-options=\"theme for theme in roomCtrl.themes\"></select>\n\t\t\t\t</div>\n\n\t\t\t</div>\n\n\t\t\t<div class=\"row\">\n\n\t\t\t\t<div class=\"col s6\">\n\t\t\t\t\t<h4>\n\t\t\t\t\t\t{{roomCtrl.code.name}}.{{roomCtrl.mode.ex}}\n\t\t\t\t\t</h4>\n\t\t\t\t</div>\n\n\t\t\t\t<form>\n\t\t\t\t\t<div class=\"col s2 file-field input-field\">\n\t\t\t\t\t\t<div class=\"waves-effect waves-light btn\">\n\t\t\t\t\t\t\t<span>Load</span>\n\t\t\t\t\t\t\t<input type=\"file\" on-read-file=\"roomCtrl.showContent($fileContent)\">\n\t\t\t\t\t\t</div>\n\t\t\t\t\t\t<div class=\"file-path-wrapper\">\n\t\t\t\t\t\t\t<input type=\"file\"/>\n\t\t\t\t\t\t</div>\n\t\t\t\t\t</div>\n\t\t\t\t</form>\n\n\t\t\t\t<div class=\"col s2 file-field input-field\">\n\t\t\t\t\t<div class=\"waves-effect waves-light btn\" ng-click=\"roomCtrl.save(roomCtrl.code.content)\">save</div>\n\t\t\t\t</div>\n\n\t\t\t</div>\n\n\t\t    <div class=\"row\">\n\t\t\t\t<textarea id=\"editor\" ui-codemirror=\"roomCtrl.uiCodemirrorConfig\"  ng-model=\"roomCtrl.code.content\" ng-change=\"roomCtrl.input()\"></textarea>\n\t\t\t</div>\n\n\t\t\t<div class=\"row\">\n\t\t\t\t<div class=\"col s2 file-field input-field\">\n\t\t\t\t\t<div class=\"waves-effect waves-light btn\" ng-click=\"roomCtrl.run(roomCtrl.code.content)\">run</div>\n\t\t\t\t</div>\n\t\t\t</div>\n\t\t\t\n\t\t\t<div class=\"row\">\n\t\t\t\t<div class=\"col s12 card-panel teal lighten-5\" ng-show=\"roomCtrl.result\">\n\t\t\t\t\t<h3 ng-show=\"roomCtrl.result.is_error\" class=\"red-text text-darken-3\">Error</h3>\n\t\t\t\t\t<h3 ng-hide=\"roomCtrl.result.is_error\" class=\"blue-text text-darken-3\">Success</h3>\n\t\t\t\t\t<pre>{{roomCtrl.result.output}}</pre>\n\t\t\t\t</div>\n\t\t\t\t<div class=\"col s12 card-panel teal lighten-3\" ng-show=\"roomCtrl.searchResult\">\n\t\t\t\t\t<h3 class=\"blue-text text-darken-3\">Recomendation</h3>\n\t\t\t\t\t<h4 class=\"blue-text text-darken-2\">{{roomCtrl.searchResult.title}}</h3>\n\t\t\t\t\t<a class=\"blue-text text-darken-2\" href=\"{{roomCtrl.searchResult.url}}\" target=\"_blank\">{{roomCtrl.searchResult.url}}</a>\n\t\t\t\t</div>\n\t\t\t</div>\n\t\t</div>\n\n\t\t<div class=\"col s4\">\n\t\t\t<!-- Audio and Video area -->\n\t\t\t<div class=\"videos\" style=\"position: fixed; top : 0px; width: auto; height: 100vh;\"></div>\n\t\t</div>\n\t</div>\n</div>";
+	module.exports = "<div class=\"container\">\n\t<div class=\"row\">\n\t\t<div class=\"col s8\">\n\t\t\t<div class=\"caption center-align\">\n\t\t\t\t<div class=\"card-panel\">\n\t\t\t\t\t<h3 class=\"blue-text text-darken-2\">{{roomCtrl.roomName}}</h3>\n\t\t\t\t\t<h5 class=\"light grey-text text-darken-1\">({{roomCtrl.roomMember}} users joined)</h5>\n\t\t\t\t</div>\n\t        </div>\n\n\t\t\t<div class=\"row\">\n\n\t\t\t\t<div class=\"col s6 input-field\">\n\t\t\t\t\t<label>Language Select</label><br><br>\n\t\t\t\t\t<select class=\"browser-default\" ng-change=\"roomCtrl.input()\" ng-model=\"roomCtrl.mode\" ng-options=\"mode as mode.lang for mode in roomCtrl.modes\"></select>\n\t\t\t\t</div>\n\n\t\t\t\t<div class=\"col s6 input-field\">\n\t\t\t\t\t<label>Theme Select</label><br><br>\n\t\t\t\t\t<select class=\"browser-default\" ng-change=\"roomCtrl.input()\" ng-model=\"roomCtrl.theme\" ng-options=\"theme for theme in roomCtrl.themes\"></select>\n\t\t\t\t</div>\n\n\t\t\t</div>\n\n\t\t\t<div class=\"row\">\n\n\t\t\t\t<div class=\"col s6\">\n\t\t\t\t\t<h4>\n\t\t\t\t\t\t{{roomCtrl.code.name}}.{{roomCtrl.mode.ex}}\n\t\t\t\t\t</h4>\n\t\t\t\t</div>\n\n\t\t\t\t<form>\n\t\t\t\t\t<div class=\"col s2 file-field input-field\">\n\t\t\t\t\t\t<div class=\"waves-effect waves-light btn\">\n\t\t\t\t\t\t\t<span>Load</span>\n\t\t\t\t\t\t\t<input type=\"file\" on-read-file=\"roomCtrl.showContent($fileContent)\">\n\t\t\t\t\t\t</div>\n\t\t\t\t\t\t<div class=\"file-path-wrapper\">\n\t\t\t\t\t\t\t<input type=\"file\"/>\n\t\t\t\t\t\t</div>\n\t\t\t\t\t</div>\n\t\t\t\t</form>\n\n\t\t\t\t<div class=\"col s2 file-field input-field\">\n\t\t\t\t\t<div class=\"waves-effect waves-light btn\" ng-click=\"roomCtrl.save(roomCtrl.code.content)\">save</div>\n\t\t\t\t</div>\n\n\t\t\t</div>\n\n\t\t    <div class=\"row\">\n\t\t\t\t<textarea id=\"editor\" ui-codemirror=\"roomCtrl.uiCodemirrorConfig\"  ng-model=\"roomCtrl.code.content\" ng-change=\"roomCtrl.input()\"></textarea>\n\t\t\t</div>\n\n\t\t\t<div class=\"row\">\n\t\t\t\t<div class=\"col s2 file-field input-field\">\n\t\t\t\t\t<div class=\"waves-effect waves-light btn\" ng-click=\"roomCtrl.run(roomCtrl.code.content)\">run</div>\n\t\t\t\t</div>\n\t\t\t</div>\n\t\t\t\n\t\t\t<div class=\"row\">\n\t\t\t\t<div class=\"col s12 card-panel teal lighten-5\" ng-show=\"roomCtrl.result\">\n\t\t\t\t\t<h3 ng-show=\"roomCtrl.result.is_error\" class=\"red-text text-darken-3\">Error</h3>\n\t\t\t\t\t<h3 ng-hide=\"roomCtrl.result.is_error\" class=\"blue-text text-darken-3\">Success</h3>\n\t\t\t\t\t<pre>{{roomCtrl.result.output}}</pre>\n\t\t\t\t</div>\n\t\t\t\t<div class=\"col s12 card-panel teal lighten-3\" ng-show=\"roomCtrl.searchResult\">\n\t\t\t\t\t<h3 class=\"blue-text text-darken-3\">Recomendation</h3>\n\t\t\t\t\t<h4 class=\"blue-text text-darken-2\">{{roomCtrl.searchResult.title}}</h3>\n\t\t\t\t\t<a class=\"blue-text text-darken-2\" href=\"{{roomCtrl.searchResult.url}}\" target=\"_blank\">{{roomCtrl.searchResult.url}}</a>\n\t\t\t\t</div>\n\t\t\t</div>\n\t\t</div>\n\n\t\t<div class=\"col s4\">\n\t\t\t<!-- Audio and Video area -->\n\t\t\t<div class=\"videos row\" style=\"position: fixed; top : 0px; width: auto; height: 100vh;\"></div>\n\t\t</div>\n\t</div>\n</div>";
 
 /***/ },
 /* 308 */
@@ -44968,13 +44968,14 @@
 
 	    _classCallCheck(this, roomController);
 
+	    //ブラウザでカメラとマイクを使用するために必要なコードライン
+	    navigator.getUserMedia = navigator.getUserMedia || navigator.webkitGetUserMedia || navigator.mozGetUserMedia;
+
 	    //おすすめサイトの名前を正しくstringに直すためにこの関数を具現した。
 	    String.prototype.unescapeHtml = function () {
 	      return this.replace(/&amp;/g, "&").replace(/&lt;/g, "<").replace(/&gt;/g, ">").replace(/&quot;/g, "\"").replace(/&#39;/g, "\'");
 	    };
 
-	    //ブラウザでカメラとマイクを使用するために必要なコードライン
-	    navigator.getUserMedia = navigator.getUserMedia || navigator.webkitGetUserMedia || navigator.mozGetUserMedia;
 	    //必要となる変数などをここで定義
 	    this.$scope = $scope;
 	    this.$http = $http;
@@ -44990,7 +44991,7 @@
 	      "extraKeys": { "Ctrl-Space": "autocomplete" }
 	    };
 	    //現在のmember数
-	    this.roomMember = 0;
+	    this.roomMember = 1;
 	    /*
 	    room stateでroomNameを決めてきていたらそれがroomKeyとなる。
 	    もし、そうでないのなら、urlからroomKeyを読み取る。
@@ -45034,26 +45035,64 @@
 	        window.localStream = stream;
 	        var streamURL = URL.createObjectURL(stream);
 	        var myPeerId = id;
-	        angular.element('.videos').append(angular.element('<video id="video_' + myPeerId + '" class="videoBox" width="300" height="200" autoplay="autoplay" class="remoteVideos" src="' + streamURL + '" > </video> <br>'));
+	        console.log("add my stream", stream, streamURL);
+	        $('.videos').append('<p>user</p><video id="video_' + myPeerId + '" class="user videoBox col s12" width="300" height="200" autoplay="autoplay" class="remoteVideos" src="' + streamURL + '" > </video>');
 	        /*
 	        自分のvideoを表示できてから、roomに入る準備をする。
 	        ここでthis.roomNameが入ろうとするroomを特定するkeyとなる。
 	        */
 	        console.log(_this.roomName, "に接続します");
 	        _this.room = _this.peer.joinRoom(_this.roomName, { mode: 'sfu', stream: stream });
-	        _this.room.on('open', function () {
-	          //openイベントの後connect関数を実行することで、roomに入る。
-	          _this.connect();
+	        // 他のmemberのstreamを管理
+	        _this.room.on('stream', function (stream) {
+	          console.log("add other stream", stream);
+	          var streamURL = URL.createObjectURL(stream);
+	          var peerId = stream.peerId;
+	          _this.$scope.$apply(function () {
+	            _this.roomMember++;
+	          });
+	          //div class="video"の中にvideoをappendしていく。
+	          $('.videos').append('<p>other</p><video id="video_' + peerId + '" class="otherUser videoBox col s12" width="300" height="200" autoplay="autoplay" class="remoteVideos" src="' + streamURL + '" > </video>');
+	        });
+
+	        //他のmemberがroomから離れる時は該当するvideoタグを除去
+	        _this.room.on('removeStream', function (stream) {
+	          console.log("remove other stream", stream);
+	          _this.$scope.$apply(function () {
+	            _this.roomMember--;
+	          });
+	          $('#video_' + stream.peerId).remove();
+	        });
+
+	        _this.room.on('data', function (message) {
+	          console.log(message.src + "からのデータ：", message);
+
+	          //mode, themeを同期化
+	          _this.mode = message.data.mode;
+	          _this.theme = message.data.theme;
+	          _this.uiCodemirrorConfig.mode = message.data.mode.lang;
+	          _this.uiCodemirrorConfig.theme = message.data.theme;
+	          console.log(_this.uiCodemirrorConfig);
+
+	          //codeUpdate
+	          _this.codeUpdate(message.data);
+	        });
+
+	        _this.room.on('peerJoin', function (peerId) {
+	          console.log(peerId + 'has joined the room');
+	          _this.input();
+	        });
+
+	        _this.room.on('peerLeave', function (peerId) {
+	          console.log(peerId + 'has left the room');
+	        });
+
+	        _this.room.on('error', function (err) {
+	          console.log("error : ", err);
 	        });
 	      }, function (e) {
-	        console.error(e);
+	        console.error("error", e);
 	      });
-	    });
-
-	    // Await connections from others
-	    this.peer.on('connection', this.connect);
-	    this.peer.on('error', function (err) {
-	      console.log(err);
 	    });
 
 	    //アプリから抜ける時にcうあんと接続関連して、綺麗に片付けるためのコードライン
@@ -45110,27 +45149,20 @@
 	      this.room.send({
 	        "pastCursor": this.pastCursor,
 	        "newString": this.code.content,
-	        "newCursor": angular.element('.CodeMirror')[0].CodeMirror.getDoc().getCursor(),
+	        "newCursor": angular.element('.CodeMirror')[0].CodeMirror.getDoc().getCursor() || this.pastCursor,
 	        "mode": this.mode,
 	        "theme": this.theme
 	      });
 
-	      this.pastCursor = angular.element('.CodeMirror')[0].CodeMirror.getDoc().getCursor();
+	      this.pastCursor = angular.element('.CodeMirror')[0].CodeMirror.getDoc().getCursor() || this.pastCursor;
 	    }
 	  }, {
-	    key: "update",
+	    key: "codeUpdate",
 
 
-	    //この関数はeditorに何らかのアップデートが生じた時に呼ぶように自分が作ったものではあるが、上でイベントハンドラをつける方がより良いので今後削除すると思う。
-	    value: function update(data) {
+	    //この関数は自分以外のユーザがコードを書いた時にそれを自分のeditorに適切に反映させる関数
+	    value: function codeUpdate(data) {
 	      var _this3 = this;
-
-	      //mode, themeを同期化
-	      this.mode = data.mode;
-	      this.theme = data.theme;
-	      this.uiCodemirrorConfig.mode = data.mode.lang;
-	      this.uiCodemirrorConfig.theme = data.theme;
-	      console.log(this.uiCodemirrorConfig);
 
 	      this.$scope.$apply(function () {
 	        /*
@@ -45152,7 +45184,7 @@
 	          console.log("behindString", behindString);
 	          var duplicated_length = 0;
 	          for (var i = 0; i < behindString.length; i++) {
-	            if (data.newString[data.newString.length - i] != behindString[behindString.length - i]) {
+	            if (data.newString[data.newString.length - i - 1] != behindString[behindString.length - i - 1]) {
 	              break;
 	            } else {
 	              duplicated_length++;
@@ -45205,50 +45237,6 @@
 	      return result;
 	    }
 	  }, {
-	    key: "connect",
-
-
-	    //自分がroomに参加したり、他の人たちがroomに参加したりする時のロジックをここに書く。
-	    value: function connect() {
-	      var _this4 = this;
-
-	      //まずは自分が参加したときこの関数を始めて呼ぶ
-	      console.log("roomに参加できました。");
-	      this.$scope.$apply(function () {
-	        _this4.roomMember++;
-	      });
-
-	      this.room.on('data', function (message) {
-	        console.log(message.src + "からのデータ：", message);
-	        _this4.update(message.data);
-	      });
-
-	      this.room.on('peerJoin', function (peerId) {
-	        console.log(peerId + 'has joined the room');
-	        _this4.input();
-	      });
-
-	      this.room.on('peerLeave', function (peerId) {
-	        console.log(peerId + 'has left the room');
-	      });
-
-	      // 他のmemberのstreamを管理
-	      this.room.on('stream', function (stream) {
-	        var streamURL = URL.createObjectURL(stream);
-	        var peerId = stream.peerId;
-	        //div class="video"の中にvideoをappendしていく。
-	        $('.videos').append($('<video id="video_' + peerId + '" class="videoBox" width="300" height="200" autoplay="autoplay" class="remoteVideos" src="' + streamURL + '" > </video> <br>'));
-	      });
-
-	      //他のmemberがroomから離れる時は該当するvideoタグを除去
-	      this.room.on('removeStream', function (removedStream) {
-	        _this4.$scope.$apply(function () {
-	          _this4.roomMember--;
-	        });
-	        $('#video_' + removedStream.peerId).remove();
-	      });
-	    }
-	  }, {
 	    key: "showContent",
 
 
@@ -45265,7 +45253,7 @@
 
 	    //コード実行機能
 	    value: function run(data) {
-	      var _this5 = this;
+	      var _this4 = this;
 
 	      console.log("sended data : ", JSON.stringify({
 	        "language": this.mode.lang,
@@ -45278,16 +45266,16 @@
 	      })).then(function (response) {
 	        //responseをもらう
 	        console.log("response : ", response);
-	        _this5.searchResult = 0;
-	        _this5.result = response.data;
+	        _this4.searchResult = 0;
+	        _this4.result = response.data;
 
 	        //もしエラーが返ってきたら
-	        if (_this5.result.is_error) {
+	        if (_this4.result.is_error) {
 	          //search機能実行
-	          _this5.search({
-	            "language": _this5.mode.lang,
+	          _this4.search({
+	            "language": _this4.mode.lang,
 	            "code": data,
-	            "output": _this5.result.output
+	            "output": _this4.result.output
 	          });
 	        }
 	      });
@@ -45298,13 +45286,13 @@
 
 	    //search apiを呼ぶ
 	    value: function search(query) {
-	      var _this6 = this;
+	      var _this5 = this;
 
 	      console.log("search now!");
 	      //http post
 	      return this.$http.post("https://hello-world.moe/search", JSON.stringify(query)).then(function (response) {
 	        console.log("search response : ", response);
-	        _this6.searchResult = {
+	        _this5.searchResult = {
 	          "title": response.data.title.unescapeHtml(),
 	          "url": response.data.url
 	        };
