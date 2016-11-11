@@ -28,7 +28,7 @@ export default class roomController {
         "extraKeys": {"Ctrl-Space":"autocomplete"}
     };
     //現在のmember数
-    this.roomMember = 1;
+    this.roomMember = 0;
     /*
     room stateでroomNameを決めてきていたらそれがroomKeyとなる。
     もし、そうでないのなら、urlからroomKeyを読み取る。
@@ -137,8 +137,33 @@ export default class roomController {
       console.log("beforeChange! codemirror,changeObj : ",codemirror,changeObj);
     });
   }
+
+  //editorに何らかのinputがあったときに呼ばれる関数(イベントハンドラが上にあるのでそれに切り替える予定)
+  input(){
+    console.log("changed! send data!");
+    //mode themeが変更された場合、それを自分のeditorに反映する。
+    this.uiCodemirrorConfig.mode = this.mode.lang;
+    this.uiCodemirrorConfig.theme = this.theme;
+    //pastCursor,newString,newCursorを送る。
+    this.room.send({
+      "pastCursor" : this.pastCursor,
+      "newString" : this.code.content,
+      "newCursor" : angular.element('.CodeMirror')[0].CodeMirror.getDoc().getCursor(),
+      "mode" : this.mode,
+      "theme" : this.theme
+    });
+
+    this.pastCursor = angular.element('.CodeMirror')[0].CodeMirror.getDoc().getCursor()
+  };
+
   //この関数はeditorに何らかのアップデートが生じた時に呼ぶように自分が作ったものではあるが、上でイベントハンドラをつける方がより良いので今後削除すると思う。
   update(data){
+    this.mode = data.mode;
+    this.theme = data.theme;
+    this.uiCodemirrorConfig.mode = data.mode.lang;
+    this.uiCodemirrorConfig.theme = data.theme;
+    console.log(this.uiCodemirrorConfig)
+    
     this.pastCursor = angular.element('.CodeMirror')[0].CodeMirror.getDoc().getCursor()
     var newCursor = this.pastCursor;
     this.$scope.$apply(() => {
@@ -206,16 +231,13 @@ export default class roomController {
     return result;
   };
 
-  settingChange(){
-    this.uiCodemirrorConfig.mode = this.mode.lang;
-    this.uiCodemirrorConfig.theme = this.theme;
-    console.log("setting Changed!",this.uiCodemirrorConfig);
-  };
-
   //自分がroomに参加したり、他の人たちがroomに参加したりする時のロジックをここに書く。
   connect() {
     //まずは自分が参加したときこの関数を始めて呼ぶ
     console.log("roomに参加できました。")
+    this.$scope.$apply(()=>{
+      this.roomMember++;
+    });
 
     this.room.on('data', (message) => {
       console.log(message.src + "からのデータ：",message)
@@ -235,9 +257,6 @@ export default class roomController {
     this.room.on('stream', (stream) =>{
       const streamURL = URL.createObjectURL(stream);
       const peerId = stream.peerId;
-      this.$scope.$apply(()=>{
-        this.roomMember++;
-      });
       //div class="video"の中にvideoをappendしていく。
       $('.videos').append($(
           '<video id="video_' + peerId + '" class="videoBox" width="300" height="200" autoplay="autoplay" class="remoteVideos" src="' + streamURL + '" > </video> <br>'
@@ -304,35 +323,14 @@ export default class roomController {
     });
   }
 
-  //clear機能
-  clear(){
-    this.code.name = "new file";
-    this.code.content = "";
-    this.input();
-  };
-
   //save機能
   save(data){
     var link = document.createElement('a');
-    link.download = this.code.name; //filename
+    link.download = this.code.name + this.mode.ex; //filename
     link.href = 'data:text,\uFEFF' + escape(data); //content
     document.body.appendChild(link);
     link.click();
     document.body.removeChild(link);
-  };
-
-  //editorに何らかのinputがあったときに呼ばれる関数(イベントハンドラが上にあるのでそれに切り替える予定)
-  input(){
-    console.log("changed! send code!");
-    console.log(angular.element('.CodeMirror')[0].CodeMirror);
-    console.log(angular.element('.CodeMirror')[0].CodeMirror.getDoc().getCursor());
-    //pastCursor,newString,newCursorを送る。
-    this.room.send({
-      "pastCursor" : this.pastCursor,
-      "newString" : this.code.content,
-      "newCursor" : angular.element('.CodeMirror')[0].CodeMirror.getDoc().getCursor()
-    });
-    this.pastCursor = angular.element('.CodeMirror')[0].CodeMirror.getDoc().getCursor()
   };
 
 };

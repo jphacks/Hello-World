@@ -12,21 +12,23 @@
 
 				<div class="col s6 input-field">
 					<label>Language Select</label><br><br>
-					<select class="browser-default" ng-change="roomCtrl.settingChange()" ng-model="roomCtrl.mode" ng-options="mode as mode.lang for mode in roomCtrl.modes"></select>
+					<select class="browser-default" ng-change="roomCtrl.input()" ng-model="roomCtrl.mode" ng-options="mode as mode.lang for mode in roomCtrl.modes"></select>
 				</div>
 
 				<div class="col s6 input-field">
 					<label>Theme Select</label><br><br>
-					<select class="browser-default" ng-change="roomCtrl.settingChange()" ng-model="roomCtrl.theme" ng-options="theme for theme in roomCtrl.themes"></select>
+					<select class="browser-default" ng-change="roomCtrl.input()" ng-model="roomCtrl.theme" ng-options="theme for theme in roomCtrl.themes"></select>
 				</div>
 
 			</div>
 
 			<div class="row">
 
-				<label class="col s6">
-					<input ng-model="roomCtrl.code.name"/>
-				</label>
+				<div class="col s6">
+					<h4>
+						{{roomCtrl.code.name}}.{{roomCtrl.mode.ex}}
+					</h4>
+				</div>
 
 				<form>
 					<div class="col s2 file-field input-field">
@@ -65,7 +67,7 @@
 				<div class="col s12 card-panel teal lighten-3" ng-show="roomCtrl.searchResult">
 					<h3 class="blue-text text-darken-3">Recomendation</h3>
 					<h4 class="blue-text text-darken-2">{{roomCtrl.searchResult.title}}</h3>
-					<a class="blue-text text-darken-2" href="{{roomCtrl.searchResult.url}}">{{roomCtrl.searchResult.url}}</a>
+					<a class="blue-text text-darken-2" href="{{roomCtrl.searchResult.url}}" target="_blank">{{roomCtrl.searchResult.url}}</a>
 				</div>
 			</div>
 		</div>

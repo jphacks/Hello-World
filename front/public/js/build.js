@@ -44940,7 +44940,7 @@
 /* 307 */
 /***/ function(module, exports) {
 
-	module.exports = "<div class=\"container\">\n\t<div class=\"row\">\n\t\t<div class=\"col s8\">\n\t\t\t<div class=\"caption center-align\">\n\t\t\t\t<div class=\"card-panel\">\n\t\t\t\t\t<h3 class=\"blue-text text-darken-2\">{{roomCtrl.roomName}}</h3>\n\t\t\t\t\t<h5 class=\"light grey-text text-darken-1\">({{roomCtrl.roomMember}} users joined)</h5>\n\t\t\t\t</div>\n\t        </div>\n\n\t\t\t<div class=\"row\">\n\n\t\t\t\t<div class=\"col s6 input-field\">\n\t\t\t\t\t<label>Language Select</label><br><br>\n\t\t\t\t\t<select class=\"browser-default\" ng-change=\"roomCtrl.settingChange()\" ng-model=\"roomCtrl.mode\" ng-options=\"mode as mode.lang for mode in roomCtrl.modes\"></select>\n\t\t\t\t</div>\n\n\t\t\t\t<div class=\"col s6 input-field\">\n\t\t\t\t\t<label>Theme Select</label><br><br>\n\t\t\t\t\t<select class=\"browser-default\" ng-change=\"roomCtrl.settingChange()\" ng-model=\"roomCtrl.theme\" ng-options=\"theme for theme in roomCtrl.themes\"></select>\n\t\t\t\t</div>\n\n\t\t\t</div>\n\n\t\t\t<div class=\"row\">\n\n\t\t\t\t<label class=\"col s6\">\n\t\t\t\t\t<input ng-model=\"roomCtrl.code.name\"/>\n\t\t\t\t</label>\n\n\t\t\t\t<form>\n\t\t\t\t\t<div class=\"col s2 file-field input-field\">\n\t\t\t\t\t\t<div class=\"waves-effect waves-light btn\">\n\t\t\t\t\t\t\t<span>Load</span>\n\t\t\t\t\t\t\t<input type=\"file\" on-read-file=\"roomCtrl.showContent($fileContent)\">\n\t\t\t\t\t\t</div>\n\t\t\t\t\t\t<div class=\"file-path-wrapper\">\n\t\t\t\t\t\t\t<input type=\"file\"/>\n\t\t\t\t\t\t</div>\n\t\t\t\t\t</div>\n\t\t\t\t</form>\n\n\t\t\t\t<div class=\"col s2 file-field input-field\">\n\t\t\t\t\t<div class=\"waves-effect waves-light btn\" ng-click=\"roomCtrl.save(roomCtrl.code.content)\">save</div>\n\t\t\t\t</div>\n\n\t\t\t</div>\n\n\t\t    <div class=\"row\">\n\t\t\t\t<textarea id=\"editor\" ui-codemirror=\"roomCtrl.uiCodemirrorConfig\"  ng-model=\"roomCtrl.code.content\" ng-change=\"roomCtrl.input()\"></textarea>\n\t\t\t</div>\n\n\t\t\t<div class=\"row\">\n\t\t\t\t<div class=\"col s2 file-field input-field\">\n\t\t\t\t\t<div class=\"waves-effect waves-light btn\" ng-click=\"roomCtrl.run(roomCtrl.code.content)\">run</div>\n\t\t\t\t</div>\n\t\t\t</div>\n\t\t\t\n\t\t\t<div class=\"row\">\n\t\t\t\t<div class=\"col s12 card-panel teal lighten-5\" ng-show=\"roomCtrl.result\">\n\t\t\t\t\t<h3 ng-show=\"roomCtrl.result.is_error\" class=\"red-text text-darken-3\">Error</h3>\n\t\t\t\t\t<h3 ng-hide=\"roomCtrl.result.is_error\" class=\"blue-text text-darken-3\">Success</h3>\n\t\t\t\t\t<pre>{{roomCtrl.result.output}}</pre>\n\t\t\t\t</div>\n\t\t\t\t<div class=\"col s12 card-panel teal lighten-3\" ng-show=\"roomCtrl.searchResult\">\n\t\t\t\t\t<h3 class=\"blue-text text-darken-3\">Recomendation</h3>\n\t\t\t\t\t<h4 class=\"blue-text text-darken-2\">{{roomCtrl.searchResult.title}}</h3>\n\t\t\t\t\t<a class=\"blue-text text-darken-2\" href=\"{{roomCtrl.searchResult.url}}\">{{roomCtrl.searchResult.url}}</a>\n\t\t\t\t</div>\n\t\t\t</div>\n\t\t</div>\n\n\t\t<div class=\"col s4\">\n\t\t\t<!-- Audio and Video area -->\n\t\t\t<div class=\"videos\" style=\"position: fixed; top : 0px; width: auto; height: 100vh;\"></div>\n\t\t</div>\n\t</div>\n</div>";
+	module.exports = "<div class=\"container\">\n\t<div class=\"row\">\n\t\t<div class=\"col s8\">\n\t\t\t<div class=\"caption center-align\">\n\t\t\t\t<div class=\"card-panel\">\n\t\t\t\t\t<h3 class=\"blue-text text-darken-2\">{{roomCtrl.roomName}}</h3>\n\t\t\t\t\t<h5 class=\"light grey-text text-darken-1\">({{roomCtrl.roomMember}} users joined)</h5>\n\t\t\t\t</div>\n\t        </div>\n\n\t\t\t<div class=\"row\">\n\n\t\t\t\t<div class=\"col s6 input-field\">\n\t\t\t\t\t<label>Language Select</label><br><br>\n\t\t\t\t\t<select class=\"browser-default\" ng-change=\"roomCtrl.input()\" ng-model=\"roomCtrl.mode\" ng-options=\"mode as mode.lang for mode in roomCtrl.modes\"></select>\n\t\t\t\t</div>\n\n\t\t\t\t<div class=\"col s6 input-field\">\n\t\t\t\t\t<label>Theme Select</label><br><br>\n\t\t\t\t\t<select class=\"browser-default\" ng-change=\"roomCtrl.input()\" ng-model=\"roomCtrl.theme\" ng-options=\"theme for theme in roomCtrl.themes\"></select>\n\t\t\t\t</div>\n\n\t\t\t</div>\n\n\t\t\t<div class=\"row\">\n\n\t\t\t\t<div class=\"col s6\">\n\t\t\t\t\t<h4>\n\t\t\t\t\t\t{{roomCtrl.code.name}}.{{roomCtrl.mode.ex}}\n\t\t\t\t\t</h4>\n\t\t\t\t</div>\n\n\t\t\t\t<form>\n\t\t\t\t\t<div class=\"col s2 file-field input-field\">\n\t\t\t\t\t\t<div class=\"waves-effect waves-light btn\">\n\t\t\t\t\t\t\t<span>Load</span>\n\t\t\t\t\t\t\t<input type=\"file\" on-read-file=\"roomCtrl.showContent($fileContent)\">\n\t\t\t\t\t\t</div>\n\t\t\t\t\t\t<div class=\"file-path-wrapper\">\n\t\t\t\t\t\t\t<input type=\"file\"/>\n\t\t\t\t\t\t</div>\n\t\t\t\t\t</div>\n\t\t\t\t</form>\n\n\t\t\t\t<div class=\"col s2 file-field input-field\">\n\t\t\t\t\t<div class=\"waves-effect waves-light btn\" ng-click=\"roomCtrl.save(roomCtrl.code.content)\">save</div>\n\t\t\t\t</div>\n\n\t\t\t</div>\n\n\t\t    <div class=\"row\">\n\t\t\t\t<textarea id=\"editor\" ui-codemirror=\"roomCtrl.uiCodemirrorConfig\"  ng-model=\"roomCtrl.code.content\" ng-change=\"roomCtrl.input()\"></textarea>\n\t\t\t</div>\n\n\t\t\t<div class=\"row\">\n\t\t\t\t<div class=\"col s2 file-field input-field\">\n\t\t\t\t\t<div class=\"waves-effect waves-light btn\" ng-click=\"roomCtrl.run(roomCtrl.code.content)\">run</div>\n\t\t\t\t</div>\n\t\t\t</div>\n\t\t\t\n\t\t\t<div class=\"row\">\n\t\t\t\t<div class=\"col s12 card-panel teal lighten-5\" ng-show=\"roomCtrl.result\">\n\t\t\t\t\t<h3 ng-show=\"roomCtrl.result.is_error\" class=\"red-text text-darken-3\">Error</h3>\n\t\t\t\t\t<h3 ng-hide=\"roomCtrl.result.is_error\" class=\"blue-text text-darken-3\">Success</h3>\n\t\t\t\t\t<pre>{{roomCtrl.result.output}}</pre>\n\t\t\t\t</div>\n\t\t\t\t<div class=\"col s12 card-panel teal lighten-3\" ng-show=\"roomCtrl.searchResult\">\n\t\t\t\t\t<h3 class=\"blue-text text-darken-3\">Recomendation</h3>\n\t\t\t\t\t<h4 class=\"blue-text text-darken-2\">{{roomCtrl.searchResult.title}}</h3>\n\t\t\t\t\t<a class=\"blue-text text-darken-2\" href=\"{{roomCtrl.searchResult.url}}\" target=\"_blank\">{{roomCtrl.searchResult.url}}</a>\n\t\t\t\t</div>\n\t\t\t</div>\n\t\t</div>\n\n\t\t<div class=\"col s4\">\n\t\t\t<!-- Audio and Video area -->\n\t\t\t<div class=\"videos\" style=\"position: fixed; top : 0px; width: auto; height: 100vh;\"></div>\n\t\t</div>\n\t</div>\n</div>";
 
 /***/ },
 /* 308 */
@@ -44989,7 +44989,7 @@
 	      "extraKeys": { "Ctrl-Space": "autocomplete" }
 	    };
 	    //現在のmember数
-	    this.roomMember = 1;
+	    this.roomMember = 0;
 	    /*
 	    room stateでroomNameを決めてきていたらそれがroomKeyとなる。
 	    もし、そうでないのなら、urlからroomKeyを読み取る。
@@ -45093,12 +45093,40 @@
 	        console.log("beforeChange! codemirror,changeObj : ", codemirror, changeObj);
 	      });
 	    }
-	    //この関数はeditorに何らかのアップデートが生じた時に呼ぶように自分が作ったものではあるが、上でイベントハンドラをつける方がより良いので今後削除すると思う。
+
+	    //editorに何らかのinputがあったときに呼ばれる関数(イベントハンドラが上にあるのでそれに切り替える予定)
 
 	  }, {
+	    key: "input",
+	    value: function input() {
+	      console.log("changed! send data!");
+	      //mode themeが変更された場合、それを自分のeditorに反映する。
+	      this.uiCodemirrorConfig.mode = this.mode.lang;
+	      this.uiCodemirrorConfig.theme = this.theme;
+	      //pastCursor,newString,newCursorを送る。
+	      this.room.send({
+	        "pastCursor": this.pastCursor,
+	        "newString": this.code.content,
+	        "newCursor": angular.element('.CodeMirror')[0].CodeMirror.getDoc().getCursor(),
+	        "mode": this.mode,
+	        "theme": this.theme
+	      });
+
+	      this.pastCursor = angular.element('.CodeMirror')[0].CodeMirror.getDoc().getCursor();
+	    }
+	  }, {
 	    key: "update",
+
+
+	    //この関数はeditorに何らかのアップデートが生じた時に呼ぶように自分が作ったものではあるが、上でイベントハンドラをつける方がより良いので今後削除すると思う。
 	    value: function update(data) {
 	      var _this3 = this;
+
+	      this.mode = data.mode;
+	      this.theme = data.theme;
+	      this.uiCodemirrorConfig.mode = data.mode.lang;
+	      this.uiCodemirrorConfig.theme = data.theme;
+	      console.log(this.uiCodemirrorConfig);
 
 	      this.pastCursor = angular.element('.CodeMirror')[0].CodeMirror.getDoc().getCursor();
 	      var newCursor = this.pastCursor;
@@ -45169,13 +45197,6 @@
 	      return result;
 	    }
 	  }, {
-	    key: "settingChange",
-	    value: function settingChange() {
-	      this.uiCodemirrorConfig.mode = this.mode.lang;
-	      this.uiCodemirrorConfig.theme = this.theme;
-	      console.log("setting Changed!", this.uiCodemirrorConfig);
-	    }
-	  }, {
 	    key: "connect",
 
 
@@ -45185,6 +45206,9 @@
 
 	      //まずは自分が参加したときこの関数を始めて呼ぶ
 	      console.log("roomに参加できました。");
+	      this.$scope.$apply(function () {
+	        _this4.roomMember++;
+	      });
 
 	      this.room.on('data', function (message) {
 	        console.log(message.src + "からのデータ：", message);
@@ -45204,9 +45228,6 @@
 	      this.room.on('stream', function (stream) {
 	        var streamURL = URL.createObjectURL(stream);
 	        var peerId = stream.peerId;
-	        _this4.$scope.$apply(function () {
-	          _this4.roomMember++;
-	        });
 	        //div class="video"の中にvideoをappendしていく。
 	        $('.videos').append($('<video id="video_' + peerId + '" class="videoBox" width="300" height="200" autoplay="autoplay" class="remoteVideos" src="' + streamURL + '" > </video> <br>'));
 	      });
@@ -45282,44 +45303,17 @@
 	      });
 	    }
 
-	    //clear機能
+	    //save機能
 
-	  }, {
-	    key: "clear",
-	    value: function clear() {
-	      this.code.name = "new file";
-	      this.code.content = "";
-	      this.input();
-	    }
 	  }, {
 	    key: "save",
-
-
-	    //save機能
 	    value: function save(data) {
 	      var link = document.createElement('a');
-	      link.download = this.code.name; //filename
+	      link.download = this.code.name + this.mode.ex; //filename
 	      link.href = "data:text,\uFEFF" + escape(data); //content
 	      document.body.appendChild(link);
 	      link.click();
 	      document.body.removeChild(link);
-	    }
-	  }, {
-	    key: "input",
-
-
-	    //editorに何らかのinputがあったときに呼ばれる関数(イベントハンドラが上にあるのでそれに切り替える予定)
-	    value: function input() {
-	      console.log("changed! send code!");
-	      console.log(angular.element('.CodeMirror')[0].CodeMirror);
-	      console.log(angular.element('.CodeMirror')[0].CodeMirror.getDoc().getCursor());
-	      //pastCursor,newString,newCursorを送る。
-	      this.room.send({
-	        "pastCursor": this.pastCursor,
-	        "newString": this.code.content,
-	        "newCursor": angular.element('.CodeMirror')[0].CodeMirror.getDoc().getCursor()
-	      });
-	      this.pastCursor = angular.element('.CodeMirror')[0].CodeMirror.getDoc().getCursor();
 	    }
 	  }]);
 
