@@ -46,4 +46,6 @@ angular
         controllerAs: 'roomCtrl'
       })
 
+    $urlRouterProvider.otherwise("/");
+
   });
