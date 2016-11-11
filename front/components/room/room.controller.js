@@ -5,7 +5,7 @@ export default class roomController {
   $scope,$http,$stateParams,$stateはこのroomControllerで使うためにinjectする必要のなるものであり、
   詳細はAngularJSを参照すること。
   */
-  constructor($scope,$http,$stateParams,$state,uiCodemirrorConfig) {
+  constructor($scope,$http,$stateParams,$state) {
 
     //おすすめサイトの名前を正しくstringに直すためにこの関数を具現した。
     String.prototype.unescapeHtml = function(){
@@ -27,7 +27,6 @@ export default class roomController {
         "theme": "midnight",
         "extraKeys": {"Ctrl-Space":"autocomplete"}
     };
-    console.log("uiCodemirrorConfig",uiCodemirrorConfig)
     //現在のmember数
     this.roomMember = 1;
     /*
@@ -208,14 +207,8 @@ export default class roomController {
   };
 
   settingChange(){
-    this.uiCodemirrorConfig = {
-        "onLoad" : this.codemirrorLoaded,
-        "lineWrapping" : true,
-        "lineNumbers": true,
-        "mode": this.mode.lang,
-        "theme": this.theme,
-        "extraKeys": {"Ctrl-Space":"autocomplete"}
-    };
+    this.uiCodemirrorConfig.mode = this.mode.lang;
+    this.uiCodemirrorConfig.theme = this.theme;
     console.log("setting Changed!",this.uiCodemirrorConfig);
   };
 
@@ -231,23 +224,27 @@ export default class roomController {
 
     this.room.on('peerJoin', (peerId) => {
       console.log(peerId + 'has joined the room');
+      this.input();
     });
 
     this.room.on('peerLeave', (peerId) => {
       console.log(peerId + 'has left the room');
     });
 
-    // Wait for stream on the call, then set peer video display
+    // 他のmemberのstreamを管理
     this.room.on('stream', (stream) =>{
       const streamURL = URL.createObjectURL(stream);
       const peerId = stream.peerId;
       this.$scope.$apply(()=>{
         this.roomMember++;
       });
+      //div class="video"の中にvideoをappendしていく。
       $('.videos').append($(
           '<video id="video_' + peerId + '" class="videoBox" width="300" height="200" autoplay="autoplay" class="remoteVideos" src="' + streamURL + '" > </video> <br>'
       ));
     });
+
+    //他のmemberがroomから離れる時は該当するvideoタグを除去
     this.room.on('removeStream', (removedStream) => {
       this.$scope.$apply(()=>{
         this.roomMember--;

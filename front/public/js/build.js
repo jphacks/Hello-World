@@ -8217,12 +8217,7 @@
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-	_angular2.default.module('myApp', [_angularUiRouter2.default]).constant('uiCodemirrorConfig', {
-	  "lineWrapping": true,
-	  "lineNumbers": true,
-	  "mode": "javascript",
-	  "theme": "midnight"
-	}).directive('onReadFile', _roomFileReadDirective2.default).directive('uiCodemirror', _roomUicodemirrorDirective2.default).config(function ($stateProvider, $urlRouterProvider) {
+	_angular2.default.module('myApp', [_angularUiRouter2.default]).constant('uiCodemirrorConfig', {}).directive('onReadFile', _roomFileReadDirective2.default).directive('uiCodemirror', _roomUicodemirrorDirective2.default).config(function ($stateProvider, $urlRouterProvider) {
 	  /*
 	  以下でroutingルールを決める。
 	  ui-router : https://github.com/angular-ui/ui-router
@@ -44968,7 +44963,7 @@
 	  $scope,$http,$stateParams,$stateはこのroomControllerで使うためにinjectする必要のなるものであり、
 	  詳細はAngularJSを参照すること。
 	  */
-	  function roomController($scope, $http, $stateParams, $state, uiCodemirrorConfig) {
+	  function roomController($scope, $http, $stateParams, $state) {
 	    var _this = this;
 
 	    _classCallCheck(this, roomController);
@@ -44993,7 +44988,6 @@
 	      "theme": "midnight",
 	      "extraKeys": { "Ctrl-Space": "autocomplete" }
 	    };
-	    console.log("uiCodemirrorConfig", uiCodemirrorConfig);
 	    //現在のmember数
 	    this.roomMember = 1;
 	    /*
@@ -45177,14 +45171,8 @@
 	  }, {
 	    key: "settingChange",
 	    value: function settingChange() {
-	      this.uiCodemirrorConfig = {
-	        "onLoad": this.codemirrorLoaded,
-	        "lineWrapping": true,
-	        "lineNumbers": true,
-	        "mode": this.mode.lang,
-	        "theme": this.theme,
-	        "extraKeys": { "Ctrl-Space": "autocomplete" }
-	      };
+	      this.uiCodemirrorConfig.mode = this.mode.lang;
+	      this.uiCodemirrorConfig.theme = this.theme;
 	      console.log("setting Changed!", this.uiCodemirrorConfig);
 	    }
 	  }, {
@@ -45205,21 +45193,25 @@
 
 	      this.room.on('peerJoin', function (peerId) {
 	        console.log(peerId + 'has joined the room');
+	        _this4.input();
 	      });
 
 	      this.room.on('peerLeave', function (peerId) {
 	        console.log(peerId + 'has left the room');
 	      });
 
-	      // Wait for stream on the call, then set peer video display
+	      // 他のmemberのstreamを管理
 	      this.room.on('stream', function (stream) {
 	        var streamURL = URL.createObjectURL(stream);
 	        var peerId = stream.peerId;
 	        _this4.$scope.$apply(function () {
 	          _this4.roomMember++;
 	        });
+	        //div class="video"の中にvideoをappendしていく。
 	        $('.videos').append($('<video id="video_' + peerId + '" class="videoBox" width="300" height="200" autoplay="autoplay" class="remoteVideos" src="' + streamURL + '" > </video> <br>'));
 	      });
+
+	      //他のmemberがroomから離れる時は該当するvideoタグを除去
 	      this.room.on('removeStream', function (removedStream) {
 	        _this4.$scope.$apply(function () {
 	          _this4.roomMember--;

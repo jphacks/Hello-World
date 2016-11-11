@@ -19,12 +19,7 @@ import roomController from './components/room/room.controller.js';
 
 angular
   .module('myApp', [uirouter])
-  .constant('uiCodemirrorConfig', {
-        "lineWrapping" : true,
-        "lineNumbers": true,
-        "mode": "javascript",
-        "theme": "midnight"
-    })
+  .constant('uiCodemirrorConfig', {})
   .directive('onReadFile', fileReadDirective)
   .directive('uiCodemirror', uiCodemirrorDirective)
   .config(function ($stateProvider, $urlRouterProvider) {
