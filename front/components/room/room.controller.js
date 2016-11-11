@@ -79,10 +79,12 @@ export default class roomController {
             // Set your video displays
             window.localStream = stream;
             var streamURL = URL.createObjectURL(stream);
-            var myPeerId = id;
-            console.log("add my stream",stream,streamURL);
-            $('.videos').append(
-                '<p>user</p><video id="video_' + myPeerId + '" class="user videoBox col s12" width="300" height="200" autoplay="autoplay" class="remoteVideos" src="' + streamURL + '" > </video>'
+            var peerId = id;
+            //このvideo-wrapperで大きさの調整ができる
+            angular.element('#video-wrapper')[0].style.width = "255px";
+
+            angular.element('.videos').append(
+                '<div class="videoBox"><video id="video_' + peerId + '" class="remoteVideos" width="100%" autoplay="autoplay" src="' + streamURL + '" > </video></div>'
             );
             /*
             自分のvideoを表示できてから、roomに入る準備をする。
@@ -99,9 +101,9 @@ export default class roomController {
                 this.roomMember++;
               });
               //div class="video"の中にvideoをappendしていく。
-              $('.videos').append(
-                  '<p>other</p><video id="video_' + peerId + '" class="otherUser videoBox col s12" width="300" height="200" autoplay="autoplay" class="remoteVideos" src="' + streamURL + '" > </video>'
-              );
+              angular.element('.videos').append(
+                '<div class="videoBox"><video id="video_' + peerId + '" class="remoteVideos" width="100%" autoplay="autoplay" src="' + streamURL + '" > </video></div>'
+            );
             });
 
             //他のmemberがroomから離れる時は該当するvideoタグを除去
@@ -110,7 +112,7 @@ export default class roomController {
               this.$scope.$apply(()=>{
                 this.roomMember--;
               });
-              $('#video_' + stream.peerId).remove();
+              angular.element('#video_' + stream.peerId).remove();
             });
 
             this.room.on('data', (message) => {

@@ -44940,7 +44940,7 @@
 /* 307 */
 /***/ function(module, exports) {
 
-	module.exports = "<div class=\"container\">\n\t<div class=\"row\">\n\t\t<div class=\"col s8\">\n\t\t\t<div class=\"caption center-align\">\n\t\t\t\t<div class=\"card-panel\">\n\t\t\t\t\t<h3 class=\"blue-text text-darken-2\">{{roomCtrl.roomName}}</h3>\n\t\t\t\t\t<h5 class=\"light grey-text text-darken-1\">({{roomCtrl.roomMember}} users joined)</h5>\n\t\t\t\t</div>\n\t        </div>\n\n\t\t\t<div class=\"row\">\n\n\t\t\t\t<div class=\"col s6 input-field\">\n\t\t\t\t\t<label>Language Select</label><br><br>\n\t\t\t\t\t<select class=\"browser-default\" ng-change=\"roomCtrl.input()\" ng-model=\"roomCtrl.mode\" ng-options=\"mode as mode.lang for mode in roomCtrl.modes\"></select>\n\t\t\t\t</div>\n\n\t\t\t\t<div class=\"col s6 input-field\">\n\t\t\t\t\t<label>Theme Select</label><br><br>\n\t\t\t\t\t<select class=\"browser-default\" ng-change=\"roomCtrl.input()\" ng-model=\"roomCtrl.theme\" ng-options=\"theme for theme in roomCtrl.themes\"></select>\n\t\t\t\t</div>\n\n\t\t\t</div>\n\n\t\t\t<div class=\"row\">\n\n\t\t\t\t<div class=\"col s6\">\n\t\t\t\t\t<h4>\n\t\t\t\t\t\t{{roomCtrl.code.name}}.{{roomCtrl.mode.ex}}\n\t\t\t\t\t</h4>\n\t\t\t\t</div>\n\n\t\t\t\t<form>\n\t\t\t\t\t<div class=\"col s2 file-field input-field\">\n\t\t\t\t\t\t<div class=\"waves-effect waves-light btn\">\n\t\t\t\t\t\t\t<span>Load</span>\n\t\t\t\t\t\t\t<input type=\"file\" on-read-file=\"roomCtrl.showContent($fileContent)\">\n\t\t\t\t\t\t</div>\n\t\t\t\t\t\t<div class=\"file-path-wrapper\">\n\t\t\t\t\t\t\t<input type=\"file\"/>\n\t\t\t\t\t\t</div>\n\t\t\t\t\t</div>\n\t\t\t\t</form>\n\n\t\t\t\t<div class=\"col s2 file-field input-field\">\n\t\t\t\t\t<div class=\"waves-effect waves-light btn\" ng-click=\"roomCtrl.save(roomCtrl.code.content)\">save</div>\n\t\t\t\t</div>\n\n\t\t\t</div>\n\n\t\t    <div class=\"row\">\n\t\t\t\t<textarea id=\"editor\" ui-codemirror=\"roomCtrl.uiCodemirrorConfig\"  ng-model=\"roomCtrl.code.content\" ng-change=\"roomCtrl.input()\"></textarea>\n\t\t\t</div>\n\n\t\t\t<div class=\"row\">\n\t\t\t\t<div class=\"col s2 file-field input-field\">\n\t\t\t\t\t<div class=\"waves-effect waves-light btn\" ng-click=\"roomCtrl.run(roomCtrl.code.content)\">run</div>\n\t\t\t\t</div>\n\t\t\t</div>\n\t\t\t\n\t\t\t<div class=\"row\">\n\t\t\t\t<div class=\"col s12 card-panel teal lighten-5\" ng-show=\"roomCtrl.result\">\n\t\t\t\t\t<h3 ng-show=\"roomCtrl.result.is_error\" class=\"red-text text-darken-3\">Error</h3>\n\t\t\t\t\t<h3 ng-hide=\"roomCtrl.result.is_error\" class=\"blue-text text-darken-3\">Success</h3>\n\t\t\t\t\t<pre>{{roomCtrl.result.output}}</pre>\n\t\t\t\t</div>\n\t\t\t\t<div class=\"col s12 card-panel teal lighten-3\" ng-show=\"roomCtrl.searchResult\">\n\t\t\t\t\t<h3 class=\"blue-text text-darken-3\">Recomendation</h3>\n\t\t\t\t\t<h4 class=\"blue-text text-darken-2\">{{roomCtrl.searchResult.title}}</h3>\n\t\t\t\t\t<a class=\"blue-text text-darken-2\" href=\"{{roomCtrl.searchResult.url}}\" target=\"_blank\">{{roomCtrl.searchResult.url}}</a>\n\t\t\t\t</div>\n\t\t\t</div>\n\t\t</div>\n\n\t\t<div class=\"col s4\">\n\t\t\t<!-- Audio and Video area -->\n\t\t\t<div class=\"videos row\" style=\"position: fixed; top : 0px; width: auto; height: 100vh;\"></div>\n\t\t</div>\n\t</div>\n</div>";
+	module.exports = "<div class=\"container\">\n\t<div class=\"row\">\n\t\t<div class=\"col s8\">\n\t\t\t<div class=\"caption center-align\">\n\t\t\t\t<div class=\"card-panel\">\n\t\t\t\t\t<h3 class=\"blue-text text-darken-2\">{{roomCtrl.roomName}}</h3>\n\t\t\t\t\t<h5 class=\"light grey-text text-darken-1\">({{roomCtrl.roomMember}} users joined)</h5>\n\t\t\t\t</div>\n\t        </div>\n\n\t\t\t<div class=\"row\">\n\n\t\t\t\t<div class=\"col s6 input-field\">\n\t\t\t\t\t<label>Language Select</label><br><br>\n\t\t\t\t\t<select class=\"browser-default\" ng-change=\"roomCtrl.input()\" ng-model=\"roomCtrl.mode\" ng-options=\"mode as mode.lang for mode in roomCtrl.modes\"></select>\n\t\t\t\t</div>\n\n\t\t\t\t<div class=\"col s6 input-field\">\n\t\t\t\t\t<label>Theme Select</label><br><br>\n\t\t\t\t\t<select class=\"browser-default\" ng-change=\"roomCtrl.input()\" ng-model=\"roomCtrl.theme\" ng-options=\"theme for theme in roomCtrl.themes\"></select>\n\t\t\t\t</div>\n\n\t\t\t</div>\n\n\t\t\t<div class=\"row\">\n\n\t\t\t\t<div class=\"col s6\">\n\t\t\t\t\t<h4>\n\t\t\t\t\t\t{{roomCtrl.code.name}}.{{roomCtrl.mode.ex}}\n\t\t\t\t\t</h4>\n\t\t\t\t</div>\n\n\t\t\t\t<form>\n\t\t\t\t\t<div class=\"col s2 file-field input-field\">\n\t\t\t\t\t\t<div class=\"waves-effect waves-light btn\">\n\t\t\t\t\t\t\t<span>Load</span>\n\t\t\t\t\t\t\t<input type=\"file\" on-read-file=\"roomCtrl.showContent($fileContent)\">\n\t\t\t\t\t\t</div>\n\t\t\t\t\t\t<div class=\"file-path-wrapper\">\n\t\t\t\t\t\t\t<input type=\"file\"/>\n\t\t\t\t\t\t</div>\n\t\t\t\t\t</div>\n\t\t\t\t</form>\n\n\t\t\t\t<div class=\"col s2 file-field input-field\">\n\t\t\t\t\t<div class=\"waves-effect waves-light btn\" ng-click=\"roomCtrl.save(roomCtrl.code.content)\">save</div>\n\t\t\t\t</div>\n\n\t\t\t</div>\n\n\t\t    <div class=\"row\">\n\t\t\t\t<textarea id=\"editor\" ui-codemirror=\"roomCtrl.uiCodemirrorConfig\"  ng-model=\"roomCtrl.code.content\" ng-change=\"roomCtrl.input()\"></textarea>\n\t\t\t</div>\n\n\t\t\t<div class=\"row\">\n\t\t\t\t<div class=\"col s2 file-field input-field\">\n\t\t\t\t\t<div class=\"waves-effect waves-light btn\" ng-click=\"roomCtrl.run(roomCtrl.code.content)\">run</div>\n\t\t\t\t</div>\n\t\t\t</div>\n\t\t\t\n\t\t\t<div class=\"row\">\n\t\t\t\t<div class=\"col s12 card-panel teal lighten-5\" ng-show=\"roomCtrl.result\">\n\t\t\t\t\t<h3 ng-show=\"roomCtrl.result.is_error\" class=\"red-text text-darken-3\">Error</h3>\n\t\t\t\t\t<h3 ng-hide=\"roomCtrl.result.is_error\" class=\"blue-text text-darken-3\">Success</h3>\n\t\t\t\t\t<pre>{{roomCtrl.result.output}}</pre>\n\t\t\t\t</div>\n\t\t\t\t<div class=\"col s12 card-panel teal lighten-3\" ng-show=\"roomCtrl.searchResult\">\n\t\t\t\t\t<h3 class=\"blue-text text-darken-3\">Recomendation</h3>\n\t\t\t\t\t<h4 class=\"blue-text text-darken-2\">{{roomCtrl.searchResult.title}}</h3>\n\t\t\t\t\t<a class=\"blue-text text-darken-2\" href=\"{{roomCtrl.searchResult.url}}\" target=\"_blank\">{{roomCtrl.searchResult.url}}</a>\n\t\t\t\t</div>\n\t\t\t</div>\n\t\t</div>\n\n\t\t<div class=\"col s4\">\n\t\t\t<!-- Audio and Video area -->\n\t\t\t<div id=\"video-wrapper\" style=\"position: relative;\">\n<!-- \t\t\t\t<div class=\"card-panel\">\n\t\t\t\t\t<h5 class=\"blue-text text-darken-2\">Users</h5>\n\t\t\t\t</div> -->\n\t\t\t\t<div class=\"videos\" style=\"position: fixed; width: inherit; !important\"></div>\n\t\t\t</div>\n\t\t</div>\n\t</div>\n</div>";
 
 /***/ },
 /* 308 */
@@ -45034,9 +45034,11 @@
 	        // Set your video displays
 	        window.localStream = stream;
 	        var streamURL = URL.createObjectURL(stream);
-	        var myPeerId = id;
-	        console.log("add my stream", stream, streamURL);
-	        $('.videos').append('<p>user</p><video id="video_' + myPeerId + '" class="user videoBox col s12" width="300" height="200" autoplay="autoplay" class="remoteVideos" src="' + streamURL + '" > </video>');
+	        var peerId = id;
+	        //このvideo-wrapperで大きさの調整ができる
+	        angular.element('#video-wrapper')[0].style.width = "255px";
+
+	        angular.element('.videos').append('<div class="videoBox"><video id="video_' + peerId + '" class="remoteVideos" width="100%" autoplay="autoplay" src="' + streamURL + '" > </video></div>');
 	        /*
 	        自分のvideoを表示できてから、roomに入る準備をする。
 	        ここでthis.roomNameが入ろうとするroomを特定するkeyとなる。
@@ -45052,7 +45054,7 @@
 	            _this.roomMember++;
 	          });
 	          //div class="video"の中にvideoをappendしていく。
-	          $('.videos').append('<p>other</p><video id="video_' + peerId + '" class="otherUser videoBox col s12" width="300" height="200" autoplay="autoplay" class="remoteVideos" src="' + streamURL + '" > </video>');
+	          angular.element('.videos').append('<div class="videoBox"><video id="video_' + peerId + '" class="remoteVideos" width="100%" autoplay="autoplay" src="' + streamURL + '" > </video></div>');
 	        });
 
 	        //他のmemberがroomから離れる時は該当するvideoタグを除去
@@ -45061,7 +45063,7 @@
 	          _this.$scope.$apply(function () {
 	            _this.roomMember--;
 	          });
-	          $('#video_' + stream.peerId).remove();
+	          angular.element('#video_' + stream.peerId).remove();
 	        });
 
 	        _this.room.on('data', function (message) {
@@ -45255,6 +45257,7 @@
 	    value: function run(data) {
 	      var _this4 = this;
 
+	      angular.element('#video-wrapper')[0].style.width = "355px";
 	      console.log("sended data : ", JSON.stringify({
 	        "language": this.mode.lang,
 	        "code": data
