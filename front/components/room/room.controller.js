@@ -52,8 +52,9 @@ export default class roomController {
     // API 経由で内容を変更した際のアラートを黙らせます
     this.editor.$blockScrolling = Infinity;
     this.editor.setTheme("ace/theme/monokai");
-    this.editor.on("input",()=>{
+    this.editor.on("input",(event)=>{
       this.isFromMe = true;
+      console.log("input event : ",event)
     });
     this.editor.on("change",(event)=>{
       if(this.isFromMe){

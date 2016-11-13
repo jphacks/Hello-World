@@ -45016,8 +45016,9 @@
 	    // API 経由で内容を変更した際のアラートを黙らせます
 	    this.editor.$blockScrolling = Infinity;
 	    this.editor.setTheme("ace/theme/monokai");
-	    this.editor.on("input", function () {
+	    this.editor.on("input", function (event) {
 	      _this.isFromMe = true;
+	      console.log("input event : ", event);
 	    });
 	    this.editor.on("change", function (event) {
 	      if (_this.isFromMe) {
