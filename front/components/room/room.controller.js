@@ -257,7 +257,7 @@ export default class roomController {
           }
         };
         console.log("duplicated_length",duplicated_length);
-        this.newCursor = this.indexCursor(data.newString, duplicated_length + 1);
+        this.newCursor = this.indexCursor(data.newString, duplicated_length);
       };
       this.code.content = data.newString;
     });
