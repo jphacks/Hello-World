@@ -20,23 +20,6 @@ export default class roomController {
     this.$stateParams = $stateParams;
     this.$state = $state;
 
-    //editor with ace
-    this.editor = ace.edit("editor");
-    // API 経由で内容を変更した際のアラートを黙らせます
-    this.editor.$blockScrolling = Infinity;
-    this.editor.setTheme("ace/theme/monokai");
-    this.editor.on("input",()=>{
-      this.isFromMe = true;
-    });
-    this.editor.on("change",(event)=>{
-      console.log("send event : ",event)
-      if(this.isFromMe){
-        this.room.send({
-          "event" : event
-        });
-        this.isFromMe = false;
-      }
-    });
     //初めて参加したユーザかどうか
     this.isNew = true;
 
@@ -63,8 +46,28 @@ export default class roomController {
     this.themes = ["midnight","neo","eclipse"];
     //選択されたテーマの情報
     this.theme = this.themes[0];
-    //これらはアルゴリズム実装のために必要
-    this.pastCursor = {"line": 0, "ch": 0};
+
+    //editor with ace
+    this.editor = ace.edit("editor");
+    // API 経由で内容を変更した際のアラートを黙らせます
+    this.editor.$blockScrolling = Infinity;
+    this.editor.setTheme("ace/theme/monokai");
+    this.editor.on("input",()=>{
+      this.isFromMe = true;
+    });
+    this.editor.on("change",(event)=>{
+      if(this.isFromMe){
+        console.log("send event : ",event)
+        this.room.send({
+          "name" : this.name,
+          "theme" : this.theme,
+          "mode" : this.mode,
+          "event" : event
+        });
+        this.isFromMe = false;
+      }
+    });
+
     //このpeerが通信を可能とするオブジェクト
     this.peer = new Peer({
       //Api key(KIM GEE WOOK)
@@ -73,8 +76,6 @@ export default class roomController {
     // peerにつながったらopenというイベントが発生し、(id)=>{...}と書かれているcallback関数が実行される。
     // もしこのCallback関数のことがわからないのなら、JSのことの勉強をすること。
     this.peer.on('open', (id) => {
-      //debugをしやすくするためにこのように時々console.log()を用いてコンソルに出力している。
-      //console.log("peerはconnect");
       /*
       以下はaudioとvideoをstreamにして、
       angular.elementでclassがvideoであるroom.htmlでのdivに(room.htmlを確認すること。)
@@ -126,7 +127,6 @@ export default class roomController {
 
             this.room.on('data', (data) => {
               console.log(data.src + "からもらったデータ：",data)
-              this.isFromMe = false;
 
               this.mode = (data.data.mode) ? data.data.mode: this.mode;
               this.theme = (data.data.theme) ? data.data.theme: this.theme;
@@ -134,12 +134,12 @@ export default class roomController {
 
               if(data.data.content && this.isNew){
                 console.log("receive content from ancestor");
+                this.isFromMe = false;
                 this.editor.setValue(data.data.content);
                 this.isNew = false;
               }
 
               if(data.data.event){
-                this.isNew = false;
                 console.log("receive event from other");
                 if(data.data.event.action === "insert"){
                   console.log("insert event")
@@ -243,6 +243,18 @@ export default class roomController {
     link.click();
     document.body.removeChild(link);
   };
+
+  modeChange(){
+    this.room.send({
+      "mode" : this.mode
+    })
+  };
+
+  themeChange(){
+    this.room.send({
+      "theme" : this.theme
+    })
+  }
 
 
   //以下のコードは参考用で残すけどもう使わない
