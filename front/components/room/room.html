@@ -43,18 +43,18 @@
 				</form>
 
 				<div class="col s2 file-field input-field">
-					<div class="waves-effect waves-light btn" ng-click="roomCtrl.save(roomCtrl.code.content)">save</div>
+					<div class="waves-effect waves-light btn" ng-click="roomCtrl.save()">save</div>
 				</div>
 
 			</div>
 
 		    <div class="row">
-				<textarea id="editor" ui-codemirror="roomCtrl.uiCodemirrorConfig"  ng-model="roomCtrl.code.content" ng-change="roomCtrl.input()"></textarea>
+				<div id="editor" class="col s12" style="height: 500px;"></div>
 			</div>
 
 			<div class="row">
 				<div class="col s2 file-field input-field">
-					<div class="waves-effect waves-light btn" ng-click="roomCtrl.run(roomCtrl.code.content)">run</div>
+					<div class="waves-effect waves-light btn" ng-click="roomCtrl.run()">run</div>
 				</div>
 			</div>
 			

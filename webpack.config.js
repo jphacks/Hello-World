@@ -18,9 +18,9 @@ const config = {
     filename: 'build.js'
   },
   plugins: [
-    new webpack.optimize.UglifyJsPlugin({
-        mangle: false
-    })
+    // new webpack.optimize.UglifyJsPlugin({
+    //     mangle: false
+    // })
   ],
   module: {
     loaders: [
