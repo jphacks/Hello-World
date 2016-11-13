@@ -52,14 +52,19 @@ export default class roomController {
     // API 経由で内容を変更した際のアラートを黙らせます
     this.editor.$blockScrolling = Infinity;
     this.editor.setTheme("ace/theme/monokai");
-    this.onkeyup = ()=>{
-      console.log("onkeyup event")
-      this.isFromMe = true;
-    };
+
+    window.addEventListener("keydown", function(e) { 
+        if (this.editor.isFocused()) {
+          console.log("onkeydown event")
+          this.isFromMe = true;
+          e.preventDefault();
+        } 
+    }, true) 
     this.editor.on("paste",()=>{
       console.log("paste event")
       this.isFromMe = true;
     });
+
 
     this.editor.getSession().on("change",(event)=>{
       if(this.isFromMe){
