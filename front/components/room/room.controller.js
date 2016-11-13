@@ -174,7 +174,7 @@ export default class roomController {
 
     console.log("codeMirror instance : this.editor :",this.editor);
     this.editor.on("cursorActivity", ()=>{
-      this.pastCursor = this.editor.getDoc().getCursor()
+      //this.pastCursor = this.editor.getDoc().getCursor()
       //console.log("update cursor",this.pastCursor);
     });
     this.editor.on("change", (codemirror,changeObj)=>{
@@ -216,6 +216,7 @@ export default class roomController {
   ３。ここothermpカーサが後ろであった場合であり、２。の逆の方法で良い
   */
   codeUpdate(data){
+    console.log("code update")
     this.$scope.$apply(() => {
       /*
         this.code.contentとdataをうまく比較してrememberから修正を加えて、cursorの位置を更新
