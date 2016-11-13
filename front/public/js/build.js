@@ -44987,9 +44987,10 @@
 	    this.$http = $http;
 	    this.$stateParams = $stateParams;
 	    this.$state = $state;
+	    this.date = new Date();
 
-	    //初めて参加したユーザかどうか
-	    this.isNew = true;
+	    //定期同期化される必要があるかどうか
+	    this.needSync = true;
 
 	    //現在のmember数
 	    this.roomMember = 1;
@@ -45016,11 +45017,16 @@
 	    // API 経由で内容を変更した際のアラートを黙らせます
 	    this.editor.$blockScrolling = Infinity;
 	    this.editor.setTheme("ace/theme/monokai");
-	    this.editor.on("input", function (event) {
+	    this.editor.on("input", function (e) {
 	      _this.isFromMe = true;
-	      console.log("input event : ", event);
+	      _this.lastInputTime = _this.date.getTime();
+	      if (Math.abs(_this.lastInputTime - _this.lastRecieveTime) <= 100) {
+	        //0.1秒以内なら
+	        console.log("for no conflict, blur the editor.");
+	        _this.editor.blur();
+	      }
 	    });
-	    this.editor.on("change", function (event) {
+	    this.editor.getSession().on("change", function (event) {
 	      if (_this.isFromMe) {
 	        console.log("send event : ", event);
 	        _this.room.send({
@@ -45029,7 +45035,15 @@
 	          "mode": _this.mode,
 	          "event": event
 	        });
+	      } else {
+	        console.log("other wrote something");
 	      }
+	    });
+	    this.editor.on("blur", function (e) {
+	      console.log("blur", e);
+	    });
+	    this.editor.on("changeSession", function (e) {
+	      console.log("changeSession", e);
 	    });
 
 	    //このpeerが通信を可能とするオブジェクト
@@ -45085,16 +45099,23 @@
 
 	        _this.room.on('data', function (data) {
 	          console.log(data.src + "からもらったデータ：", data);
+	          _this.lastRecieveTime = _this.date.getTime();
+	          if (Math.abs(_this.lastInputTime - _this.lastRecieveTime) <= 100) {
+	            //0.1秒以内なら
+	            console.log("for no conflict, blur the editor.");
+	            _this.editor.blur();
+	          }
+
 	          _this.isFromMe = false;
 
 	          _this.mode = data.data.mode ? data.data.mode : _this.mode;
 	          _this.theme = data.data.theme ? data.data.theme : _this.theme;
 	          _this.name = data.data.name ? data.data.name : _this.name;
 
-	          if (data.data.content && _this.isNew) {
-	            console.log("receive content from ancestor");
+	          if (data.data.content && _this.needSync) {
+	            console.log("Sync now");
 	            _this.editor.setValue(data.data.content);
-	            _this.isNew = false;
+	            _this.needSync = false;
 	          }
 
 	          if (data.data.event) {
