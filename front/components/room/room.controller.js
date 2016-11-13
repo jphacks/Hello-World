@@ -157,6 +157,7 @@ export default class roomController {
         this.peer.destroy();
       }
     };
+    
   };
 
   /*
