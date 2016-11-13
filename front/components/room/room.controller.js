@@ -157,7 +157,7 @@ export default class roomController {
         this.peer.destroy();
       }
     };
-    
+
   };
 
   /*
@@ -207,7 +207,14 @@ export default class roomController {
     this.pastCursor = angular.element('.CodeMirror')[0].CodeMirror.getDoc().getCursor() || this.pastCursor
   };
 
-  //この関数は自分以外のユーザがコードを書いた時にそれを自分のeditorに適切に反映させる関数
+  /*
+  この関数は自分以外のユーザがコードを書いた時にそれを自分のeditorに適切に反映させる関数
+  アルゴリズムの説明(user other, meを仮定)
+  １。otherのcursorとmeのcursorが一緒の位置であったのならotherが変更を加えた後にも彼らのcursorは一緒である。
+  ２。otherのcursorが前にあったら、meの現在のカーサの位置からstringの終わりまでを切って、保管しておく(behindstring)。
+    そして、変更されたstringから後ろから見て、behindstringと重なる範囲でできるだけ前の位置にmeのカーサをおけばOK
+  ３。ここothermpカーサが後ろであった場合であり、２。の逆の方法で良い
+  */
   codeUpdate(data){
     this.$scope.$apply(() => {
       /*
@@ -249,7 +256,7 @@ export default class roomController {
           }
         };
         console.log("duplicated_length",duplicated_length);
-        this.newCursor = this.indexCursor(data.newString, duplicated_length);
+        this.newCursor = this.indexCursor(data.newString, duplicated_length + 1);
       };
       this.code.content = data.newString;
     });
