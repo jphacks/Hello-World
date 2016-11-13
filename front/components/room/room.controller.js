@@ -19,7 +19,6 @@ export default class roomController {
     this.$http = $http;
     this.$stateParams = $stateParams;
     this.$state = $state;
-    this.date = new Date();
 
     //定期同期化される必要があるかどうか
     this.needSync = true;
@@ -53,17 +52,19 @@ export default class roomController {
     // API 経由で内容を変更した際のアラートを黙らせます
     this.editor.$blockScrolling = Infinity;
     this.editor.setTheme("ace/theme/monokai");
-    this.editor.on("input",()=>{
-      console.log("input event")
-      this.isFromMe = true;
-      this.lastInputTime = this.date.getTime();
-      if(Math.abs(this.lastInputTime - this.lastRecieveTime) <= 100){//0.1秒以内なら
-        console.log("for no conflict, blur the editor.");
-        this.editor.blur();
-      }
+    this.onkeypress = ()=>{
+      console.log("onkeypress event")
+      this.lastInputTime = new Date().getTime();
+    };
+    this.editor.on("paste",()=>{
+      console.log("paste event")
+      this.lastInputTime = new Date().getTime();
     });
+
     this.editor.getSession().on("change",(event)=>{
-      if(this.isFromMe){
+      this.lastChangeTime = new Date().getTime();
+      console.log("this.lastInputTime,this.lastChangeTime",this.lastInputTime,this.lastChangeTime);
+      if(Math.abs(this.lastInputTime - this.lastChangeTime) < 50){//50以内なら自分がやったのでしょう
         console.log("send event : ",event)
         this.room.send({
           "name" : this.name,
@@ -74,12 +75,6 @@ export default class roomController {
       }else{
         console.log("other wrote something")
       }
-    });
-    this.editor.on("blur",(e)=>{
-      console.log("blur",e)
-    });
-    this.editor.on("changeSession",(e)=>{
-      console.log("changeSession",e)
     });
 
     //このpeerが通信を可能とするオブジェクト
@@ -150,18 +145,13 @@ export default class roomController {
 
               if(data.data.content && this.needSync){
                 console.log("Sync now");
+                this.lastInputTime = new Date().getTime();
                 this.editor.setValue(data.data.content);
                 this.needSync = false;
               }
 
               if(data.data.event){
-
-                this.lastRecieveTime = this.date.getTime();
-                if(Math.abs(this.lastInputTime - this.lastRecieveTime) <= 100){//0.1秒以内なら
-                  console.log("for no conflict, blur the editor.");
-                  this.editor.blur();
-                }
-
+                this.lastInputTime = new Date().getTime();
                 console.log("receive event from other");
                 if(data.data.event.action === "insert"){
                   console.log("insert event")

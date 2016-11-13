@@ -44946,7 +44946,7 @@
 /* 307 */
 /***/ function(module, exports) {
 
-	module.exports = "<div class=\"container\">\n\t<div class=\"row\">\n\t\t<div class=\"col s8\">\n\t\t\t<div class=\"caption center-align\">\n\t\t\t\t<div class=\"card-panel\">\n\t\t\t\t\t<h3 class=\"blue-text text-darken-2\">{{roomCtrl.roomName}}</h3>\n\t\t\t\t\t<h5 class=\"light grey-text text-darken-1\">({{roomCtrl.roomMember}} users joined)</h5>\n\t\t\t\t</div>\n\t        </div>\n\n\t\t\t<div class=\"row\">\n\n\t\t\t\t<div class=\"col s6 input-field\">\n\t\t\t\t\t<label>Language Select</label><br><br>\n\t\t\t\t\t<select class=\"browser-default\" ng-change=\"roomCtrl.input()\" ng-model=\"roomCtrl.mode\" ng-options=\"mode as mode.lang for mode in roomCtrl.modes\"></select>\n\t\t\t\t</div>\n\n\t\t\t\t<div class=\"col s6 input-field\">\n\t\t\t\t\t<label>Theme Select</label><br><br>\n\t\t\t\t\t<select class=\"browser-default\" ng-change=\"roomCtrl.input()\" ng-model=\"roomCtrl.theme\" ng-options=\"theme for theme in roomCtrl.themes\"></select>\n\t\t\t\t</div>\n\n\t\t\t</div>\n\n\t\t\t<div class=\"row\">\n\n\t\t\t\t<div class=\"col s6\">\n\t\t\t\t\t<h4>\n\t\t\t\t\t\t{{roomCtrl.name}}\n\t\t\t\t\t</h4>\n\t\t\t\t</div>\n\n\t\t\t\t<form>\n\t\t\t\t\t<div class=\"col s2 file-field input-field\">\n\t\t\t\t\t\t<div class=\"waves-effect waves-light btn\">\n\t\t\t\t\t\t\t<span>Load</span>\n\t\t\t\t\t\t\t<input type=\"file\" on-read-file=\"roomCtrl.showContent($fileContent)\">\n\t\t\t\t\t\t</div>\n\t\t\t\t\t\t<div class=\"file-path-wrapper\">\n\t\t\t\t\t\t\t<input type=\"file\"/>\n\t\t\t\t\t\t</div>\n\t\t\t\t\t</div>\n\t\t\t\t</form>\n\n\t\t\t\t<div class=\"col s2 file-field input-field\">\n\t\t\t\t\t<div class=\"waves-effect waves-light btn\" ng-click=\"roomCtrl.save()\">save</div>\n\t\t\t\t</div>\n\n\t\t\t</div>\n\n\t\t    <div class=\"row\">\n\t\t\t\t<div id=\"editor\" class=\"col s12\" style=\"height: 500px;\"></div>\n\t\t\t</div>\n\n\t\t\t<div class=\"row\">\n\t\t\t\t<div class=\"col s2 file-field input-field\">\n\t\t\t\t\t<div class=\"waves-effect waves-light btn\" ng-click=\"roomCtrl.run()\">run</div>\n\t\t\t\t</div>\n\t\t\t</div>\n\t\t\t\n\t\t\t<div class=\"row\">\n\t\t\t\t<div class=\"col s12 card-panel teal lighten-5\" ng-show=\"roomCtrl.result\">\n\t\t\t\t\t<h3 ng-show=\"roomCtrl.result.is_error\" class=\"red-text text-darken-3\">Error</h3>\n\t\t\t\t\t<h3 ng-hide=\"roomCtrl.result.is_error\" class=\"blue-text text-darken-3\">Success</h3>\n\t\t\t\t\t<pre>{{roomCtrl.result.output}}</pre>\n\t\t\t\t</div>\n\t\t\t\t<div class=\"col s12 card-panel teal lighten-3\" ng-show=\"roomCtrl.searchResult\">\n\t\t\t\t\t<h3 class=\"blue-text text-darken-3\">Recomendation</h3>\n\t\t\t\t\t<h4 class=\"blue-text text-darken-2\">{{roomCtrl.searchResult.title}}</h3>\n\t\t\t\t\t<a class=\"blue-text text-darken-2\" href=\"{{roomCtrl.searchResult.url}}\" target=\"_blank\">{{roomCtrl.searchResult.url}}</a>\n\t\t\t\t</div>\n\t\t\t</div>\n\t\t</div>\n\n\t\t<div class=\"col s4\">\n\t\t\t<!-- Audio and Video area -->\n\t\t\t<div id=\"video-wrapper\" style=\"position: relative;\">\n<!-- \t\t\t\t<div class=\"card-panel\">\n\t\t\t\t\t<h5 class=\"blue-text text-darken-2\">Users</h5>\n\t\t\t\t</div> -->\n\t\t\t\t<div class=\"videos\" style=\"position: fixed; width: inherit; !important\"></div>\n\t\t\t</div>\n\t\t</div>\n\t</div>\n</div>";
+	module.exports = "<div class=\"container\">\n\t<div class=\"row\">\n\t\t<div class=\"col s8\">\n\t\t\t<div class=\"caption center-align\">\n\t\t\t\t<div class=\"card-panel\">\n\t\t\t\t\t<h3 class=\"blue-text text-darken-2\">{{roomCtrl.roomName}}</h3>\n\t\t\t\t\t<h5 class=\"light grey-text text-darken-1\">({{roomCtrl.roomMember}} users joined)</h5>\n\t\t\t\t</div>\n\t        </div>\n\n\t\t\t<div class=\"row\">\n\n\t\t\t\t<div class=\"col s6 input-field\">\n\t\t\t\t\t<label>Language Select</label><br><br>\n\t\t\t\t\t<select class=\"browser-default\" ng-change=\"roomCtrl.input()\" ng-model=\"roomCtrl.mode\" ng-options=\"mode as mode.lang for mode in roomCtrl.modes\"></select>\n\t\t\t\t</div>\n\n\t\t\t\t<div class=\"col s6 input-field\">\n\t\t\t\t\t<label>Theme Select</label><br><br>\n\t\t\t\t\t<select class=\"browser-default\" ng-change=\"roomCtrl.input()\" ng-model=\"roomCtrl.theme\" ng-options=\"theme for theme in roomCtrl.themes\"></select>\n\t\t\t\t</div>\n\n\t\t\t</div>\n\n\t\t\t<div class=\"row\">\n\n\t\t\t\t<div class=\"col s6\">\n\t\t\t\t\t<h4>\n\t\t\t\t\t\t{{roomCtrl.name}}\n\t\t\t\t\t</h4>\n\t\t\t\t</div>\n\n\t\t\t\t<form>\n\t\t\t\t\t<div class=\"col s2 file-field input-field\">\n\t\t\t\t\t\t<div class=\"waves-effect waves-light btn\">\n\t\t\t\t\t\t\t<span>Load</span>\n\t\t\t\t\t\t\t<input type=\"file\" on-read-file=\"roomCtrl.showContent($fileContent)\">\n\t\t\t\t\t\t</div>\n\t\t\t\t\t\t<div class=\"file-path-wrapper\">\n\t\t\t\t\t\t\t<input type=\"file\"/>\n\t\t\t\t\t\t</div>\n\t\t\t\t\t</div>\n\t\t\t\t</form>\n\n\t\t\t\t<div class=\"col s2 file-field input-field\">\n\t\t\t\t\t<div class=\"waves-effect waves-light btn\" ng-click=\"roomCtrl.save()\">save</div>\n\t\t\t\t</div>\n\n\t\t\t</div>\n\n\t\t    <div class=\"row\">\n\t\t\t\t<div id=\"editor\" class=\"col s12\" style=\"height: 500px;\" ng-keypress=\"roomCtrl.onkeypress()\"></div>\n\t\t\t</div>\n\n\t\t\t<div class=\"row\">\n\t\t\t\t<div class=\"col s2 file-field input-field\">\n\t\t\t\t\t<div class=\"waves-effect waves-light btn\" ng-click=\"roomCtrl.run()\">run</div>\n\t\t\t\t</div>\n\t\t\t</div>\n\t\t\t\n\t\t\t<div class=\"row\">\n\t\t\t\t<div class=\"col s12 card-panel teal lighten-5\" ng-show=\"roomCtrl.result\">\n\t\t\t\t\t<h3 ng-show=\"roomCtrl.result.is_error\" class=\"red-text text-darken-3\">Error</h3>\n\t\t\t\t\t<h3 ng-hide=\"roomCtrl.result.is_error\" class=\"blue-text text-darken-3\">Success</h3>\n\t\t\t\t\t<pre>{{roomCtrl.result.output}}</pre>\n\t\t\t\t</div>\n\t\t\t\t<div class=\"col s12 card-panel teal lighten-3\" ng-show=\"roomCtrl.searchResult\">\n\t\t\t\t\t<h3 class=\"blue-text text-darken-3\">Recomendation</h3>\n\t\t\t\t\t<h4 class=\"blue-text text-darken-2\">{{roomCtrl.searchResult.title}}</h3>\n\t\t\t\t\t<a class=\"blue-text text-darken-2\" href=\"{{roomCtrl.searchResult.url}}\" target=\"_blank\">{{roomCtrl.searchResult.url}}</a>\n\t\t\t\t</div>\n\t\t\t</div>\n\t\t</div>\n\n\t\t<div class=\"col s4\">\n\t\t\t<!-- Audio and Video area -->\n\t\t\t<div id=\"video-wrapper\" style=\"position: relative;\">\n<!-- \t\t\t\t<div class=\"card-panel\">\n\t\t\t\t\t<h5 class=\"blue-text text-darken-2\">Users</h5>\n\t\t\t\t</div> -->\n\t\t\t\t<div class=\"videos\" style=\"position: fixed; width: inherit; !important\"></div>\n\t\t\t</div>\n\t\t</div>\n\t</div>\n</div>";
 
 /***/ },
 /* 308 */
@@ -44987,7 +44987,6 @@
 	    this.$http = $http;
 	    this.$stateParams = $stateParams;
 	    this.$state = $state;
-	    this.date = new Date();
 
 	    //定期同期化される必要があるかどうか
 	    this.needSync = true;
@@ -45017,18 +45016,20 @@
 	    // API 経由で内容を変更した際のアラートを黙らせます
 	    this.editor.$blockScrolling = Infinity;
 	    this.editor.setTheme("ace/theme/monokai");
-	    this.editor.on("input", function () {
-	      console.log("input event");
-	      _this.isFromMe = true;
-	      _this.lastInputTime = _this.date.getTime();
-	      if (Math.abs(_this.lastInputTime - _this.lastRecieveTime) <= 100) {
-	        //0.1秒以内なら
-	        console.log("for no conflict, blur the editor.");
-	        _this.editor.blur();
-	      }
+	    this.onkeypress = function () {
+	      console.log("onkeypress event");
+	      _this.lastInputTime = new Date().getTime();
+	    };
+	    this.editor.on("paste", function () {
+	      console.log("paste event");
+	      _this.lastInputTime = new Date().getTime();
 	    });
+
 	    this.editor.getSession().on("change", function (event) {
-	      if (_this.isFromMe) {
+	      _this.lastChangeTime = new Date().getTime();
+	      console.log("this.lastInputTime,this.lastChangeTime", _this.lastInputTime, _this.lastChangeTime);
+	      if (Math.abs(_this.lastInputTime - _this.lastChangeTime) < 50) {
+	        //50以内なら自分がやったのでしょう
 	        console.log("send event : ", event);
 	        _this.room.send({
 	          "name": _this.name,
@@ -45039,12 +45040,6 @@
 	      } else {
 	        console.log("other wrote something");
 	      }
-	    });
-	    this.editor.on("blur", function (e) {
-	      console.log("blur", e);
-	    });
-	    this.editor.on("changeSession", function (e) {
-	      console.log("changeSession", e);
 	    });
 
 	    //このpeerが通信を可能とするオブジェクト
@@ -45109,19 +45104,13 @@
 
 	          if (data.data.content && _this.needSync) {
 	            console.log("Sync now");
+	            _this.lastInputTime = new Date().getTime();
 	            _this.editor.setValue(data.data.content);
 	            _this.needSync = false;
 	          }
 
 	          if (data.data.event) {
-
-	            _this.lastRecieveTime = _this.date.getTime();
-	            if (Math.abs(_this.lastInputTime - _this.lastRecieveTime) <= 100) {
-	              //0.1秒以内なら
-	              console.log("for no conflict, blur the editor.");
-	              _this.editor.blur();
-	            }
-
+	            _this.lastInputTime = new Date().getTime();
 	            console.log("receive event from other");
 	            if (data.data.event.action === "insert") {
 	              console.log("insert event");
