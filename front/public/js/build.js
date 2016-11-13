@@ -45028,7 +45028,6 @@
 	          "mode": _this.mode,
 	          "event": event
 	        });
-	        _this.isFromMe = false;
 	      }
 	    });
 

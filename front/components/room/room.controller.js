@@ -64,7 +64,6 @@ export default class roomController {
           "mode" : this.mode,
           "event" : event
         });
-        this.isFromMe = false;
       }
     });
 
