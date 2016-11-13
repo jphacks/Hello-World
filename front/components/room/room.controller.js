@@ -53,11 +53,11 @@ export default class roomController {
     this.editor.$blockScrolling = Infinity;
     this.editor.setTheme("ace/theme/monokai");
 
-    window.addEventListener("keydown", function(e) { 
+    window.addEventListener("keydown", (e) => { 
         if (this.editor.isFocused()) {
           console.log("onkeydown event")
           this.isFromMe = true;
-          e.preventDefault();
+          //e.preventDefault();
         } 
     }, true) 
     this.editor.on("paste",()=>{

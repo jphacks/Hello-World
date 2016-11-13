@@ -45018,10 +45018,10 @@
 	    this.editor.setTheme("ace/theme/monokai");
 
 	    window.addEventListener("keydown", function (e) {
-	      if (this.editor.isFocused()) {
+	      if (_this.editor.isFocused()) {
 	        console.log("onkeydown event");
-	        this.isFromMe = true;
-	        e.preventDefault();
+	        _this.isFromMe = true;
+	        //e.preventDefault();
 	      }
 	    }, true);
 	    this.editor.on("paste", function () {
