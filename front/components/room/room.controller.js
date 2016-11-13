@@ -54,17 +54,15 @@ export default class roomController {
     this.editor.setTheme("ace/theme/monokai");
     this.onkeypress = ()=>{
       console.log("onkeypress event")
-      this.lastInputTime = new Date().getTime();
+      this.isFromMe = true;
     };
     this.editor.on("paste",()=>{
       console.log("paste event")
-      this.lastInputTime = new Date().getTime();
+      this.isFromMe = true;
     });
 
     this.editor.getSession().on("change",(event)=>{
-      this.lastChangeTime = new Date().getTime();
-      console.log("this.lastInputTime,this.lastChangeTime",this.lastInputTime,this.lastChangeTime);
-      if(Math.abs(this.lastInputTime - this.lastChangeTime) < 50){//50以内なら自分がやったのでしょう
+      if(this.isFromMe){
         console.log("send event : ",event)
         this.room.send({
           "name" : this.name,
@@ -136,22 +134,16 @@ export default class roomController {
 
             this.room.on('data', (data) => {
               console.log(data.src + "からもらったデータ：",data)
-
               this.isFromMe = false;
-
               this.mode = (data.data.mode) ? data.data.mode: this.mode;
               this.theme = (data.data.theme) ? data.data.theme: this.theme;
               this.name = (data.data.name) ? data.data.name: this.name;
-
               if(data.data.content && this.needSync){
                 console.log("Sync now");
-                this.lastInputTime = new Date().getTime();
                 this.editor.setValue(data.data.content);
                 this.needSync = false;
               }
-
               if(data.data.event){
-                this.lastInputTime = new Date().getTime();
                 console.log("receive event from other");
                 if(data.data.event.action === "insert"){
                   console.log("insert event")
@@ -161,13 +153,13 @@ export default class roomController {
                   this.editor.getSession().getDocument().remove(data.data.event);
                 }
               }
-
             });
 
             this.room.on('peerJoin', (peerId) => {
               console.log(peerId + 'has joined the room');
               //新たなユーザが入ってきたらcode, theme, modeを共有
               this.isFromMe = true;
+              this.needSync = false;
               this.room.send({
                 "name" : this.name,
                 "content" : this.editor.getValue(),

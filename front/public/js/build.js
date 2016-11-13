@@ -45018,18 +45018,15 @@
 	    this.editor.setTheme("ace/theme/monokai");
 	    this.onkeypress = function () {
 	      console.log("onkeypress event");
-	      _this.lastInputTime = new Date().getTime();
+	      _this.isFromMe = true;
 	    };
 	    this.editor.on("paste", function () {
 	      console.log("paste event");
-	      _this.lastInputTime = new Date().getTime();
+	      _this.isFromMe = true;
 	    });
 
 	    this.editor.getSession().on("change", function (event) {
-	      _this.lastChangeTime = new Date().getTime();
-	      console.log("this.lastInputTime,this.lastChangeTime", _this.lastInputTime, _this.lastChangeTime);
-	      if (Math.abs(_this.lastInputTime - _this.lastChangeTime) < 50) {
-	        //50以内なら自分がやったのでしょう
+	      if (_this.isFromMe) {
 	        console.log("send event : ", event);
 	        _this.room.send({
 	          "name": _this.name,
@@ -45095,22 +45092,16 @@
 
 	        _this.room.on('data', function (data) {
 	          console.log(data.src + "からもらったデータ：", data);
-
 	          _this.isFromMe = false;
-
 	          _this.mode = data.data.mode ? data.data.mode : _this.mode;
 	          _this.theme = data.data.theme ? data.data.theme : _this.theme;
 	          _this.name = data.data.name ? data.data.name : _this.name;
-
 	          if (data.data.content && _this.needSync) {
 	            console.log("Sync now");
-	            _this.lastInputTime = new Date().getTime();
 	            _this.editor.setValue(data.data.content);
 	            _this.needSync = false;
 	          }
-
 	          if (data.data.event) {
-	            _this.lastInputTime = new Date().getTime();
 	            console.log("receive event from other");
 	            if (data.data.event.action === "insert") {
 	              console.log("insert event");
@@ -45126,6 +45117,7 @@
 	          console.log(peerId + 'has joined the room');
 	          //新たなユーザが入ってきたらcode, theme, modeを共有
 	          _this.isFromMe = true;
+	          _this.needSync = false;
 	          _this.room.send({
 	            "name": _this.name,
 	            "content": _this.editor.getValue(),
