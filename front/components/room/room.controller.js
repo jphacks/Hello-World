@@ -34,6 +34,7 @@ export default class roomController {
         this.room.send({
           "event" : event
         });
+        this.isFromMe = false;
       }
     });
     //初めて参加したユーザかどうか

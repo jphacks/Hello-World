@@ -45002,6 +45002,7 @@
 	        _this.room.send({
 	          "event": event
 	        });
+	        _this.isFromMe = false;
 	      }
 	    });
 	    //初めて参加したユーザかどうか
