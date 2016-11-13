@@ -116,14 +116,14 @@ export default class roomController {
             });
 
             this.room.on('data', (message) => {
-              console.log(message.src + "からのデータ：",message)
+              //console.log(message.src + "からのデータ：",message)
 
               //mode, themeを同期化
               this.mode = message.data.mode;
               this.theme = message.data.theme;
               this.uiCodemirrorConfig.mode = message.data.mode.lang;
               this.uiCodemirrorConfig.theme = message.data.theme;
-              console.log(this.uiCodemirrorConfig)
+              //console.log(this.uiCodemirrorConfig)
 
               //fileNameを同期化
               this.code.name = message.data.fileName;
@@ -175,22 +175,22 @@ export default class roomController {
     console.log("codeMirror instance : this.editor :",this.editor);
     this.editor.on("cursorActivity", ()=>{
       this.pastCursor = this.editor.getDoc().getCursor()
-      console.log("update cursor",this.pastCursor);
+      //console.log("update cursor",this.pastCursor);
     });
     this.editor.on("change", (codemirror,changeObj)=>{
-      console.log("change! codemirror,changeObj : ",codemirror,changeObj);
+      //console.log("change! codemirror,changeObj : ",codemirror,changeObj);
     });
     this.editor.on("changes", (codemirror,changes)=>{
-      console.log("changes! codemirror,changes : ",codemirror,changes);
+      //console.log("changes! codemirror,changes : ",codemirror,changes);
     });
     this.editor.on("beforeChange", (codemirror,changeObj)=>{
-      console.log("beforeChange! codemirror,changeObj : ",codemirror,changeObj);
+      //console.log("beforeChange! codemirror,changeObj : ",codemirror,changeObj);
     });
   }
 
   //editorに何らかのinputがあったときに呼ばれる関数(イベントハンドラが上にあるのでそれに切り替える予定)
   input(){
-    console.log("changed! send data!");
+    //console.log("changed! send data!");
     //mode themeが変更された場合、それを自分のeditorに反映する。
     this.uiCodemirrorConfig.mode = this.mode.lang;
     this.uiCodemirrorConfig.theme = this.theme;
@@ -222,15 +222,15 @@ export default class roomController {
       */
       this.pastCursor = angular.element('.CodeMirror')[0].CodeMirror.getDoc().getCursor()
       this.newCursor = this.pastCursor;
-      console.log("before update",this.code.content);
-      console.log("recieved data is : ",data);
-      console.log("data.pastCursor,this.newCursor : ",data.pastCursor,this.newCursor);
+      console.log("アップデートの前のstring : ",this.code.content);
+      console.log("otherのアップデート前のカーサ, meのアップデート前のカーサ : ",data.pastCursor,this.newCursor);
 
       if((data.pastCursor.line == this.newCursor.line) && (data.pastCursor.ch == this.newCursor.ch)){
+        console.log("#other.pastcursor == me.pastcursor#")
         //変更の前にお互いのカーサーの位置が一緒の場合にはそのまま追いかければ良い。
         this.newCursor = data.newCursor;
-        console.log("same",this.newCursor)
       }else if(data.pastCursor.line < this.newCursor.line || ((data.pastCursor.line == this.newCursor.line) && (data.pastCursor.ch < this.newCursor.ch))){
+        console.log("#other.pastcursor < me.pastcursor#")
         //相手のカーサーが前にあった場合
         var behindString = this.code.content.slice(this.cursorIndex(this.code.content,this.pastCursor));
         console.log("behindString",behindString);
@@ -245,6 +245,7 @@ export default class roomController {
         console.log("duplicated_length",duplicated_length);
         this.newCursor = this.indexCursor(data.newString, data.newString.length - duplicated_length);
       }else{
+        console.log("#other.pastcursor > me.pastcursor#")
         var beforeString = this.code.content.slice(0,this.cursorIndex(this.code.content,angular.element('.CodeMirror')[0].CodeMirror.getDoc().getCursor()));
         console.log("beforeString",beforeString);
         var duplicated_length = 0;
@@ -267,10 +268,15 @@ export default class roomController {
   };
 
   indexCursor(string,index){
-    console.log("indexCursor function with string : ",string," index : ",index);
+    //console.log("indexCursor function with string : ",string," index : ",index);
     var beforeCursor = string.slice(0,index);
-    console.log("beforeCursor string : ",beforeCursor);
+    //console.log("beforeCursor string : ",beforeCursor);
     var lines = beforeCursor.split("\n");
+    console.log("indexCursor関数の結果です。string,index,result順")
+    console.log(string,index,{
+      "line" : lines.length-1,
+      "ch" : lines[lines.length-1].length
+    });
     return {
       "line" : lines.length-1,
       "ch" : lines[lines.length-1].length
@@ -284,6 +290,8 @@ export default class roomController {
       result+=lines[i].length;
     };
     result+=cursor.ch;
+    console.log("cursorIndex関数の結果です。string,cursor,result順")
+    console.log(string,cursor,result);
     return result;
   };
 
