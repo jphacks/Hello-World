@@ -45099,12 +45099,6 @@
 
 	        _this.room.on('data', function (data) {
 	          console.log(data.src + "からもらったデータ：", data);
-	          _this.lastRecieveTime = _this.date.getTime();
-	          if (Math.abs(_this.lastInputTime - _this.lastRecieveTime) <= 100) {
-	            //0.1秒以内なら
-	            console.log("for no conflict, blur the editor.");
-	            _this.editor.blur();
-	          }
 
 	          _this.isFromMe = false;
 
@@ -45119,6 +45113,14 @@
 	          }
 
 	          if (data.data.event) {
+
+	            _this.lastRecieveTime = _this.date.getTime();
+	            if (Math.abs(_this.lastInputTime - _this.lastRecieveTime) <= 100) {
+	              //0.1秒以内なら
+	              console.log("for no conflict, blur the editor.");
+	              _this.editor.blur();
+	            }
+
 	            console.log("receive event from other");
 	            if (data.data.event.action === "insert") {
 	              console.log("insert event");

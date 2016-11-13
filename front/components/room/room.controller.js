@@ -140,11 +140,6 @@ export default class roomController {
 
             this.room.on('data', (data) => {
               console.log(data.src + "からもらったデータ：",data)
-              this.lastRecieveTime = this.date.getTime();
-              if(Math.abs(this.lastInputTime - this.lastRecieveTime) <= 100){//0.1秒以内なら
-                console.log("for no conflict, blur the editor.");
-                this.editor.blur();
-              }
 
               this.isFromMe = false;
 
@@ -159,6 +154,13 @@ export default class roomController {
               }
 
               if(data.data.event){
+                
+                this.lastRecieveTime = this.date.getTime();
+                if(Math.abs(this.lastInputTime - this.lastRecieveTime) <= 100){//0.1秒以内なら
+                  console.log("for no conflict, blur the editor.");
+                  this.editor.blur();
+                }
+
                 console.log("receive event from other");
                 if(data.data.event.action === "insert"){
                   console.log("insert event")
