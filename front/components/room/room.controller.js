@@ -226,9 +226,17 @@ export default class roomController {
         this.memberChanged = 1;
       });
       console.log(this.userName + ' entered!')
-      $('.videos').append($(
-          '<video id="video_' + peerId + '" class="videoBox" width="300" height="200" autoplay="autoplay" class="remoteVideos" src="' + streamURL + '" > </video> <br>'
+      $('.videos_style').append($(
+          '<style id="video_style_' + peerId + '">#video_' + peerId + ' {border: 5px groove yellow;}</style><br>'
       ));
+      $('.videos').append($(
+          '<video id="video_' + peerId + '" class="videoBox" width="300" height="200" autoplay="autoplay" class="remoteVideos" src="' + streamURL + '"> </video><br>'
+      ));
+      console.log(this.userName+' was joined!!');
+      //4sライトアップ
+      this.job = 	setTimeout(()=> {
+        $('#video_style_' + peerId).remove();
+      }, 4000);
 
     });
 
