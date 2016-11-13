@@ -53,7 +53,8 @@ export default class roomController {
     // API 経由で内容を変更した際のアラートを黙らせます
     this.editor.$blockScrolling = Infinity;
     this.editor.setTheme("ace/theme/monokai");
-    this.editor.on("input",(e)=>{
+    this.editor.on("input",()=>{
+      console.log("input event")
       this.isFromMe = true;
       this.lastInputTime = this.date.getTime();
       if(Math.abs(this.lastInputTime - this.lastRecieveTime) <= 100){//0.1秒以内なら
@@ -154,7 +155,7 @@ export default class roomController {
               }
 
               if(data.data.event){
-                
+
                 this.lastRecieveTime = this.date.getTime();
                 if(Math.abs(this.lastInputTime - this.lastRecieveTime) <= 100){//0.1秒以内なら
                   console.log("for no conflict, blur the editor.");
