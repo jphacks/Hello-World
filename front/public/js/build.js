@@ -45085,6 +45085,7 @@
 
 	        _this.room.on('data', function (data) {
 	          console.log(data.src + "からもらったデータ：", data);
+	          _this.isFromMe = false;
 
 	          _this.mode = data.data.mode ? data.data.mode : _this.mode;
 	          _this.theme = data.data.theme ? data.data.theme : _this.theme;
@@ -45092,7 +45093,6 @@
 
 	          if (data.data.content && _this.isNew) {
 	            console.log("receive content from ancestor");
-	            _this.isFromMe = false;
 	            _this.editor.setValue(data.data.content);
 	            _this.isNew = false;
 	          }

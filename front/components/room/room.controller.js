@@ -127,6 +127,7 @@ export default class roomController {
 
             this.room.on('data', (data) => {
               console.log(data.src + "からもらったデータ：",data)
+              this.isFromMe = false;
 
               this.mode = (data.data.mode) ? data.data.mode: this.mode;
               this.theme = (data.data.theme) ? data.data.theme: this.theme;
@@ -134,7 +135,6 @@ export default class roomController {
 
               if(data.data.content && this.isNew){
                 console.log("receive content from ancestor");
-                this.isFromMe = false;
                 this.editor.setValue(data.data.content);
                 this.isNew = false;
               }
