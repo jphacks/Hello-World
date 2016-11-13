@@ -203,6 +203,7 @@ export default class roomController {
       "theme" : this.theme,
       "fileName" : this.code.name
     });
+
   };
 
   /*
@@ -219,6 +220,7 @@ export default class roomController {
       /*
         this.code.contentとdataをうまく比較してrememberから修正を加えて、cursorの位置を更新
       */
+      this.pastCursor = angular.element('.CodeMirror')[0].CodeMirror.getDoc().getCursor()
       this.newCursor = this.pastCursor;
       console.log("アップデートの前のstring : ",this.code.content);
       console.log("otherのアップデート前のカーサ, meのアップデート前のカーサ : ",data.pastCursor,this.newCursor);
