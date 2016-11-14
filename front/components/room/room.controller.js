@@ -117,8 +117,10 @@ export default class roomController {
                 angular.element('.videos')[0].style.height = angular.element(window).height()+"px";
             });
             angular.element('.videos').append(
-                '<div class="videoBox video_' + peerId + '"><video id="video_' + peerId + '" class="remoteVideos" width="100%" muted　autoplay="autoplay" src="' + streamURL + '" > </video></div>'
+                '<div class="videoBox video_' + peerId + '"><video id="video_' + peerId + '" class="remoteVideos" width="100%" autoplay="autoplay" src="' + streamURL + '" > </video></div>'
             );
+            //prevent howling
+            angular.element('#video_' + peerId).muted = true;
             /*
             自分のvideoを表示できてから、roomに入る準備をする。
             ここでthis.roomNameが入ろうとするroomを特定するkeyとなる。
