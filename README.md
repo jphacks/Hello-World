@@ -94,7 +94,7 @@
   * [Dogfalo/materialize](https://github.com/Dogfalo/materialize)
   * [AngularJS — Superheroic JavaScript MVW Framework](https://angularjs.org/)
   * [jQuery](https://jquery.com/)
-  * [CodeMirror](https://codemirror.net/)
+  * [ace](https://ace.c9.io/)
 
 #### その他
 
