@@ -120,8 +120,8 @@ export default class roomController {
                 '<div class="videoBox video_' + peerId + '"><video id="myVideo video_' + peerId + '" class="remoteVideos" width="100%" autoplay="autoplay" src="' + streamURL + '" > </video></div>'
             );
             //prevent howling
-            console.log("prevent howling")
-            angular.element('myVideo').muted = true;
+            console.log("prevent howling!")
+            angular.element('myVideo').prop('muted', true);
             /*
             自分のvideoを表示できてから、roomに入る準備をする。
             ここでthis.roomNameが入ろうとするroomを特定するkeyとなる。
