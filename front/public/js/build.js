@@ -44834,11 +44834,13 @@
 	        reader.onload = function (onLoadEvent) {
 	          scope.$apply(function () {
 	            //fileを読んでから、最後の.以後の格調しのところは除去する
-	            var fileName = onChangeEvent.target.files[0].name;
-	            var lastIndex = fileName.lastIndexOf(".");
-	            fileName = fileName.substring(0, lastIndex);
+	            var fileFullName = onChangeEvent.target.files[0].name;
+	            var lastIndex = fileFullName.lastIndexOf(".");
+	            var fileName = fileFullName.substring(0, lastIndex);
+	            var fileEx = fileFullName.substring(lastIndex + 1);
 	            fn(scope, { $fileContent: {
 	                "name": fileName,
+	                "ex": fileEx || null,
 	                "content": onLoadEvent.target.result
 	              } });
 	          });
@@ -44946,7 +44948,7 @@
 /* 307 */
 /***/ function(module, exports) {
 
-	module.exports = "<div class=\"container\">\n\t<div class=\"row\">\n\t\t<div class=\"col s8\">\n\t\t\t<div class=\"caption center-align\">\n\t\t\t\t<div class=\"card-panel\">\n\t\t\t\t\t<h3 class=\"blue-text text-darken-2\">{{roomCtrl.roomName}}</h3>\n\t\t\t\t\t<h5 class=\"light grey-text text-darken-1\">({{roomCtrl.roomMember}} users joined)</h5>\n\t\t\t\t</div>\n\t        </div>\n\n\t\t\t<div class=\"row\">\n\n\t\t\t\t<div class=\"col s6 input-field\">\n\t\t\t\t\t<label>Language Select</label><br><br>\n\t\t\t\t\t<select class=\"browser-default\" ng-change=\"roomCtrl.input()\" ng-model=\"roomCtrl.mode\" ng-options=\"mode as mode.lang for mode in roomCtrl.modes\"></select>\n\t\t\t\t</div>\n\n\t\t\t\t<div class=\"col s6 input-field\">\n\t\t\t\t\t<label>Theme Select</label><br><br>\n\t\t\t\t\t<select class=\"browser-default\" ng-change=\"roomCtrl.input()\" ng-model=\"roomCtrl.theme\" ng-options=\"theme for theme in roomCtrl.themes\"></select>\n\t\t\t\t</div>\n\n\t\t\t</div>\n\n\t\t\t<div class=\"row\">\n\n\t\t\t\t<div class=\"col s6\">\n\t\t\t\t\t<h4>\n\t\t\t\t\t\t{{roomCtrl.name}}\n\t\t\t\t\t</h4>\n\t\t\t\t</div>\n\n\t\t\t\t<form>\n\t\t\t\t\t<div class=\"col s2 file-field input-field\">\n\t\t\t\t\t\t<div class=\"waves-effect waves-light btn\">\n\t\t\t\t\t\t\t<span>Load</span>\n\t\t\t\t\t\t\t<input type=\"file\" on-read-file=\"roomCtrl.showContent($fileContent)\">\n\t\t\t\t\t\t</div>\n\t\t\t\t\t\t<div class=\"file-path-wrapper\">\n\t\t\t\t\t\t\t<input type=\"file\"/>\n\t\t\t\t\t\t</div>\n\t\t\t\t\t</div>\n\t\t\t\t</form>\n\n\t\t\t\t<div class=\"col s2 file-field input-field\">\n\t\t\t\t\t<div class=\"waves-effect waves-light btn\" ng-click=\"roomCtrl.save()\">save</div>\n\t\t\t\t</div>\n\n\t\t\t</div>\n\n\t\t    <div class=\"row\">\n\t\t\t\t<div id=\"editor\" class=\"col s12\" style=\"height: 500px;\"></div>\n\t\t\t</div>\n\n\t\t\t<div class=\"row\">\n\t\t\t\t<div class=\"col s2 file-field input-field\">\n\t\t\t\t\t<div class=\"waves-effect waves-light btn\" ng-click=\"roomCtrl.run()\">run</div>\n\t\t\t\t</div>\n\t\t\t</div>\n\t\t\t\n\t\t\t<div class=\"row\">\n\t\t\t\t<div class=\"col s12 card-panel teal lighten-5\" ng-show=\"roomCtrl.result\">\n\t\t\t\t\t<h3 ng-show=\"roomCtrl.result.is_error\" class=\"red-text text-darken-3\">Error</h3>\n\t\t\t\t\t<h3 ng-hide=\"roomCtrl.result.is_error\" class=\"blue-text text-darken-3\">Success</h3>\n\t\t\t\t\t<pre>{{roomCtrl.result.output}}</pre>\n\t\t\t\t</div>\n\t\t\t\t<div class=\"col s12 card-panel teal lighten-3\" ng-show=\"roomCtrl.searchResult\">\n\t\t\t\t\t<h3 class=\"blue-text text-darken-3\">Recomendation</h3>\n\t\t\t\t\t<h4 class=\"blue-text text-darken-2\">{{roomCtrl.searchResult.title}}</h3>\n\t\t\t\t\t<a class=\"blue-text text-darken-2\" href=\"{{roomCtrl.searchResult.url}}\" target=\"_blank\">{{roomCtrl.searchResult.url}}</a>\n\t\t\t\t</div>\n\t\t\t</div>\n\t\t</div>\n\n\t\t<div class=\"userVideo col s4\">\n\t\t\t<!-- Audio and Video area -->\n\t\t\t<div id=\"video-wrapper\" style=\"position: relative;\">\n\t\t\t\t<div class=\"videos\" style=\"position: fixed; width: inherit; overflow-y: auto; !important\">\n\t\t\t\t\t<div class=\"card-panel\">\n\t\t\t\t\t\t<h5 class=\"blue-text text-darken-2\">Users</h5>\n\t\t\t\t\t</div>\n\t\t\t\t</div>\n\t\t\t</div>\n\t\t</div>\n\t</div>\n</div>";
+	module.exports = "<div class=\"container\">\n\t<div class=\"row\">\n\t\t<div class=\"col s8\">\n\t\t\t<div class=\"caption center-align\">\n\t\t\t\t<div class=\"card-panel\">\n\t\t\t\t\t<h3 class=\"blue-text text-darken-2\">{{roomCtrl.roomName}}</h3>\n\t\t\t\t\t<h5 class=\"light grey-text text-darken-1\">({{roomCtrl.roomMember}} users joined)</h5>\n\t\t\t\t</div>\n\t        </div>\n\n\t\t\t<div class=\"row\">\n\n\t\t\t\t<div class=\"col s6 input-field\">\n\t\t\t\t\t<label>Language Select</label><br><br>\n\t\t\t\t\t<select class=\"browser-default\" ng-change=\"roomCtrl.modeChange()\" ng-model=\"roomCtrl.mode\" ng-options=\"mode as mode.lang for mode in roomCtrl.modes\"></select>\n\t\t\t\t</div>\n\n\t\t\t\t<div class=\"col s6 input-field\">\n\t\t\t\t\t<label>Theme Select</label><br><br>\n\t\t\t\t\t<select class=\"browser-default\" ng-change=\"roomCtrl.themeChange()\" ng-model=\"roomCtrl.theme\" ng-options=\"theme for theme in roomCtrl.themes\"></select>\n\t\t\t\t</div>\n\n\t\t\t</div>\n\n\t\t\t<div class=\"row\">\n\n\t\t\t\t<div class=\"col s6\">\n\t\t\t\t\t<h4>\n\t\t\t\t\t\t{{roomCtrl.name}}\n\t\t\t\t\t</h4>\n\t\t\t\t</div>\n\n\t\t\t\t<form>\n\t\t\t\t\t<div class=\"col s2 file-field input-field\">\n\t\t\t\t\t\t<div class=\"waves-effect waves-light btn\">\n\t\t\t\t\t\t\t<span>Load</span>\n\t\t\t\t\t\t\t<input type=\"file\" on-read-file=\"roomCtrl.showContent($fileContent)\">\n\t\t\t\t\t\t</div>\n\t\t\t\t\t\t<div class=\"file-path-wrapper\">\n\t\t\t\t\t\t\t<input type=\"file\"/>\n\t\t\t\t\t\t</div>\n\t\t\t\t\t</div>\n\t\t\t\t</form>\n\n\t\t\t\t<div class=\"col s2 file-field input-field\">\n\t\t\t\t\t<div class=\"waves-effect waves-light btn\" ng-click=\"roomCtrl.save()\">save</div>\n\t\t\t\t</div>\n\n\t\t\t</div>\n\n\t\t    <div class=\"row\">\n\t\t\t\t<div id=\"editor\" class=\"col s12\" style=\"height: 500px;\"></div>\n\t\t\t</div>\n\n\t\t\t<div class=\"row\">\n\t\t\t\t<div class=\"col s2 file-field input-field\">\n\t\t\t\t\t<div class=\"waves-effect waves-light btn\" ng-click=\"roomCtrl.run()\">run</div>\n\t\t\t\t</div>\n\t\t\t</div>\n\t\t\t\n\t\t\t<div class=\"row\">\n\t\t\t\t<div class=\"col s12 card-panel teal lighten-5\" ng-show=\"roomCtrl.result\">\n\t\t\t\t\t<h3 ng-show=\"roomCtrl.result.is_error\" class=\"red-text text-darken-3\">Error</h3>\n\t\t\t\t\t<h3 ng-hide=\"roomCtrl.result.is_error\" class=\"blue-text text-darken-3\">Success</h3>\n\t\t\t\t\t<pre>{{roomCtrl.result.output}}</pre>\n\t\t\t\t</div>\n\t\t\t\t<div class=\"col s12 card-panel teal lighten-3\" ng-show=\"roomCtrl.searchResult\">\n\t\t\t\t\t<h3 class=\"blue-text text-darken-3\">Recomendation</h3>\n\t\t\t\t\t<h4 class=\"blue-text text-darken-2\">{{roomCtrl.searchResult.title}}</h3>\n\t\t\t\t\t<a class=\"blue-text text-darken-2\" href=\"{{roomCtrl.searchResult.url}}\" target=\"_blank\">{{roomCtrl.searchResult.url}}</a>\n\t\t\t\t</div>\n\t\t\t</div>\n\t\t</div>\n\n\t\t<div class=\"userVideo col s4\">\n\t\t\t<!-- Audio and Video area -->\n\t\t\t<div id=\"video-wrapper\" style=\"position: relative;\">\n\t\t\t\t<div class=\"videos\" style=\"position: fixed; width: inherit; overflow-y: auto; !important\">\n\t\t\t\t\t<div class=\"card-panel\">\n\t\t\t\t\t\t<h5 class=\"blue-text text-darken-2\">Users</h5>\n\t\t\t\t\t</div>\n\t\t\t\t</div>\n\t\t\t</div>\n\t\t</div>\n\t</div>\n</div>";
 
 /***/ },
 /* 308 */
@@ -45007,21 +45009,21 @@
 	    //選択された言語モードの情報
 	    this.mode = this.modes[0];
 	    //選択可能なテーマの情報
-	    this.themes = ["midnight", "neo", "eclipse"];
+	    this.themes = ["ambiance", "chaos", "chrome", "clouds_midnight", "clouds", "cobalt", "crimson_editor", "dawn", "dreamweaver", "eclipse", "github", "idle_fingers", "iplastic", "katzenmilch", "kr_theme", "kuroir", "merbivore_soft", "merbivore", "mono_industrial", "monokai", "pastel_on_dark", "solarized_dark", "solarized_light", "sqlserver", "terminal", "textmate", "tomorrow_night_blue", "tomorrow_night_bright", "tomorrow_night_eighties", "tomorrow_night", "tomorrow", "twilight", "vibrant_ink", "xcode"];
 	    //選択されたテーマの情報
 	    this.theme = this.themes[0];
 
 	    //editor with ace
 	    this.editor = ace.edit("editor");
-	    // API 経由で内容を変更した際のアラートを黙らせます
 	    this.editor.$blockScrolling = Infinity;
+	    this.editor.setFontSize(14);
 	    this.editor.setTheme("ace/theme/monokai");
+	    this.editor.getSession().setMode("ace/mode/javascript");
 
 	    window.addEventListener("keydown", function (e) {
 	      if (_this.editor.isFocused()) {
 	        console.log("onkeydown event");
 	        _this.isFromMe = true;
-	        //e.preventDefault();
 	      }
 	    }, true);
 	    this.editor.on("paste", function () {
@@ -45109,8 +45111,14 @@
 	        _this.room.on('data', function (data) {
 	          console.log(data.src + "からもらったデータ：", data);
 	          _this.isFromMe = false;
-	          _this.mode = data.data.mode ? data.data.mode : _this.mode;
-	          _this.theme = data.data.theme ? data.data.theme : _this.theme;
+	          if (data.data.modeNum != null) {
+	            _this.mode = _this.modes[data.data.modeNum];
+	            _this.editor.getSession().setMode("ace/mode/" + _this.mode.lang);
+	          };
+	          if (data.data.theme) {
+	            _this.theme = data.data.theme;
+	            _this.editor.setTheme("ace/theme/" + _this.theme);
+	          };
 	          _this.name = data.data.name ? data.data.name : _this.name;
 	          if (data.data.content && _this.needSync) {
 	            console.log("Sync now");
@@ -45172,6 +45180,17 @@
 	      this.isFromMe = true;
 	      this.name = $fileContent.name;
 	      this.editor.setValue($fileContent.content);
+	      //以下はファイルをロードしたときに拡張子が既知であればエディターがそれを反映する部分
+	      if ($fileContent.ex) {
+	        if ($fileContent.ex === "js") {
+	          this.mode = this.modes[0];
+	        } else if ($fileContent.ex === "py") {
+	          this.mode = this.modes[1];
+	        } else if ($fileContent.ex === "rb") {
+	          this.mode = this.modes[2];
+	        }
+	        this.modeChange();
+	      }
 	    }
 	  }, {
 	    key: "run",
@@ -45236,109 +45255,29 @@
 	  }, {
 	    key: "modeChange",
 	    value: function modeChange() {
+	      console.log("mode change");
+	      this.editor.getSession().setMode("ace/mode/" + this.mode.lang);
+	      var sendMode = null;
+	      if (this.mode.ex === "js") {
+	        sendMode = 0;
+	      } else if (this.mode.ex === "py") {
+	        sendMode = 1;
+	      } else if (this.mode.ex === "rb") {
+	        sendMode = 2;
+	      }
 	      this.room.send({
-	        "mode": this.mode
+	        "modeNum": sendMode
 	      });
 	    }
 	  }, {
 	    key: "themeChange",
 	    value: function themeChange() {
+	      console.log("theme change");
+	      this.editor.setTheme("ace/theme/" + this.theme);
 	      this.room.send({
 	        "theme": this.theme
 	      });
 	    }
-
-	    //以下のコードは参考用で残すけどもう使わない
-
-	    /*
-	    この関数は自分以外のユーザがコードを書いた時にそれを自分のeditorに適切に反映させる関数
-	    アルゴリズムの説明(user other, meを仮定)
-	    １。otherのcursorとmeのcursorが一緒の位置であったのならotherが変更を加えた後にも彼らのcursorは一緒である。
-	    ２。otherのcursorが前にあったら、meの現在のカーサの位置からstringの終わりまでを切って、保管しておく(behindstring)。
-	      そして、変更されたstringから後ろから見て、behindstringと重なる範囲でできるだけ前の位置にmeのカーサをおけばOK
-	    ３。ここothermpカーサが後ろであった場合であり、２。の逆の方法で良い
-	    */
-	    // codeUpdate(data){
-	    //   console.log("code update")
-	    //   this.$scope.$apply(() => {
-	    //     /*
-	    //       this.code.contentとdataをうまく比較してrememberから修正を加えて、cursorの位置を更新
-	    //     */
-	    //     this.pastCursor = angular.element('.CodeMirror')[0].CodeMirror.getDoc().getCursor()
-	    //     this.newCursor = this.pastCursor;
-	    //     console.log("アップデートの前のstring : ",this.code.content);
-	    //     console.log("otherのアップデート前のカーサ, meのアップデート前のカーサ : ",data.pastCursor,this.newCursor);
-
-	    //     if((data.pastCursor.line == this.newCursor.line) && (data.pastCursor.ch == this.newCursor.ch)){
-	    //       console.log("#other.pastcursor == me.pastcursor#")
-	    //       //変更の前にお互いのカーサーの位置が一緒の場合にはそのまま追いかければ良い。
-	    //       this.newCursor = data.newCursor;
-	    //     }else if(data.pastCursor.line < this.newCursor.line || ((data.pastCursor.line == this.newCursor.line) && (data.pastCursor.ch < this.newCursor.ch))){
-	    //       console.log("#other.pastcursor < me.pastcursor#")
-	    //       //相手のカーサーが前にあった場合
-	    //       var behindString = this.code.content.slice(this.cursorIndex(this.code.content,this.pastCursor));
-	    //       console.log("behindString",behindString);
-	    //       var duplicated_length = 0;
-	    //       for(var i = 0;i < behindString.length;i++){
-	    //         if(data.newString[data.newString.length - i - 1] != behindString[behindString.length - i - 1]){
-	    //           break;
-	    //         }else{
-	    //           duplicated_length++;
-	    //         }
-	    //       };
-	    //       console.log("duplicated_length",duplicated_length);
-	    //       this.newCursor = this.indexCursor(data.newString, data.newString.length - duplicated_length);
-	    //     }else{
-	    //       console.log("#other.pastcursor > me.pastcursor#")
-	    //       var beforeString = this.code.content.slice(0,this.cursorIndex(this.code.content,angular.element('.CodeMirror')[0].CodeMirror.getDoc().getCursor()));
-	    //       console.log("beforeString",beforeString);
-	    //       var duplicated_length = 0;
-	    //       for(var i = 0;i < beforeString.length;i++){
-	    //         if(data.newString[i] != beforeString[i]){
-	    //           break;
-	    //         }else{
-	    //           duplicated_length++;
-	    //         }
-	    //       };
-	    //       console.log("duplicated_length",duplicated_length);
-	    //       this.newCursor = this.indexCursor(data.newString, duplicated_length);
-	    //     };
-	    //     this.code.content = data.newString;
-	    //   });
-
-	    //   angular.element('.CodeMirror')[0].CodeMirror.focus();
-	    //   angular.element('.CodeMirror')[0].CodeMirror.getDoc().setCursor(this.newCursor);
-	    //   console.log("newCursor position",this.newCursor);
-	    // };
-
-	    // indexCursor(string,index){
-	    //   //console.log("indexCursor function with string : ",string," index : ",index);
-	    //   var beforeCursor = string.slice(0,index);
-	    //   //console.log("beforeCursor string : ",beforeCursor);
-	    //   var lines = beforeCursor.split("\n");
-	    //   console.log("indexCursor関数の結果です。string,index,result順")
-	    //   console.log(string,index,{
-	    //     "line" : lines.length-1,
-	    //     "ch" : lines[lines.length-1].length
-	    //   });
-	    //   return {
-	    //     "line" : lines.length-1,
-	    //     "ch" : lines[lines.length-1].length
-	    //   };
-	    // };
-
-	    // cursorIndex(string,cursor){
-	    //   var lines = string.split("\n");
-	    //   var result = 0;
-	    //   for(var i = 0;i < cursor.line;i++,result++){
-	    //     result+=lines[i].length;
-	    //   };
-	    //   result+=cursor.ch;
-	    //   console.log("cursorIndex関数の結果です。string,cursor,result順")
-	    //   console.log(string,cursor,result);
-	    //   return result;
-	    // };
-
 	  }]);
 
 	  return roomController;

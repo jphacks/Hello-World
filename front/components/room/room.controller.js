@@ -43,21 +43,21 @@ export default class roomController {
     //選択された言語モードの情報
     this.mode = this.modes[0];
     //選択可能なテーマの情報
-    this.themes = ["midnight","neo","eclipse"];
+    this.themes = ["ambiance","chaos","chrome","clouds_midnight","clouds","cobalt","crimson_editor","dawn","dreamweaver","eclipse","github","idle_fingers","iplastic","katzenmilch","kr_theme","kuroir","merbivore_soft","merbivore","mono_industrial","monokai","pastel_on_dark","solarized_dark","solarized_light","sqlserver","terminal","textmate","tomorrow_night_blue","tomorrow_night_bright","tomorrow_night_eighties","tomorrow_night","tomorrow","twilight","vibrant_ink","xcode"];
     //選択されたテーマの情報
     this.theme = this.themes[0];
 
     //editor with ace
     this.editor = ace.edit("editor");
-    // API 経由で内容を変更した際のアラートを黙らせます
     this.editor.$blockScrolling = Infinity;
+    this.editor.setFontSize(14);
     this.editor.setTheme("ace/theme/monokai");
+    this.editor.getSession().setMode("ace/mode/javascript");
 
     window.addEventListener("keydown", (e) => { 
         if (this.editor.isFocused()) {
           console.log("onkeydown event")
           this.isFromMe = true;
-          //e.preventDefault();
         } 
     }, true) 
     this.editor.on("paste",()=>{
@@ -152,8 +152,14 @@ export default class roomController {
             this.room.on('data', (data) => {
               console.log(data.src + "からもらったデータ：",data)
               this.isFromMe = false;
-              this.mode = (data.data.mode) ? data.data.mode: this.mode;
-              this.theme = (data.data.theme) ? data.data.theme: this.theme;
+              if(data.data.modeNum != null){
+                this.mode = this.modes[data.data.modeNum];
+                this.editor.getSession().setMode("ace/mode/" + this.mode.lang);
+              };
+              if(data.data.theme){
+                this.theme = data.data.theme;
+                this.editor.setTheme("ace/theme/" + this.theme);
+              };
               this.name = (data.data.name) ? data.data.name: this.name;
               if(data.data.content && this.needSync){
                 console.log("Sync now");
@@ -214,6 +220,17 @@ export default class roomController {
     this.isFromMe = true;
     this.name = $fileContent.name;
     this.editor.setValue($fileContent.content);
+    //以下はファイルをロードしたときに拡張子が既知であればエディターがそれを反映する部分
+    if($fileContent.ex){
+      if($fileContent.ex === "js"){
+        this.mode = this.modes[0];
+      }else if($fileContent.ex === "py"){
+        this.mode = this.modes[1];
+      }else if($fileContent.ex === "rb"){
+        this.mode = this.modes[2];
+      }
+      this.modeChange();
+    }
   };
 
   //コード実行機能
@@ -266,107 +283,27 @@ export default class roomController {
   };
 
   modeChange(){
+    console.log("mode change")
+    this.editor.getSession().setMode("ace/mode/" + this.mode.lang);
+    var sendMode = null;
+    if(this.mode.ex === "js"){
+      sendMode = 0;
+    }else if(this.mode.ex === "py"){
+      sendMode = 1;
+    }else if(this.mode.ex === "rb"){
+      sendMode = 2;
+    }
     this.room.send({
-      "mode" : this.mode
+      "modeNum" : sendMode
     })
   };
 
   themeChange(){
+    console.log("theme change")
+    this.editor.setTheme("ace/theme/" + this.theme);
     this.room.send({
       "theme" : this.theme
     })
   }
-
-
-  //以下のコードは参考用で残すけどもう使わない
-
-  /*
-  この関数は自分以外のユーザがコードを書いた時にそれを自分のeditorに適切に反映させる関数
-  アルゴリズムの説明(user other, meを仮定)
-  １。otherのcursorとmeのcursorが一緒の位置であったのならotherが変更を加えた後にも彼らのcursorは一緒である。
-  ２。otherのcursorが前にあったら、meの現在のカーサの位置からstringの終わりまでを切って、保管しておく(behindstring)。
-    そして、変更されたstringから後ろから見て、behindstringと重なる範囲でできるだけ前の位置にmeのカーサをおけばOK
-  ３。ここothermpカーサが後ろであった場合であり、２。の逆の方法で良い
-  */
-  // codeUpdate(data){
-  //   console.log("code update")
-  //   this.$scope.$apply(() => {
-  //     /*
-  //       this.code.contentとdataをうまく比較してrememberから修正を加えて、cursorの位置を更新
-  //     */
-  //     this.pastCursor = angular.element('.CodeMirror')[0].CodeMirror.getDoc().getCursor()
-  //     this.newCursor = this.pastCursor;
-  //     console.log("アップデートの前のstring : ",this.code.content);
-  //     console.log("otherのアップデート前のカーサ, meのアップデート前のカーサ : ",data.pastCursor,this.newCursor);
-
-  //     if((data.pastCursor.line == this.newCursor.line) && (data.pastCursor.ch == this.newCursor.ch)){
-  //       console.log("#other.pastcursor == me.pastcursor#")
-  //       //変更の前にお互いのカーサーの位置が一緒の場合にはそのまま追いかければ良い。
-  //       this.newCursor = data.newCursor;
-  //     }else if(data.pastCursor.line < this.newCursor.line || ((data.pastCursor.line == this.newCursor.line) && (data.pastCursor.ch < this.newCursor.ch))){
-  //       console.log("#other.pastcursor < me.pastcursor#")
-  //       //相手のカーサーが前にあった場合
-  //       var behindString = this.code.content.slice(this.cursorIndex(this.code.content,this.pastCursor));
-  //       console.log("behindString",behindString);
-  //       var duplicated_length = 0;
-  //       for(var i = 0;i < behindString.length;i++){
-  //         if(data.newString[data.newString.length - i - 1] != behindString[behindString.length - i - 1]){
-  //           break;
-  //         }else{
-  //           duplicated_length++;
-  //         }
-  //       };
-  //       console.log("duplicated_length",duplicated_length);
-  //       this.newCursor = this.indexCursor(data.newString, data.newString.length - duplicated_length);
-  //     }else{
-  //       console.log("#other.pastcursor > me.pastcursor#")
-  //       var beforeString = this.code.content.slice(0,this.cursorIndex(this.code.content,angular.element('.CodeMirror')[0].CodeMirror.getDoc().getCursor()));
-  //       console.log("beforeString",beforeString);
-  //       var duplicated_length = 0;
-  //       for(var i = 0;i < beforeString.length;i++){
-  //         if(data.newString[i] != beforeString[i]){
-  //           break;
-  //         }else{
-  //           duplicated_length++;
-  //         }
-  //       };
-  //       console.log("duplicated_length",duplicated_length);
-  //       this.newCursor = this.indexCursor(data.newString, duplicated_length);
-  //     };
-  //     this.code.content = data.newString;
-  //   });
-
-  //   angular.element('.CodeMirror')[0].CodeMirror.focus();
-  //   angular.element('.CodeMirror')[0].CodeMirror.getDoc().setCursor(this.newCursor);
-  //   console.log("newCursor position",this.newCursor);
-  // };
-
-  // indexCursor(string,index){
-  //   //console.log("indexCursor function with string : ",string," index : ",index);
-  //   var beforeCursor = string.slice(0,index);
-  //   //console.log("beforeCursor string : ",beforeCursor);
-  //   var lines = beforeCursor.split("\n");
-  //   console.log("indexCursor関数の結果です。string,index,result順")
-  //   console.log(string,index,{
-  //     "line" : lines.length-1,
-  //     "ch" : lines[lines.length-1].length
-  //   });
-  //   return {
-  //     "line" : lines.length-1,
-  //     "ch" : lines[lines.length-1].length
-  //   };
-  // };
-
-  // cursorIndex(string,cursor){
-  //   var lines = string.split("\n");
-  //   var result = 0;
-  //   for(var i = 0;i < cursor.line;i++,result++){
-  //     result+=lines[i].length;
-  //   };
-  //   result+=cursor.ch;
-  //   console.log("cursorIndex関数の結果です。string,cursor,result順")
-  //   console.log(string,cursor,result);
-  //   return result;
-  // };
 
 };

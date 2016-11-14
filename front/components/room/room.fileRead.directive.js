@@ -18,11 +18,13 @@ class onReadFile {
 			reader.onload = function(onLoadEvent) {
 				scope.$apply(function() {
           //fileを読んでから、最後の.以後の格調しのところは除去する
-          var fileName = onChangeEvent.target.files[0].name;
-          var lastIndex = fileName.lastIndexOf(".");
-          fileName = fileName.substring(0, lastIndex);
+          var fileFullName = onChangeEvent.target.files[0].name;
+          var lastIndex = fileFullName.lastIndexOf(".");
+          var fileName = fileFullName.substring(0, lastIndex);
+          var fileEx = fileFullName.substring(lastIndex + 1);
 					fn(scope, {$fileContent:{
             "name" : fileName,
+            "ex" : fileEx || null,
             "content" : onLoadEvent.target.result
           }});
 				});

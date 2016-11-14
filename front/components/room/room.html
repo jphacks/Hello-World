@@ -12,12 +12,12 @@
 
 				<div class="col s6 input-field">
 					<label>Language Select</label><br><br>
-					<select class="browser-default" ng-change="roomCtrl.input()" ng-model="roomCtrl.mode" ng-options="mode as mode.lang for mode in roomCtrl.modes"></select>
+					<select class="browser-default" ng-change="roomCtrl.modeChange()" ng-model="roomCtrl.mode" ng-options="mode as mode.lang for mode in roomCtrl.modes"></select>
 				</div>
 
 				<div class="col s6 input-field">
 					<label>Theme Select</label><br><br>
-					<select class="browser-default" ng-change="roomCtrl.input()" ng-model="roomCtrl.theme" ng-options="theme for theme in roomCtrl.themes"></select>
+					<select class="browser-default" ng-change="roomCtrl.themeChange()" ng-model="roomCtrl.theme" ng-options="theme for theme in roomCtrl.themes"></select>
 				</div>
 
 			</div>
