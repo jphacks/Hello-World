@@ -102,11 +102,22 @@ export default class roomController {
             window.localStream = stream;
             var streamURL = URL.createObjectURL(stream);
             var peerId = id;
-            //このvideo-wrapperで大きさの調整ができる
-            angular.element('#video-wrapper')[0].style.width = "255px";
-
+            /*
+              このvideo-wrapperで大きさの調整ができる
+              when window resize, trigger event so that we can manage the size of video div.
+              this.resizeVideo function will resize.
+            */
+            angular.element('#video-wrapper')[0].style.width = angular.element('.userVideo')[0].clientWidth+"px";
+            angular.element('.videos')[0].style.height = angular.element(window).height()+"px";
+            angular.element(window).resize(() => {
+                console.log("window resize to (" + angular.element(window).width() + ", " + angular.element(window).height() + ")")
+                //width will be set to col s4 size
+                angular.element('#video-wrapper')[0].style.width = angular.element('.userVideo')[0].clientWidth+"px";
+                //videos height should fit to the same size of window
+                angular.element('.videos')[0].style.height = angular.element(window).height()+"px";
+            });
             angular.element('.videos').append(
-                '<div class="videoBox"><video id="video_' + peerId + '" class="remoteVideos" width="100%" autoplay="autoplay" src="' + streamURL + '" > </video></div>'
+                '<div class="videoBox video_' + peerId + '"><video id="video_' + peerId + '" class="remoteVideos" width="100%" autoplay="autoplay" src="' + streamURL + '" > </video></div>'
             );
             /*
             自分のvideoを表示できてから、roomに入る準備をする。
@@ -124,8 +135,8 @@ export default class roomController {
               });
               //div class="video"の中にvideoをappendしていく。
               angular.element('.videos').append(
-                '<div class="videoBox"><video id="video_' + peerId + '" class="remoteVideos" width="100%" autoplay="autoplay" src="' + streamURL + '" > </video></div>'
-            );
+                '<div class="videoBox video_' + peerId + '"><video id="video_' + peerId + '" class="remoteVideos" width="100%" autoplay="autoplay" src="' + streamURL + '" > </video></div>'
+              );
             });
 
             //他のmemberがroomから離れる時は該当するvideoタグを除去
@@ -135,6 +146,7 @@ export default class roomController {
                 this.roomMember--;
               });
               angular.element('#video_' + stream.peerId).remove();
+              angular.element('.video_' + stream.peerId).remove();
             });
 
             this.room.on('data', (data) => {
