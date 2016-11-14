@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <title>Editor - HELLO WORLD!</title>
+    <!--Import Google Icon Font-->
+    <link href="http://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <!-- Compiled and minified CSS -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.97.8/css/materialize.min.css">
+    <!--Let browser know website is optimized for mobile-->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="/codemirror/lib/codemirror.css">
+    <link rel="stylesheet" href="/codemirror/theme/monokai.css">
+    <link rel="stylesheet" href="/style.css">
+    <script src="/codemirror/lib/codemirror.js"></script>
+    <script src="/codemirror/mode/javascript/javascript.js"></script>
+    <script src="/codemirror/addon/selection/active-line.js"></script>
+    <script src="/codemirror/addon/edit/matchbrackets.js"></script>
+</head>
+
+<body>
+    <nav class="blue-grey darken-4">
+        <div class="nav-wrapper">
+            <div class="row">
+                <div class="col s12">
+                    <a href="#" class="brand-logo">Hello world</a>
+                    <ul id="nav-mobile" class="right hide-on-med-and-down">
+                        <li><a href="#modal-import" class="modal-trigger"><i class="material-icons left">open_in_browser</i>Import</a></li>
+                        <li><a href="#modal-save" class="modal-trigger"><i class="material-icons left">description</i>Save</a></li>
+                        <li><a href="#"><i class="material-icons left">info_outline</i>How to</a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </nav>
+    <div class="section main">
+        <div class="row">
+            <div class="col l7 m12">
+                <div class="section">
+                    <form>
+                        <textarea id="code" name="code"></textarea>
+                    </form>
+                </div>
+                <div class="section">
+                    <div class="row">
+                        <ul class="collapsible" data-collapsible="accordion">
+                            <li>
+                                <div class="collapsible-header"><i class="material-icons prefix">play_circle_outline</i>Run</div>
+                                <div class="collapsible-body">
+                                    <pre>Hello, world</pre>
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <div class="col l5 hide-on-med-and-down">
+                <div class="section">
+                    <div class="row">
+                        <div class="col m6">
+                            <div class="video-container">
+                                <iframe width="853" height="480" src="/video/sample.mp4" frameborder="0" allowfullscreen></iframe>
+                            </div>
+                        </div>
+                        <div class="col m6">
+                            <div class="video-container">
+                                <iframe width="853" height="480" src="/video/sample.mp4" frameborder="0" allowfullscreen></iframe>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col m6">
+                            <div class="video-container">
+                                <iframe width="853" height="480" src="/video/sample.mp4" frameborder="0" allowfullscreen></iframe>
+                            </div>
+                        </div>
+                        <div class="col m6">
+                            <div class="video-container">
+                                <iframe width="853" height="480" src="/video/sample.mp4" frameborder="0" allowfullscreen></iframe>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal Structure -->
+    <div id="modal-import" class="modal modal-fixed-footer">
+        <div class="modal-content">
+            <h4>Import</h4>
+            <p>Choose your program.</p>
+            <form action="#">
+                <div class="file-field input-field">
+                    <div class="btn blue darken-4">
+                        <span>File</span>
+                        <input type="file" multiple>
+                    </div>
+                    <div class="file-path-wrapper">
+                        <input class="file-path validate" type="text" placeholder="Upload one or more files">
+                    </div>
+                </div>
+            </form>
+        </div>
+        <div class="modal-footer">
+            <a href="#!" class="modal-action modal-close waves-effect waves-green btn-flat ">Import</a>
+        </div>
+    </div>
+
+    <!-- Modal Structure -->
+    <div id="modal-save" class="modal modal-fixed-footer">
+        <div class="modal-content">
+            <h4>Save</h4>
+            <div class="input-field col s6">
+                <i class="material-icons prefix">description</i>
+                <input id="icon_prefix" type="text" class="validate">
+                <label for="icon_prefix">File Name</label>
+            </div>
+        </div>
+        <div class="modal-footer">
+            <a href="#!" class="modal-action modal-close waves-effect waves-green btn-flat ">Import</a>
+        </div>
+    </div>
+
+    <script>
+        var editor = CodeMirror.fromTextArea(document.getElementById("code"), {
+            lineNumbers: true,
+            styleActiveLine: true,
+            matchBrackets: true,
+            theme: "monokai",
+        });
+    </script>
+    <!--Import jQuery before materialize.js-->
+    <script type="text/javascript" src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
+    <!-- Compiled and minified JavaScript -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.97.8/js/materialize.min.js"></script>
+    <script type="text/javascript">
+        $(document).ready(function() {
+            $('.collapsible').collapsible();
+            $('.modal').modal();
+        });
+    </script>
+</body>
+
+</html>
