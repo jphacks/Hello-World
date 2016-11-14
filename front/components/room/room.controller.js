@@ -12,7 +12,6 @@ export default class roomController {
     this.$state = $state;
     this.roomMember = 1;
     this.memberChanged = 0;
-    this.userName = $scope.rootCtrl.userName;
     this.roomName = $scope.rootCtrl.roomName;
     if(!($scope.rootCtrl.roomName)){
       $state.go('root.main');
@@ -53,9 +52,8 @@ export default class roomController {
             window.localStream = stream;
             const streamURL = URL.createObjectURL(stream);
             const myPeerId = id;
-            const myuserName = this.userName;
             $('.videos').append($(
-                '<video id="video_' + myPeerId + '" class="videoBox" width="300" height="200" autoplay="autoplay" class="remoteVideos" src="' + streamURL + '" > </video> <br><br>'
+                '<video id="video_' + myPeerId + '" class="videoBox" style="border-radius: 150px 150px 150px 150px / 100px 100px 100px 100px;" width="300" height="200" autoplay="autoplay" class="remoteVideos" src="' + streamURL + '" > </video> <br><br>'
             ));
             $('.welcome').append($(
                 '<script>Materialize.toast("Welcome to ' + this.roomName + '!", 3000)</script>'
@@ -207,7 +205,7 @@ export default class roomController {
     this.room.on('peerJoin', (peerId) => {
       console.log(peerId + ' has joined the room');
       $('.hello').append($(
-          '<script id="toast_' + peerId + '" >Materialize.toast("Here is ' + peerId + '!", 4000)</script>'
+          '<script id="toast_' + peerId + '" >Materialize.toast("New menber appeared!", 4000)</script>'
       ));
       $('#toast_' + peerId).remove();
     });
@@ -225,14 +223,12 @@ export default class roomController {
         this.roomMember++;
         this.memberChanged = 1;
       });
-      console.log(this.userName + ' entered!')
       $('.videos_style').append($(
-          '<style id="video_style_' + peerId + '">#video_' + peerId + ' {border: 5px groove yellow;}</style><br>'
+          '<style id="video_style_' + peerId + '">#video_' + peerId + ' {border: 5px groove yellow;border-radius: 150px 150px 150px 150px / 100px 100px 100px 100px;}</style><br>'
       ));
       $('.videos').append($(
-          '<video id="video_' + peerId + '" class="videoBox" width="300" height="200" autoplay="autoplay" class="remoteVideos" src="' + streamURL + '"> </video><br>'
+          '<video id="video_' + peerId + '" class="videoBox" style="border-radius: 150px 150px 150px 150px / 100px 100px 100px 100px;" width="300" height="200" autoplay="autoplay" class="remoteVideos" src="' + streamURL + '"> </video><br>'
       ));
-      console.log(this.userName+' was joined!!');
       //4sライトアップ
       this.job = 	setTimeout(()=> {
         $('#video_style_' + peerId).remove();
