@@ -237,7 +237,7 @@ export default class roomController {
   //コード実行機能
   run(){
     //http post
-    return this.$http.post("https://hello-world.moe/exec",JSON.stringify({
+    return this.$http.post("https://hello-world.run/exec",JSON.stringify({
       "language" : this.mode.lang,
       "code" :  this.editor.getValue()
     }))
@@ -263,7 +263,7 @@ export default class roomController {
   search(query){
     console.log("search now!")
     //http post
-    return this.$http.post("https://hello-world.moe/search",JSON.stringify(query))
+    return this.$http.post("https://hello-world.run/search",JSON.stringify(query))
     .then((response) => {
       console.log("search response : ",response);
       this.searchResult = {
