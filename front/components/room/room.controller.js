@@ -25,7 +25,7 @@ export default class roomController {
 
     //現在のmember数
     this.roomMember = 1;
-    
+
     /*
     room stateでroomNameを決めてきていたらそれがroomKeyとなる。
     もし、そうでないのなら、urlからroomKeyを読み取る。
@@ -54,12 +54,12 @@ export default class roomController {
     this.editor.setTheme("ace/theme/monokai");
     this.editor.getSession().setMode("ace/mode/javascript");
 
-    window.addEventListener("keydown", (e) => { 
+    window.addEventListener("keydown", (e) => {
         if (this.editor.isFocused()) {
           console.log("onkeydown event")
           this.isFromMe = true;
-        } 
-    }, true) 
+        }
+    }, true)
     this.editor.on("paste",()=>{
       console.log("paste event")
       this.isFromMe = true;
@@ -136,7 +136,11 @@ export default class roomController {
               });
               //div class="video"の中にvideoをappendしていく。
               angular.element('.videos').append(
-                '<div class="videoBox video_' + peerId + '"><video id="video_' + peerId + '" class="remoteVideos" width="100%" autoplay="autoplay" src="' + streamURL + '" > </video></div>'
+                '<div class="videoBox video_' + peerId + '"><video id="video_' + peerId + '" class="remoteVideos z-depth-3" width="100%" autoplay="autoplay" src="' + streamURL + '" > </video></div>'
+              );
+              //welcome分表示
+              angular.element('.welcome').append(
+                '<script>Materialize.toast("<h3>Welcome to ' + this.roomName + '!</h3>", 4000)</script>'
               );
             });
 
@@ -181,6 +185,11 @@ export default class roomController {
 
             this.room.on('peerJoin', (peerId) => {
               console.log(peerId + 'has joined the room');
+              //new member通知 
+              angular.element('.hello').append(
+              '<script id="toast_' + peerId + '" >Materialize.toast("<h3>New member appeared!</h3>", 4000)</script>'
+              );
+              $('#toast_' + peerId).remove();
               //新たなユーザが入ってきたらcode, theme, modeを共有
               this.isFromMe = true;
               this.needSync = false;
@@ -196,7 +205,7 @@ export default class roomController {
               console.log(peerId + 'has left the room');
             });
 
-            this.room.on('error', function(err) { 
+            this.room.on('error', function(err) {
               console.log("error : ",err);
             });
         },
