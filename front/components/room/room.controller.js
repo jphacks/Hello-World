@@ -6,6 +6,13 @@ export default class roomController {
   詳細はAngularJSを参照すること。
   */
   constructor($scope,$http,$stateParams,$state) {
+
+    // design mock
+    angular.element(document).ready(function() {
+        angular.element('.collapsible').collapsible();
+        angular.element('.modal').modal();
+    });
+
     //ブラウザでカメラとマイクを使用するために必要なコードライン
     navigator.getUserMedia = navigator.getUserMedia || navigator.webkitGetUserMedia || navigator.mozGetUserMedia;
 
@@ -125,7 +132,11 @@ export default class roomController {
             ここでthis.roomNameが入ろうとするroomを特定するkeyとなる。
             */
             console.log(this.roomName,"に接続します");
+            //入った時に時表示
+            Materialize.toast("<h3>Welcome to " + this.roomName + "!</h3>", 4000);
+
             this.room = this.peer.joinRoom(this.roomName, {mode: 'sfu', stream: stream});
+
             // 他のmemberのstreamを管理
             this.room.on('stream', (stream) =>{
               //console.log("add other stream",stream);
@@ -135,13 +146,11 @@ export default class roomController {
                 this.roomMember++;
               });
               //div class="video"の中にvideoをappendしていく。
-              angular.element('.videos').append(
+              angular.element('.videosContainer').append(
                 '<div class="videoBox video_' + peerId + '"><video id="video_' + peerId + '" class="remoteVideos z-depth-3" width="100%" autoplay="autoplay" src="' + streamURL + '" > </video></div>'
               );
-              //welcome分表示
-              angular.element('.welcome').append(
-                '<script>Materialize.toast("<h3>Welcome to ' + this.roomName + '!</h3>", 4000)</script>'
-              );
+              //show toast when other appear
+              Materialize.toast("<h3>New member appeared!</h3>", 4000);
             });
 
             //他のmemberがroomから離れる時は該当するvideoタグを除去
@@ -185,11 +194,7 @@ export default class roomController {
 
             this.room.on('peerJoin', (peerId) => {
               console.log(peerId + 'has joined the room');
-              //new member通知 
-              angular.element('.hello').append(
-              '<script id="toast_' + peerId + '" >Materialize.toast("<h3>New member appeared!</h3>", 4000)</script>'
-              );
-              $('#toast_' + peerId).remove();
+
               //新たなユーザが入ってきたらcode, theme, modeを共有
               this.isFromMe = true;
               this.needSync = false;
@@ -241,20 +246,31 @@ export default class roomController {
       }
       this.modeChange();
     }
+    //after load close modal
+    angular.element("#modal-import").modal("close");
   };
 
   //コード実行機能
   run(){
+    //一応応答が来るまではopenしない.
+    this.collapse();
     //http post
     return this.$http.post("https://hello-world.run/exec",JSON.stringify({
       "language" : this.mode.lang,
       "code" :  this.editor.getValue()
     }))
     .then((response) => {
+      //openします。
+      this.expand();
+      
       //responseをもらう
       console.log("response : ",response);
       this.searchResult = 0;
       this.result = response.data;
+      //result make collapse
+      if(this.result){
+        angular.element('.collapsible').collapsible({collapsed: true});
+      };
 
       //もしエラーが返ってきたら
       if(this.result.is_error){
@@ -290,6 +306,9 @@ export default class roomController {
     document.body.appendChild(link);
     link.click();
     document.body.removeChild(link);
+
+    //after load close modal
+    angular.element("#modal-save").modal("close");
   };
 
   modeChange(){
@@ -314,6 +333,27 @@ export default class roomController {
     this.room.send({
       "theme" : this.theme
     })
+  }
+
+  openModalImport(){
+    angular.element("#modal-import").modal("open");
+  }
+
+  openModalSave(){
+    angular.element("#modal-save").modal("open");
+  }
+
+  expand(){
+    angular.element(".collapsible-header").addClass("active");
+    angular.element(".collapsible").collapsible({accordion: false});
+  }
+
+  collapse(){
+    angular.element(".collapsible-header").removeClass(function(){
+      return "active";
+    });
+    angular.element(".collapsible").collapsible({accordion: true});
+    angular.element(".collapsible").collapsible({accordion: false});
   }
 
 };
