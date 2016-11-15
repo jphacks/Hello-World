@@ -363,11 +363,12 @@ export default class roomController {
   }
 
   logout(){
-    console.log("logout from room : ",this.roomName);
+    console.log("logout from room : ",this.room);
     if (!!this.peer && !this.peer.destroyed) {
       this.peer.destroy();
     };
-    this.$state.go("root.main");
-  }
+    this.$state.go("root.main", {}, {reload: true});
+  };
+  
 
 };
