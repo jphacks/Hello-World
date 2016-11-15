@@ -1,89 +1,142 @@
-<div class="container">
-	<div class="row">
-		<div class="col s8">
-			<div class="caption center-align">
-				<div class="card-panel">
-					<h3 class="blue-text text-darken-2">{{roomCtrl.roomName}}</h3>
-					<h5 class="light grey-text text-darken-1">({{roomCtrl.roomMember}} users joined)</h5>
-				</div>
+<div class="navbar-fixed">
+	<nav class="blue-grey darken-4">
+	    <div class="nav-wrapper">
+	        <div class="container">
+	        	<div class="row">
+		            <div class="col s12">
+		                <a class="brand-logo">{{roomCtrl.roomName}}</a>
+		                <ul id="nav-mobile" class="right hide-on-med-and-down">
+		                    <li>
+		                    	<a ng-click="roomCtrl.openModalImport()"><i class="material-icons left">open_in_browser</i>Import</a>
+		                    </li>
+		                    <li>
+		                    	<a ng-click="roomCtrl.openModalSave()"><i class="material-icons left">description</i>Save</a>
+		                    </li>
+		                    <li>
+		                    	<a href="/"><i class="material-icons left">home</i>Logout</a>
+		                    </li>
+		                </ul>
+		            </div>
+		        </div>
 	        </div>
+	    </div>
+	</nav>
+</div>
 
-			<div class="row">
 
-				<div class="col s6 input-field">
-					<label>Language Select</label><br><br>
-					<select class="browser-default" ng-change="roomCtrl.modeChange()" ng-model="roomCtrl.mode" ng-options="mode as mode.lang for mode in roomCtrl.modes"></select>
+<div class="teal lighten-5">
+	<div class="container">
+		<div class="row">
+			<div class="col s8">
+
+				<div class="section row">
+
+					<div class="col s6 input-field">
+						<label>Language</label><br><br>
+						<select class="browser-default" ng-change="roomCtrl.modeChange()" ng-model="roomCtrl.mode" ng-options="mode as mode.lang for mode in roomCtrl.modes"></select>
+					</div>
+
+					<div class="col s6 input-field">
+						<label>Theme</label><br><br>
+						<select class="browser-default" ng-change="roomCtrl.themeChange()" ng-model="roomCtrl.theme" ng-options="theme for theme in roomCtrl.themes"></select>
+					</div>
+
 				</div>
 
-				<div class="col s6 input-field">
-					<label>Theme Select</label><br><br>
-					<select class="browser-default" ng-change="roomCtrl.themeChange()" ng-model="roomCtrl.theme" ng-options="theme for theme in roomCtrl.themes"></select>
+				<div class="section">
+				    <div class="row">
+						<div id="editor" class="col s12" style="height: 500px;"></div>
+					</div>
 				</div>
+
+				<div class="section">
+                    <div class="row">
+                        <ul class="collapsible" data-collapsible="expandable">
+                            <li>
+                                <div class="collapsible-header" ng-click="roomCtrl.run()"><i class="material-icons prefix">play_circle_outline</i>Run</div>
+
+                                <div class="collapsible-body">
+                               		<div class="section">
+                               			<h3 ng-show="roomCtrl.result.is_error" class="red-text text-darken-3">Error</h3>
+										<h3 ng-hide="roomCtrl.result.is_error" class="blue-text text-darken-3">Success</h3>
+										<pre>{{roomCtrl.result.output}}</pre>
+                               		</div>
+
+									<div class="section">
+										<h3 ng-show="roomCtrl.searchResult" class="blue-text text-darken-3">Recomendation</h3>
+										<h4 class="blue-text text-darken-2">{{roomCtrl.searchResult.title}}</h3>
+										<a class="blue-text text-darken-2" href="{{roomCtrl.searchResult.url}}" target="_blank">{{roomCtrl.searchResult.url}}</a>
+									</div>
+
+                                </div>
+
+                            </li>
+                        </ul>
+                    </div>
+                </div>
 
 			</div>
 
-			<div class="row">
-
-				<div class="col s6">
-					<h4>
-						{{roomCtrl.name}}
-					</h4>
-				</div>
-
-				<form>
-					<div class="col s2 file-field input-field">
-						<div class="waves-effect waves-light btn">
-							<span>Load</span>
-							<input type="file" on-read-file="roomCtrl.showContent($fileContent)">
+			<div class="userVideo col s4">
+				<!-- Audio and Video area -->
+				<div id="video-wrapper" style="position: relative;">
+					<div class="videos" style="position: fixed; width: inherit; overflow-y: auto; !important">
+						<div class="videosContainer card-panel hoverable">
+							<div class="caption center-align">
+								<h5 class="teal-text text-darken-3">
+									Users<i class="material-icons">supervisor_account</i>
+								</h5>
+								<h6 class="light teal-text text-lighten-2">
+									({{roomCtrl.roomMember}} users joined)
+								</h6>
+					    	</div>
+							<div class="videoBox">
+								<video id="myVideo" class="remoteVideos" width="100%" muted autoplay ></video>
+							</div>			
 						</div>
-						<div class="file-path-wrapper">
-							<input type="file"/>
-						</div>
-					</div>
-				</form>
-
-				<div class="col s2 file-field input-field">
-					<div class="waves-effect waves-light btn" ng-click="roomCtrl.save()">save</div>
-				</div>
-
-			</div>
-
-		    <div class="row">
-				<div id="editor" class="col s12" style="height: 500px;"></div>
-			</div>
-
-			<div class="row">
-				<div class="col s2 file-field input-field">
-					<div class="waves-effect waves-light btn" ng-click="roomCtrl.run()">run</div>
-				</div>
-			</div>
-			
-			<div class="row">
-				<div class="col s12 card-panel teal lighten-5" ng-show="roomCtrl.result">
-					<h3 ng-show="roomCtrl.result.is_error" class="red-text text-darken-3">Error</h3>
-					<h3 ng-hide="roomCtrl.result.is_error" class="blue-text text-darken-3">Success</h3>
-					<pre>{{roomCtrl.result.output}}</pre>
-				</div>
-				<div class="col s12 card-panel teal lighten-3" ng-show="roomCtrl.searchResult">
-					<h3 class="blue-text text-darken-3">Recomendation</h3>
-					<h4 class="blue-text text-darken-2">{{roomCtrl.searchResult.title}}</h3>
-					<a class="blue-text text-darken-2" href="{{roomCtrl.searchResult.url}}" target="_blank">{{roomCtrl.searchResult.url}}</a>
-				</div>
-			</div>
-		</div>
-
-		<div class="userVideo col s4">
-			<!-- Audio and Video area -->
-			<div id="video-wrapper" style="position: relative;">
-				<div class="videos" style="position: fixed; width: inherit; overflow-y: auto; !important">
-					<div class="card-panel">
-						<h5 class="blue-text text-darken-2">Users</h5>
-					</div>
-					<div class="videoBox">
-						<video id="myVideo" class="remoteVideos" width="100%" muted autoplay></video>
 					</div>
 				</div>
 			</div>
+
+			<!-- Modal Structure -->
+		    <div id="modal-import" class="modal">
+		        <div class="modal-content">
+		            <h4>Import</h4>
+		            <p>Choose your program.</p>
+		        </div>
+		        <div class="modal-footer">
+		            <form>
+		                <div class="file-field input-field">
+		                    <div class="waves-effect waves-light blue darken-4 btn">
+								<span>Load</span>
+								<input type="file" on-read-file="roomCtrl.showContent($fileContent)">
+							</div>
+							<div class="file-path-wrapper">
+								<input type="file"/>
+							</div>
+		                </div>
+		            </form>
+		        </div>
+		    </div>
+
+		    <!-- Modal Structure -->
+		    <div id="modal-save" class="modal">
+		        <div class="modal-content">
+		            <h4>Save</h4>
+
+		            <div class="input-field col s6">
+		                <i class="material-icons prefix">description</i>
+		                <input id="icon_prefix" type="text" class="validate" ng-model="roomCtrl.name">
+		                <label for="icon_prefix">File Name</label>
+		            </div>
+
+		        </div>
+
+		        <div class="modal-footer">
+		            <a class="waves-effect waves-green btn-flat" ng-click="roomCtrl.save()">Save</a>
+		        </div>
+		    </div>
+
 		</div>
 	</div>
 </div>
