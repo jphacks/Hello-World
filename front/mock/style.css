@@ -23,3 +23,7 @@ body {
 .modal.modal-fixed-footer {
     height: 40%;
 }
+
+.dropdown-content li>span {
+    color: #0d47a1;
+}
