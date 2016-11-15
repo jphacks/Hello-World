@@ -364,7 +364,7 @@ export default class roomController {
 
   logout(){
     console.log("logout from room : ",this.room);
-    window.localStream.stop();
+    angular.element(window).localStream.stop();
     this.peer.destroy();
     this.$state.go("root.main", {}, {reload: true});
   };
