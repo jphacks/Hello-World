@@ -79,7 +79,7 @@ export default class roomController {
         this.room.send({
           "name" : this.name,
           "theme" : this.theme,
-          "mode" : this.mode,
+          "modeNum" : this.modeNum(),
           "event" : event
         });
       }else{
@@ -206,7 +206,7 @@ export default class roomController {
                 "name" : this.name,
                 "content" : this.editor.getValue(),
                 "theme" : this.theme,
-                "mode" : this.mode
+                "modeNum" : this.modeNum()
               });
             });
 
@@ -318,18 +318,20 @@ export default class roomController {
   modeChange(){
     console.log("mode change")
     this.editor.getSession().setMode("ace/mode/" + this.mode.lang);
-    var sendMode = null;
-    if(this.mode.ex === "js"){
-      sendMode = 0;
-    }else if(this.mode.ex === "py"){
-      sendMode = 1;
-    }else if(this.mode.ex === "rb"){
-      sendMode = 2;
-    }
     this.room.send({
-      "modeNum" : sendMode
+      "modeNum" : this.modeNum()
     })
   };
+
+  modeNum(){
+    if(this.mode.ex === "js"){
+      return 0;
+    }else if(this.mode.ex === "py"){
+      return 1;
+    }else if(this.mode.ex === "rb"){
+      return 2;
+    }
+  }
 
   themeChange(){
     console.log("theme change")
