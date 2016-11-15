@@ -1,10 +1,12 @@
 /*
 main state
 */
-
+html, 
 body {
-  font-family:'Open Sans',Arial,sans-serif;
+    height: 100%;
+    font-family:'Open Sans',Arial,sans-serif;
 }
+
 h2 {
   height: 20%;
   padding-top: 5%;
