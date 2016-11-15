@@ -123,7 +123,7 @@ export default class roomController {
                 //videos height should fit to the same size of window
                 angular.element('.videos')[0].style.height = angular.element(window).height()+"px";
             });
-            console.log("prevent")
+            console.log("prevent howling");
             //自分のvideoを入れる。
             angular.element('#myVideo').prop('src', streamURL);
 
@@ -360,6 +360,14 @@ export default class roomController {
     });
     angular.element(".collapsible").collapsible({accordion: true});
     angular.element(".collapsible").collapsible({accordion: false});
+  }
+
+  logout(){
+    console.log("logout from room : ",this.roomName);
+    if (!!this.peer && !this.peer.destroyed) {
+      this.peer.destroy();
+    };
+    this.$state.go("root.main");
   }
 
 };
