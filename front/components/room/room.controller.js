@@ -167,11 +167,15 @@ export default class roomController {
               console.log(data.src + "からもらったデータ：",data)
               this.isFromMe = false;
               if(data.data.modeNum != null){
-                this.mode = this.modes[data.data.modeNum];
+                this.$scope.$apply(()=>{
+                  this.mode = this.modes[data.data.modeNum];
+                });
                 this.editor.getSession().setMode("ace/mode/" + this.mode.lang);
               };
               if(data.data.theme){
-                this.theme = data.data.theme;
+                this.$scope.$apply(()=>{
+                  this.theme = data.data.theme;
+                });
                 this.editor.setTheme("ace/theme/" + this.theme);
               };
               this.name = (data.data.name) ? data.data.name: this.name;
