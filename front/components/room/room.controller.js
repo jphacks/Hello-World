@@ -106,7 +106,6 @@ export default class roomController {
         {audio: true, video: true},
         (stream) => {
             // Set your video displays
-            window.localStream = stream;
             var streamURL = URL.createObjectURL(stream);
             var peerId = id;
             /*
@@ -361,13 +360,5 @@ export default class roomController {
     angular.element(".collapsible").collapsible({accordion: true});
     angular.element(".collapsible").collapsible({accordion: false});
   }
-
-  logout(){
-    console.log("logout from room : ",this.room);
-    angular.element(window).localStream.stop();
-    this.peer.destroy();
-    this.$state.go("root.main", {}, {reload: true});
-  };
-
 
 };
