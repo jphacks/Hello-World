@@ -5,21 +5,28 @@ import urllib
 import sys
 import requests
 import json
+import re
 
 def search_with_google(lang, code, data):
     """
-    search a website with google search engine using code and data
-    input:
-      - lang: str
-      - code: str
-      - data: str
-    output:
-      - target_title: str
-      - target_url: str
+    Google検索でエラーから抽出した単語を使って検索し
+    上位の結果のタイトルとURLを返す関数
+    入力:
+      - lang: 言語指定('python'など)
+      - code: 実行したときのコード
+      - data: エラー出力
+    出力: 
+      - target_title: タイトル
+      - target_url: URL
     """
+    #検索用クエリの抽出
     data = [line.strip() for line in data.split('\n')]
-    error_status = " ".join([sentence for sentence in data if ('Error' in sentence or sentence in code)])
-    query = error_status + ' developer'
+    error_status = " ".join([sentence for sentence in data if 'Error' in sentence])
+    query = " ".join([word for word in error_status.split() if word not in " ".join(code.split()).split()])
+
+    #エラーの名前の抽出
+    error_name = " ".join([word for word in error_status.split() if 'Error' in word])
+    error_name = re.sub(r'[!-/:-@[-`{-~]+', '', error_name)
 
     keyword = lang + " " + query
     target_title, target_url = "", ""
@@ -28,21 +35,23 @@ def search_with_google(lang, code, data):
             soup = BeautifulSoup(urllib.urlopen(url))
             target_title = soup.find("title").text
             target_url = url
-            break
+            if error_name in target_title:
+                break
     except Exception as e:
         target_url, target_title = "", ""
     return target_title, target_url
 
 def search_in_stackoverflow(lang, code, data):
     """
-    search a stackoverflow page with the API
-    input:
-      - lang: str
-      - code: str
-      - data: str
-    output:
-      - target_title: str
-      - target_url: str
+    StackOverFlowのAPIでエラーから抽出した単語を使って検索し
+    上位の結果のタイトルとURLを返す関数
+    入力:
+      - lang: 言語指定('python'など)
+      - code: 実行したときのコード
+      - data: エラー出力
+    出力: 
+      - target_title: タイトル
+      - target_url: URL
     """
     error_status = [sentence for sentence in data.split('\n') if 'Error' in sentence][-1]
     query = [word for word in error_status.split() if word not in code.split()]
@@ -65,13 +74,13 @@ def clean_data(code, data):
 
 def search_error(code, data):
     """
-    input:
-      - lang:
-      - code: code written by user
-      - data: error status by system
-    output:
-      - title: Website title
-      - url: the URL
+    入力:
+      - lang: 使用言語
+      - code: 実行コード
+      - data: エラー（システムから返ってきたもの）
+    出力: 
+      - title: ウェブサイトのタイトル
+      - url: そのURL
     """
     #Google version
     print 'Google'
@@ -86,7 +95,8 @@ def search_error(code, data):
 
 def main():
     lang, code, data = sys.argv[1], sys.argv[2], sys.argv[3]
-    #search_error(lang, code, data)
+    
+    #Google version
     title, url = search_with_google(lang, code, data)
     print title
     print url
