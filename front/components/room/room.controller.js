@@ -7,19 +7,6 @@ export default class roomController {
   */
   constructor($scope,$http,$stateParams,$state) {
 
-    //必要となる変数などをここで定義
-    this.$scope = $scope;
-    this.$http = $http;
-    this.$stateParams = $stateParams;
-    this.$state = $state;
-
-    // design mock
-    angular.element(document).ready(function() {
-        angular.element('.collapsible').collapsible();
-        angular.element('.modal').modal();
-        angular.element('select').material_select();
-    });
-
     //ブラウザでカメラとマイクを使用するために必要なコードライン
     navigator.getUserMedia = navigator.getUserMedia || navigator.webkitGetUserMedia || navigator.mozGetUserMedia;
 
@@ -27,6 +14,12 @@ export default class roomController {
     String.prototype.unescapeHtml = function(){
         return this.replace(/&amp;/g, "&").replace(/&lt;/g, "<").replace(/&gt;/g, ">").replace(/&quot;/g, "\"").replace(/&#39;/g, "\'");
     };
+
+    //必要となる変数などをここで定義
+    this.$scope = $scope;
+    this.$http = $http;
+    this.$stateParams = $stateParams;
+    this.$state = $state;
 
     //定期同期化される必要があるかどうか
     this.needSync = true;
@@ -115,24 +108,27 @@ export default class roomController {
         {audio: true, video: true},
         (stream) => {
             // Set your video displays
-            var streamURL = URL.createObjectURL(stream);
-            var peerId = id;
+            var mystreamURL = URL.createObjectURL(stream);
+            var mypeerId = id;
+
             /*
               このvideo-wrapperで大きさの調整ができる
               when window resize, trigger event so that we can manage the size of video div.
               this.resizeVideo function will resize.
             */
-            angular.element('#video-wrapper')[0].style.width = angular.element('.userVideo')[0].clientWidth+"px";
-            angular.element('.videos')[0].style.height = angular.element(window).height()+"px";
-            angular.element(window).resize(() => {
-                //width will be set to col s4 size
-                angular.element('#video-wrapper')[0].style.width = angular.element('.userVideo')[0].clientWidth+"px";
-                //videos height should fit to the same size of window
-                angular.element('.videos')[0].style.height = angular.element(window).height()+"px";
+            angular.element(document).ready(() => {
+              angular.element('#video-wrapper')[0].style.width = angular.element('.userVideo')[0].clientWidth+"px";
+              angular.element('.videos')[0].style.height = angular.element(window).height()+"px";
+              angular.element(window).resize(() => {
+                  //width will be set to col s4 size
+                  angular.element('#video-wrapper')[0].style.width = angular.element('.userVideo')[0].clientWidth+"px";
+                  //videos height should fit to the same size of window
+                  angular.element('.videos')[0].style.height = angular.element(window).height()+"px";
+              });
+              console.log("prevent howling");
+              //自分のvideoを入れる。
+              angular.element('#myVideo').prop('src', mystreamURL);
             });
-            console.log("prevent howling");
-            //自分のvideoを入れる。
-            angular.element('#myVideo').prop('src', streamURL);
 
             /*
             自分のvideoを表示できてから、roomに入る準備をする。
@@ -154,7 +150,7 @@ export default class roomController {
               });
               //div class="video"の中にvideoをappendしていく。
               angular.element('.videosContainer').append(
-                '<div class="videoBox video_' + peerId + '"><video id="video_' + peerId + '" class="remoteVideos z-depth-3" width="100%" autoplay="autoplay" src="' + streamURL + '" > </video></div>'
+                '<div class="videoBox video_' + peerId + '"><video id="video_' + peerId + '" class="remoteVideos" width="100%" autoplay src="' + streamURL + '" > </video></div>'
               );
               //show toast when other appear
               Materialize.toast("<h5>New user appeared!</h5>", 3000);
@@ -238,6 +234,13 @@ export default class roomController {
           console.error("error",e);
         }
       );
+    });
+
+    // design mock
+    angular.element(document).ready(() => {
+        angular.element('.collapsible').collapsible();
+        angular.element('.modal').modal();
+        angular.element('select').material_select();
     });
 
     //アプリから抜ける時にcうあんと接続関連して、綺麗に片付けるためのコードライン
