@@ -77,8 +77,8 @@ export default class roomController {
       this.isFromMe = true;
     });
 
-
     this.editor.getSession().on("change",(event)=>{
+      console.log("#####getSession().on.change")
       if(this.isFromMe){
         console.log("send event : ",event)
         this.room.send({
@@ -90,6 +90,14 @@ export default class roomController {
       }else{
         console.log("other wrote something")
       }
+    });
+
+    this.editor.on("change",(event)=>{
+      console.log("#####change")
+    });
+
+    this.editor.on("changeSession",(event)=>{
+      console.log("#####changeSession")
     });
 
     //このpeerが通信を可能とするオブジェクト
@@ -170,6 +178,7 @@ export default class roomController {
             this.room.on('data', (data) => {
               console.log(data.src + "からもらったデータ：",data)
               this.isFromMe = false;
+
               if(data.data.modeNum != null){
                 this.$scope.$apply(()=>{
                   this.mode = this.modes[data.data.modeNum];
@@ -187,7 +196,8 @@ export default class roomController {
                 console.log("Sync now");
                 this.editor.setValue(data.data.content);
                 this.needSync = false;
-              }
+              };
+
               if(data.data.event){
                 console.log("receive event from other");
                 if(data.data.event.action === "insert"){

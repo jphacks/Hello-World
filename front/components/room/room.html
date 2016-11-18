@@ -36,13 +36,13 @@
 
 					<div class="col s6 input-field">
 						<label class="grey-text text-darken-4">Language</label><br><br>
-						<select class="browser-default" ng-change="roomCtrl.modeChange()" ng-model="roomCtrl.mode" ng-options="mode as mode.lang for mode in roomCtrl.modes">
+						<select ng-change="roomCtrl.modeChange()" ng-model="roomCtrl.mode" ng-options="mode as mode.lang for mode in roomCtrl.modes">
 						</select>
 					</div>
 
 					<div class="col s6 input-field grey-text text-darken-4">
 						<label class="grey-text text-darken-4">Theme</label><br><br>
-						<select class="browser-default" ng-change="roomCtrl.themeChange()" ng-model="roomCtrl.theme" ng-options="theme for theme in roomCtrl.themes">
+						<select ng-change="roomCtrl.themeChange()" ng-model="roomCtrl.theme" ng-options="theme for theme in roomCtrl.themes">
 						</select>
 					</div>
 
