@@ -90,19 +90,19 @@ export default class roomController {
 
     this.editor.on("change",(event)=>{
       console.log("change event happend.")
-      //一旦今は更新いらないです
-      $timeout.cancel(this.amILastAndNeedToSync);
-      //しかし以下の条件なら必要ですね
-      if(this.otherCursorRow < this.myCursorRow){
-        this.amILastAndNeedToSync = this.$timeout(()=>{
-          //Syncを実行するよ
-          this.Sync();
-        },this.syncIntever);//syncを実行する基準がthis.syncIntever
-      };
 
       //ここはつまり、自分がたたいて、変更が起こったら送るということ
       if(this.isFromMe){
         console.log("I did change.")
+        $timeout.cancel(this.amILastAndNeedToSync);
+        //しかし以下の条件なら必要ですね
+        if(this.otherCursorRow < this.myCursorRow){
+          this.amILastAndNeedToSync = this.$timeout(()=>{
+            //Syncを実行するよ
+            this.Sync();
+          },this.syncIntever);//syncを実行する基準がthis.syncIntever
+        };
+
         //自分のカーサの更新
         this.myCursorRow = this.editor.getCursorPosition().row;
         this.room.send({
@@ -113,6 +113,11 @@ export default class roomController {
           "cursorRow" : this.myCursorRow
         });
       }else{
+
+        if(this.otherCursorRow > this.myCursorRow){
+          $timeout.cancel(this.amILastAndNeedToSync);
+        }
+        
         console.log("Other did change.")
         this.otherTyping = "Other user is typing now..";
         setTimeout(()=>{
@@ -307,6 +312,7 @@ export default class roomController {
     this.$timeout(()=>{
       this.synced = " ";
     },this.syncIntever);
+    this.isFromMe = true;
     this.room.send({
       "sync" : {
         "content" : this.editor.getValue(),
