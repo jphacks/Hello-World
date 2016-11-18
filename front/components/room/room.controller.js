@@ -188,7 +188,15 @@ export default class roomController {
               //syncデータが来た！
               if(data.data.sync){
                 console.log("#Synced!")
+                console.log(this.editor.getCursorPosition(),this.editor.getCursorPositionScreen());
+                var tmp = this.editor.getCursorPosition();
                 this.editor.setValue(data.data.sync.content);
+                this.editor.moveCursorToPosition(tmp);
+
+                this.synced = "Synced at " + data.data.sync.time;
+                this.$timeout(()=>{
+                  this.synced = " ";
+                },1000);
               }
               //eventがあるとしたら、送った人が何かを叩いたということ。
               if(data.data.event){
@@ -270,10 +278,15 @@ export default class roomController {
 
   Sync(){
     console.log("SYNC!");
+    this.time = Date.now();
+    this.synced = "Synced at " + this.time;
+    this.$timeout(()=>{
+      this.synced = " ";
+    },1000);
     this.room.send({
       "sync" : {
         "content" : this.editor.getValue(),
-        "time" : Date.now()
+        "time" : this.time
       }
     });
   };
