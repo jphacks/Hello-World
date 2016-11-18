@@ -12,7 +12,7 @@ import (
 type Searcher struct {
 	Language string `json:"language"`
 	Code     string `json:"code"`
-	Data     string `json:"data"`
+	Output   string `json:"output"`
 }
 
 type Page struct {
@@ -25,8 +25,8 @@ func (s *Searcher) Search(c *gin.Context) {
 	c.BindJSON(&request)
 	request.Language = `"""` + request.Language + `"""`
 	request.Code = `"""` + request.Code + `"""`
-	request.Data = `"""` + request.Data + `"""`
-	output, err := exec.Command("python", "search.py", request.Language, request.Code, request.Data).Output()
+	request.Output = `"""` + request.Output + `"""`
+	output, err := exec.Command("python", "search.py", request.Language, request.Code, request.Output).Output()
 	if err != nil {
 		fmt.Println("ERROR!!!: ", err)
 	}
