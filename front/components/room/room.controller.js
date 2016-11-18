@@ -64,7 +64,13 @@ export default class roomController {
     this.editor.$blockScrolling = Infinity;
     this.editor.setFontSize(14);
     this.editor.setTheme("ace/theme/monokai");
-    this.editor.getSession().setMode("ace/mode/javascript");
+
+    //editor session
+    this.editor.session = this.editor.getSession();
+    this.editor.session.setMode("ace/mode/javascript");
+
+    //editor document
+    this.document = this.editor.session.getDocument();
 
     window.addEventListener("keydown", (e) => {
         if (this.editor.isFocused()) {
@@ -77,8 +83,12 @@ export default class roomController {
       this.isFromMe = true;
     });
 
-    this.editor.getSession().on("change",(event)=>{
-      console.log("#####getSession().on.change")
+    this.document.on("change",(event)=>{
+      console.log("document change");
+    });
+
+    this.editor.on("change",(event)=>{
+      console.log("editor change");
       if(this.isFromMe){
         console.log("send event : ",event)
         this.room.send({
@@ -90,14 +100,6 @@ export default class roomController {
       }else{
         console.log("other wrote something")
       }
-    });
-
-    this.editor.on("change",(event)=>{
-      console.log("#####change")
-    });
-
-    this.editor.on("changeSession",(event)=>{
-      console.log("#####changeSession")
     });
 
     //このpeerが通信を可能とするオブジェクト
@@ -177,7 +179,19 @@ export default class roomController {
 
             this.room.on('data', (data) => {
               console.log(data.src + "からもらったデータ：",data)
-              this.isFromMe = false;
+
+              if(data.data.event){
+                console.log("receive event from other");
+                if(data.data.event.action === "insert"){
+                  console.log("insert event")
+                  this.isFromMe = false;
+                  this.document.insertMergedLines(data.data.event.start, data.data.event.lines);
+                } else if(data.data.event.action === "remove"){
+                  console.log("remove event")
+                  this.isFromMe = false;
+                  this.document.remove(data.data.event);
+                }
+              };
 
               if(data.data.modeNum != null){
                 this.$scope.$apply(()=>{
@@ -194,20 +208,10 @@ export default class roomController {
               this.name = (data.data.name) ? data.data.name: this.name;
               if(data.data.content && this.needSync){
                 console.log("Sync now");
+                this.isFromMe = false;
                 this.editor.setValue(data.data.content);
                 this.needSync = false;
               };
-
-              if(data.data.event){
-                console.log("receive event from other");
-                if(data.data.event.action === "insert"){
-                  console.log("insert event")
-                  this.editor.getSession().getDocument().insertMergedLines(data.data.event.start, data.data.event.lines);
-                } else if(data.data.event.action === "remove"){
-                  console.log("remove event")
-                  this.editor.getSession().getDocument().remove(data.data.event);
-                }
-              }
             });
 
             this.room.on('peerJoin', (peerId) => {
