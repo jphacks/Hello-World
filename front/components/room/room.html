@@ -61,16 +61,21 @@
                                 <div class="collapsible-header waves-effect hoverable" ng-click="roomCtrl.run()"><i class="material-icons prefix">play_circle_outline</i>Run</div>
 
                                 <div class="collapsible-body">
-                               		<div class="section" ng-show="roomCtrl.result">
-                               			<h3 ng-show="roomCtrl.result.is_error" class="red-text text-darken-3">Error</h3>
-										<h3 ng-hide="roomCtrl.result.is_error" class="blue-text text-darken-3">Success</h3>
-										<pre>{{roomCtrl.result.output}}</pre>
+                               		<div ng-show="roomCtrl.result" style="padding: 20px;">
+
+                               			<h3 ng-show="roomCtrl.result.is_error" class="red-text text-accent-3">Error</h3>
+
+										<h3 ng-hide="roomCtrl.result.is_error" class="blue-text text-accent-3">Success</h3>
+
+										<pre class="grey-text text-darken-4">{{roomCtrl.result.output}}</pre>
                                		</div>
 
-									<div class="section" ng-show="roomCtrl.searchResult">
-										<h3 class="blue-text text-darken-3">Recomendation</h3>
-										<h4 class="blue-text text-darken-2">{{roomCtrl.searchResult.title}}</h3>
-										<a class="blue-text text-darken-2" href="{{roomCtrl.searchResult.url}}" target="_blank">{{roomCtrl.searchResult.url}}</a>
+									<div ng-show="roomCtrl.searchResult" style="padding: 20px;">
+										<h3 class="green-text text-accent-4">Recomendation</h3>
+
+										<h4 class="grey-text text-darken-4">{{roomCtrl.searchResult.title}}</h3>
+
+										<a class="grey-text text-darken-4" href="{{roomCtrl.searchResult.url}}" target="_blank">{{roomCtrl.searchResult.url}}</a>
 									</div>
 
                                 </div>
