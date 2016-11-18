@@ -24,19 +24,19 @@
 </div>
 
 
-<div class="grey lighten-5" style="height : 100%;">
+<div style="height : 100%;">
 	<div class="container">
 		<div class="row">
 			<div class="col s8">
 
 				<div class="section row">
 
-					<div class="col s6 input-field">
+					<div class="col s6 input-field grey-text text-darken-4">
 						<label>Language</label><br><br>
 						<select class="browser-default" ng-change="roomCtrl.modeChange()" ng-model="roomCtrl.mode" ng-options="mode as mode.lang for mode in roomCtrl.modes"></select>
 					</div>
 
-					<div class="col s6 input-field">
+					<div class="col s6 input-field grey-text text-darken-4">
 						<label>Theme</label><br><br>
 						<select class="browser-default" ng-change="roomCtrl.themeChange()" ng-model="roomCtrl.theme" ng-options="theme for theme in roomCtrl.themes"></select>
 					</div>
@@ -51,7 +51,7 @@
 
 				<div class="section">
                     <div class="row">
-                        <ul class="collapsible" data-collapsible="expandable">
+                        <ul class="collapsible" data-collapsible="accordion">
                             <li>
                                 <div class="collapsible-header" ng-click="roomCtrl.run()"><i class="material-icons prefix">play_circle_outline</i>Run</div>
 
@@ -83,10 +83,10 @@
 					<div class="videos" style="position: fixed; width: inherit; overflow-y: auto; !important">
 						<div class="videosContainer card-panel hoverable">
 							<div class="caption center-align">
-								<h5 class="teal-text text-darken-3">
+								<h5 class="grey-text text-darken-4">
 									Users<i class="material-icons">supervisor_account</i>
 								</h5>
-								<h6 class="light teal-text text-lighten-2">
+								<h6 class="light teal-text text-darken-3">
 									({{roomCtrl.roomMember}} users joined)
 								</h6>
 					    	</div>
@@ -99,7 +99,7 @@
 			</div>
 
 			<!-- Modal Structure -->
-		    <div id="modal-import" class="modal">
+		    <div id="modal-import" class="modal modal-fixed-footer">
 		        <div class="modal-content">
 		            <h4>Import</h4>
 		            <p>Choose your program.</p>
@@ -120,7 +120,7 @@
 		    </div>
 
 		    <!-- Modal Structure -->
-		    <div id="modal-save" class="modal">
+		    <div id="modal-save" class="modal modal-fixed-footer">
 		        <div class="modal-content">
 		            <h4>Save</h4>
 
