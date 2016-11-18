@@ -7,6 +7,12 @@ export default class roomController {
   */
   constructor($scope,$http,$stateParams,$state) {
 
+    //必要となる変数などをここで定義
+    this.$scope = $scope;
+    this.$http = $http;
+    this.$stateParams = $stateParams;
+    this.$state = $state;
+
     // design mock
     angular.element(document).ready(function() {
         angular.element('.collapsible').collapsible();
@@ -21,12 +27,6 @@ export default class roomController {
     String.prototype.unescapeHtml = function(){
         return this.replace(/&amp;/g, "&").replace(/&lt;/g, "<").replace(/&gt;/g, ">").replace(/&quot;/g, "\"").replace(/&#39;/g, "\'");
     };
-
-    //必要となる変数などをここで定義
-    this.$scope = $scope;
-    this.$http = $http;
-    this.$stateParams = $stateParams;
-    this.$state = $state;
 
     //定期同期化される必要があるかどうか
     this.needSync = true;
@@ -57,38 +57,38 @@ export default class roomController {
     //選択されたテーマの情報の初期化
     if(!this.theme){
       this.theme = this.themes[0];
-    }
+    };
 
     //editor with ace
     this.editor = ace.edit("editor");
     this.editor.$blockScrolling = Infinity;
     this.editor.setFontSize(14);
-    this.editor.setTheme("ace/theme/monokai");
+    //この時点でthemeに何かは入っている。
+    this.editor.setTheme("ace/theme/" + this.theme);
 
     //editor session
-    this.editor.session = this.editor.getSession();
-    this.editor.session.setMode("ace/mode/javascript");
+    this.session = this.editor.getSession();
+    this.session.setMode("ace/mode/javascript");
 
     //editor document
-    this.document = this.editor.session.getDocument();
+    this.document = this.session.getDocument();
 
+    //自分がたたいたら、this.isFromMe = true;
     window.addEventListener("keydown", (e) => {
         if (this.editor.isFocused()) {
           console.log("onkeydown event")
           this.isFromMe = true;
         }
-    }, true)
+    }, true);
+    //自分がpasteしたら、this.isFromMe = true;
     this.editor.on("paste",()=>{
       console.log("paste event")
       this.isFromMe = true;
     });
 
-    this.document.on("change",(event)=>{
-      console.log("document change");
-    });
-
     this.editor.on("change",(event)=>{
-      console.log("editor change");
+      console.log("change")
+      //ここはつまり、自分がたたいて、変更が起こったら送るということ
       if(this.isFromMe){
         console.log("send event : ",event)
         this.room.send({
@@ -98,7 +98,10 @@ export default class roomController {
           "event" : event
         });
       }else{
-        console.log("other wrote something")
+        this.otherTyping = "Other user is typing..";
+        setTimeout(()=>{
+          this.otherTyping = " ";
+        },500);
       }
     });
 
@@ -110,13 +113,6 @@ export default class roomController {
     // peerにつながったらopenというイベントが発生し、(id)=>{...}と書かれているcallback関数が実行される。
     // もしこのCallback関数のことがわからないのなら、JSのことの勉強をすること。
     this.peer.on('open', (id) => {
-      /*
-      以下はaudioとvideoをstreamにして、
-      angular.elementでclassがvideoであるroom.htmlでのdivに(room.htmlを確認すること。)
-      '<video id="video_' + myPeerId + '" class="videoBox" width="300" height="200" autoplay="autoplay" class="remoteVideos" src="' + streamURL + '" > </video> <br>'
-      このvideoタグを入れている。
-      そして実行してみてdivの中に要素が追加されることが確認できる。
-      */
       navigator.getUserMedia(
         {audio: true, video: true},
         (stream) => {
@@ -131,7 +127,6 @@ export default class roomController {
             angular.element('#video-wrapper')[0].style.width = angular.element('.userVideo')[0].clientWidth+"px";
             angular.element('.videos')[0].style.height = angular.element(window).height()+"px";
             angular.element(window).resize(() => {
-                console.log("window resize to (" + angular.element(window).width() + ", " + angular.element(window).height() + ")")
                 //width will be set to col s4 size
                 angular.element('#video-wrapper')[0].style.width = angular.element('.userVideo')[0].clientWidth+"px";
                 //videos height should fit to the same size of window
@@ -147,7 +142,7 @@ export default class roomController {
             */
             console.log(this.roomName,"に接続します");
             //入った時に時表示
-            Materialize.toast("<h3>Welcome to " + this.roomName + "!</h3>", 4000);
+            Materialize.toast("<h3>Welcome to " + this.roomName + "!</h3>", 2000);
 
             this.room = this.peer.joinRoom(this.roomName, {mode: 'sfu', stream: stream});
 
@@ -164,7 +159,7 @@ export default class roomController {
                 '<div class="videoBox video_' + peerId + '"><video id="video_' + peerId + '" class="remoteVideos z-depth-3" width="100%" autoplay="autoplay" src="' + streamURL + '" > </video></div>'
               );
               //show toast when other appear
-              Materialize.toast("<h3>New member appeared!</h3>", 4000);
+              Materialize.toast("<h5>New user appeared!</h5>", 3000);
             });
 
             //他のmemberがroomから離れる時は該当するvideoタグを除去
@@ -175,11 +170,17 @@ export default class roomController {
               });
               angular.element('#video_' + stream.peerId).remove();
               angular.element('.video_' + stream.peerId).remove();
+              //show toast when other appear
+              Materialize.toast("<h5>A user disappeared!</h5>", 3000);
             });
 
+            /*
+              ここが重要
+              データが送られてきたとき
+            */
             this.room.on('data', (data) => {
               console.log(data.src + "からもらったデータ：",data)
-
+              //eventがあるとしたら、送った人が何かを叩いたということ。
               if(data.data.event){
                 console.log("receive event from other");
                 if(data.data.event.action === "insert"){
@@ -197,7 +198,7 @@ export default class roomController {
                 this.$scope.$apply(()=>{
                   this.mode = this.modes[data.data.modeNum];
                 });
-                this.editor.getSession().setMode("ace/mode/" + this.mode.lang);
+                this.session.setMode("ace/mode/" + this.mode.lang);
               };
               if(data.data.theme){
                 this.$scope.$apply(()=>{
@@ -253,6 +254,7 @@ export default class roomController {
 
   //file load機能
   showContent($fileContent){
+    console.log("show content func")
     //自分が入力するものだから
     this.isFromMe = true;
     this.name = $fileContent.name;
@@ -314,7 +316,7 @@ export default class roomController {
 
   //search apiを呼ぶ
   search(query){
-    console.log("search now!")
+    console.log("search now! with query : ",query)
     //http post
     return this.$http.post("https://hello-world.run/search",JSON.stringify(query))
     .then((response) => {
@@ -341,7 +343,7 @@ export default class roomController {
 
   modeChange(){
     console.log("mode change")
-    this.editor.getSession().setMode("ace/mode/" + this.mode.lang);
+    this.session.setMode("ace/mode/" + this.mode.lang);
     this.room.send({
       "modeNum" : this.modeNum()
     })
@@ -355,7 +357,7 @@ export default class roomController {
     }else if(this.mode.ex === "rb"){
       return 2;
     }else{
-      console.log("no ex info");
+      alert("no ex info");
       return 0;
     }
   }
@@ -369,6 +371,7 @@ export default class roomController {
   }
 
   openModalImport(){
+    angular.element('#loadedfile').val("");
     angular.element("#modal-import").modal("open");
   }
 

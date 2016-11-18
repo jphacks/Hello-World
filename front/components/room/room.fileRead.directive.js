@@ -8,7 +8,7 @@ class onReadFile {
     // allows us to use the injected dependencies
     // elsewhere in the directive (e.g. compile or link function)
     this.$parse = $parse;
-  }
+  };
 
   // optional link function
   link(scope, element, attrs) {

@@ -32,7 +32,7 @@
 		<div class="row">
 			<div class="col s8">
 
-				<div class="section row">
+				<section class="row">
 
 					<div class="col s6 input-field">
 						<label class="grey-text text-darken-4">Language</label><br><br>
@@ -46,15 +46,16 @@
 						</select>
 					</div>
 
-				</div>
+				</section>
 
-				<div class="section">
+				<section>
+					<label>　{{roomCtrl.otherTyping}}　</label>
 				    <div class="row">
 						<div id="editor" class="col s12" style="height: 500px;"></div>
 					</div>
-				</div>
+				</section>
 
-				<div class="section">
+				<section>
                     <div class="row">
                         <ul class="collapsible" data-collapsible="accordion">
                             <li>
@@ -71,7 +72,7 @@
                                		</div>
 
 									<div ng-show="roomCtrl.searchResult" style="padding: 20px;">
-										<h3 class="green-text text-accent-4">Recomendation</h3>
+										<h3 class="green-text text-accent-4">Recommendation</h3>
 
 										<h4 class="grey-text text-darken-4">{{roomCtrl.searchResult.title}}</h3>
 
@@ -83,7 +84,7 @@
                             </li>
                         </ul>
                     </div>
-                </div>
+                </section>
 
 			</div>
 
@@ -119,7 +120,7 @@
 		                <div class="file-field input-field">
 		                    <div class="waves-effect waves-light blue darken-4 btn">
 								<span>Load</span>
-								<input type="file" on-read-file="roomCtrl.showContent($fileContent)">
+								<input id="loadedfile" type="file" on-read-file="roomCtrl.showContent($fileContent)">
 							</div>
 							<div class="file-path-wrapper">
 								<input type="file"/>
