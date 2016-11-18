@@ -76,7 +76,6 @@ export default class roomController {
     //自分がたたいたら、this.isFromMe = true;
     window.addEventListener("keydown", (e) => {
         if (this.editor.isFocused()) {
-          console.log("onkeydown event")
           this.isFromMe = true;
         }
     }, true);
@@ -90,7 +89,6 @@ export default class roomController {
       console.log("change")
       //ここはつまり、自分がたたいて、変更が起こったら送るということ
       if(this.isFromMe){
-        console.log("send event : ",event)
         this.room.send({
           "name" : this.name,
           "theme" : this.theme,
@@ -98,10 +96,10 @@ export default class roomController {
           "event" : event
         });
       }else{
-        this.otherTyping = "Other user is typing..";
+        this.otherTyping = "Other user is typing now..";
         setTimeout(()=>{
           this.otherTyping = " ";
-        },500);
+        },600);
       }
     });
 
@@ -182,7 +180,6 @@ export default class roomController {
               console.log(data.src + "からもらったデータ：",data)
               //eventがあるとしたら、送った人が何かを叩いたということ。
               if(data.data.event){
-                console.log("receive event from other");
                 if(data.data.event.action === "insert"){
                   console.log("insert event")
                   this.isFromMe = false;

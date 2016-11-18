@@ -70,12 +70,14 @@
 									<pre class="grey-text text-darken-4">{{roomCtrl.result.output}}</pre>
                            		</div>
 
-								<div ng-show="roomCtrl.searchResult" style="padding: 20px;">
+								<div ng-show="roomCtrl.searchResult.title" style="padding: 20px;">
+									<hr>
 									<h3 class="green-text text-accent-4">Recommendation</h3>
 
-									<h4 class="grey-text text-darken-4">{{roomCtrl.searchResult.title}}</h3>
+									<h3 class="grey-text text-darken-4">{{roomCtrl.searchResult.title}}</h3>
 
-									<a class="grey-text text-darken-4" href="{{roomCtrl.searchResult.url}}" target="_blank">{{roomCtrl.searchResult.url}}</a>
+									<a class="grey-text text-darken-4" ng-href="{{roomCtrl.searchResult.url}}" target="_blank">{{roomCtrl.searchResult.url}}</a>
+
 								</div>
 
                             </div>
