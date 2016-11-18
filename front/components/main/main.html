@@ -5,7 +5,7 @@
 		<div class="logo"></div>
 
 		<h2>Let's start <i><strong>programming!</strong></i></h2>
-		<h4>Create a room for <strong>video chat</strong> room and invite your friends.</h4>
+		<h4>Create a room for <strong>Programming</strong> and invite friends.</h4>
 		<div class="init">
 			<div class="row">
 				<form class="formstyle">
@@ -14,7 +14,7 @@
 							data-validate="validate(required, text)" required="required" ng-model="rootCtrl.roomName">
 						</div>
 						<div class="col s5">
-							<button ng-click="rootCtrl.clear()" ui-sref="root.room({roomKey: rootCtrl.roomName})" class="btn-large waves-effect waves-light">enter
+							<button ng-click="rootCtrl.enterRoom()" class="btn-large waves-effect waves-light">enter
 							</button>
 						</div>
 				</form>

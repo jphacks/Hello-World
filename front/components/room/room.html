@@ -13,6 +13,9 @@
 		                    	<a ng-click="roomCtrl.openModalSave()"><i class="material-icons left">description</i>Save</a>
 		                    </li>
 		                    <li>
+		                    	<a ng-click="roomCtrl.openModalPlus()"><i class="material-icons left">open_in_new</i>Add room</a>
+		                    </li>
+		                    <li>
 		                    	<a ng-href="/" target="_self"><i class="material-icons left">home</i>Logout</a>
 		                    </li>
 		                </ul>
@@ -31,14 +34,16 @@
 
 				<div class="section row">
 
-					<div class="col s6 input-field grey-text text-darken-4">
-						<label>Language</label><br><br>
-						<select class="browser-default" ng-change="roomCtrl.modeChange()" ng-model="roomCtrl.mode" ng-options="mode as mode.lang for mode in roomCtrl.modes"></select>
+					<div class="col s6 input-field">
+						<label class="grey-text text-darken-4">Language</label><br><br>
+						<select class="browser-default" ng-change="roomCtrl.modeChange()" ng-model="roomCtrl.mode" ng-options="mode as mode.lang for mode in roomCtrl.modes">
+						</select>
 					</div>
 
 					<div class="col s6 input-field grey-text text-darken-4">
-						<label>Theme</label><br><br>
-						<select class="browser-default" ng-change="roomCtrl.themeChange()" ng-model="roomCtrl.theme" ng-options="theme for theme in roomCtrl.themes"></select>
+						<label class="grey-text text-darken-4">Theme</label><br><br>
+						<select class="browser-default" ng-change="roomCtrl.themeChange()" ng-model="roomCtrl.theme" ng-options="theme for theme in roomCtrl.themes">
+						</select>
 					</div>
 
 				</div>
@@ -53,17 +58,17 @@
                     <div class="row">
                         <ul class="collapsible" data-collapsible="accordion">
                             <li>
-                                <div class="collapsible-header" ng-click="roomCtrl.run()"><i class="material-icons prefix">play_circle_outline</i>Run</div>
+                                <div class="collapsible-header waves-effect hoverable" ng-click="roomCtrl.run()"><i class="material-icons prefix">play_circle_outline</i>Run</div>
 
                                 <div class="collapsible-body">
-                               		<div class="section">
+                               		<div class="section" ng-show="roomCtrl.result">
                                			<h3 ng-show="roomCtrl.result.is_error" class="red-text text-darken-3">Error</h3>
 										<h3 ng-hide="roomCtrl.result.is_error" class="blue-text text-darken-3">Success</h3>
 										<pre>{{roomCtrl.result.output}}</pre>
                                		</div>
 
-									<div class="section">
-										<h3 ng-show="roomCtrl.searchResult" class="blue-text text-darken-3">Recomendation</h3>
+									<div class="section" ng-show="roomCtrl.searchResult">
+										<h3 class="blue-text text-darken-3">Recomendation</h3>
 										<h4 class="blue-text text-darken-2">{{roomCtrl.searchResult.title}}</h3>
 										<a class="blue-text text-darken-2" href="{{roomCtrl.searchResult.url}}" target="_blank">{{roomCtrl.searchResult.url}}</a>
 									</div>
@@ -81,8 +86,8 @@
 				<!-- Audio and Video area -->
 				<div id="video-wrapper" style="position: relative;">
 					<div class="videos" style="position: fixed; width: inherit; overflow-y: auto; !important">
-						<div class="videosContainer card-panel hoverable">
-							<div class="caption center-align">
+						<div class="videosContainer card-panel">
+							<div class="caption center-align" style="padding-bottom: 10px;">
 								<h5 class="grey-text text-darken-4">
 									Users<i class="material-icons">supervisor_account</i>
 								</h5>
@@ -126,14 +131,32 @@
 
 		            <div class="input-field col s6">
 		                <i class="material-icons prefix">description</i>
-		                <input id="icon_prefix" type="text" placeholder=" " class="validate" ng-model="roomCtrl.name">
+		                <input id="icon_prefix" type="text" class="validate" ng-model="roomCtrl.filename">
 		                <label for="icon_prefix">File Name</label>
 		            </div>
 
 		        </div>
 
 		        <div class="modal-footer">
-		            <a class="waves-effect waves-green btn-flat" ng-click="roomCtrl.save()">Save</a>
+		            <a class="waves-effect waves-green btn-flat" ng-click="roomCtrl.save(roomCtrl.filename)">Save</a>
+		        </div>
+		    </div>
+
+		    <!-- Modal Structure -->
+		    <div id="modal-plus" class="modal modal-fixed-footer">
+		        <div class="modal-content">
+		            <h4>Add one more room</h4>
+
+		            <div class="input-field col s6">
+		                <i class="material-icons prefix">open_in_new</i>
+		                <input id="icon_prefix" type="text" class="validate" ng-model="roomCtrl.newRoom">
+		                <label for="icon_prefix">Room Name</label>
+		            </div>
+
+		        </div>
+
+		        <div class="modal-footer">
+		            <a class="modal-action modal-close waves-effect waves-green btn-flat" ng-href="/#/{{roomCtrl.newRoom}}"  target="_blank">Enter</a>
 		        </div>
 		    </div>
 

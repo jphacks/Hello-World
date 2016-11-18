@@ -11,6 +11,7 @@ export default class roomController {
     angular.element(document).ready(function() {
         angular.element('.collapsible').collapsible();
         angular.element('.modal').modal();
+        angular.element('select').material_select();
     });
 
     //ブラウザでカメラとマイクを使用するために必要なコードライン
@@ -47,12 +48,16 @@ export default class roomController {
       {"lang" : "python", "ex" : "py"},
       {"lang" : "ruby", "ex" : "rb"}
     ];
-    //選択された言語モードの情報
-    this.mode = this.modes[0];
+    //選択された言語モードの情報の初期化
+    if(!this.mode){
+      this.mode = this.modes[0];
+    };
     //選択可能なテーマの情報
     this.themes = ["ambiance","chaos","chrome","clouds_midnight","clouds","cobalt","crimson_editor","dawn","dreamweaver","eclipse","github","idle_fingers","iplastic","katzenmilch","kr_theme","kuroir","merbivore_soft","merbivore","mono_industrial","monokai","pastel_on_dark","solarized_dark","solarized_light","sqlserver","terminal","textmate","tomorrow_night_blue","tomorrow_night_bright","tomorrow_night_eighties","tomorrow_night","tomorrow","twilight","vibrant_ink","xcode"];
-    //選択されたテーマの情報
-    this.theme = this.themes[0];
+    //選択されたテーマの情報の初期化
+    if(!this.theme){
+      this.theme = this.themes[0];
+    }
 
     //editor with ace
     this.editor = ace.edit("editor");
@@ -246,6 +251,9 @@ export default class roomController {
         this.mode = this.modes[1];
       }else if($fileContent.ex === "rb"){
         this.mode = this.modes[2];
+      }else{
+        console.log("no ex info");
+        this.mode = this.modes[0];
       }
       this.modeChange();
     }
@@ -283,7 +291,10 @@ export default class roomController {
           "code" :  this.editor.getValue(),
           "output" : this.result.output
         });
-      }
+      }else{
+        //過去のオススメの履歴削除
+        this.searchResult = null;
+      };
     });
   };
 
@@ -302,9 +313,9 @@ export default class roomController {
   }
 
   //save機能
-  save(){
+  save(filename){
     var link = document.createElement('a');
-    link.download = this.name + '.' +this.mode.ex; //filename
+    link.download = filename; //filename
     link.href = 'data:text,\uFEFF' + escape(this.editor.getValue()); //content
     document.body.appendChild(link);
     link.click();
@@ -329,6 +340,9 @@ export default class roomController {
       return 1;
     }else if(this.mode.ex === "rb"){
       return 2;
+    }else{
+      console.log("no ex info");
+      return 0;
     }
   }
 
@@ -346,6 +360,10 @@ export default class roomController {
 
   openModalSave(){
     angular.element("#modal-save").modal("open");
+  }
+
+  openModalPlus(){
+    angular.element("#modal-plus").modal("open");
   }
 
   expand(){
