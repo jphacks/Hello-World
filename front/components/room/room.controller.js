@@ -191,9 +191,14 @@ export default class roomController {
               //syncデータが来た！
               if(data.data.sync){
                 console.log("#Synced!")
+                //現在自分の位置記憶
                 var tmp = this.editor.getCursorPosition();
+                //値を設定
                 this.editor.setValue(data.data.sync.content);
-                this.editor.moveCursorToPosition(tmp);
+                //移動せよ
+                this.editor.moveCursorTo(tmp.row, tmp.column);
+                //selectを解除
+                this.editor.clearSelection();
 
                 this.synced = "Synced at " + data.data.sync.time;
                 this.$timeout(()=>{
