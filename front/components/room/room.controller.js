@@ -5,7 +5,7 @@ export default class roomController {
   $scope,$http,$stateParams,$stateはこのroomControllerで使うためにinjectする必要のなるものであり、
   詳細はAngularJSを参照すること。
   */
-  constructor($scope,$http,$stateParams,$state) {
+  constructor($scope,$http,$stateParams,$state,$timeout) {
 
     //ブラウザでカメラとマイクを使用するために必要なコードライン
     navigator.getUserMedia = navigator.getUserMedia || navigator.webkitGetUserMedia || navigator.mozGetUserMedia;
@@ -20,9 +20,13 @@ export default class roomController {
     this.$http = $http;
     this.$stateParams = $stateParams;
     this.$state = $state;
+    this.$timeout = $timeout;
 
-    //定期同期化される必要があるかどうか
-    this.needSync = true;
+    //初回に同期化される必要があるかどうか
+    this.needFirstSync = true;
+
+    //自分が最後の編集者でありSyncする必要ってあるのか(この変数にはPromiseが入る)
+    this.amILastAndNeedToSync = null;
 
     //現在のmember数
     this.roomMember = 1;
@@ -82,6 +86,12 @@ export default class roomController {
       console.log("change")
       //ここはつまり、自分がたたいて、変更が起こったら送るということ
       if(this.isFromMe){
+
+        this.amILastAndNeedToSync = this.$timeout(()=>{
+          //Syncを実行するよ
+          this.Sync();
+        },3000);
+
         this.room.send({
           "name" : this.name,
           "theme" : this.theme,
@@ -90,6 +100,7 @@ export default class roomController {
         });
       }else{
         this.otherTyping = "Other user is typing now..";
+        $timeout.cancel(this.amILastAndNeedToSync);
         setTimeout(()=>{
           this.otherTyping = " ";
         },600);
@@ -200,11 +211,11 @@ export default class roomController {
                 this.editor.setTheme("ace/theme/" + this.theme);
               };
               this.name = (data.data.name) ? data.data.name: this.name;
-              if(data.data.content && this.needSync){
+              if(data.data.content && this.needFirstSync){
                 console.log("Sync now");
                 this.isFromMe = false;
                 this.editor.setValue(data.data.content);
-                this.needSync = false;
+                this.needFirstSync = false;
               };
             });
 
@@ -213,7 +224,7 @@ export default class roomController {
 
               //新たなユーザが入ってきたらcode, theme, modeを共有
               this.isFromMe = true;
-              this.needSync = false;
+              this.needFirstSync = false;
               this.room.send({
                 "name" : this.name,
                 "content" : this.editor.getValue(),
@@ -250,6 +261,10 @@ export default class roomController {
       }
     };
 
+  };
+
+  Sync(){
+    console.log("SYNC!")
   };
 
   //file load機能
