@@ -31,7 +31,7 @@ def search_with_google(lang, code, data):
     keyword = lang + " " + query
     target_title, target_url = "", ""
     try:
-        for url in search(keyword, stop=1, lang="ja"):
+        for url in search(keyword, stop=10, lang="ja"):
             soup = BeautifulSoup(urllib.urlopen(url))
             target_title = soup.find("title").text
             target_url = url
