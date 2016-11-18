@@ -32,7 +32,7 @@
 		<div class="row">
 			<div class="col s8">
 
-				<section class="row">
+				<div class="row">
 
 					<div class="col s6 input-field">
 						<label class="grey-text text-darken-4">Language</label><br><br>
@@ -46,49 +46,45 @@
 						</select>
 					</div>
 
-				</section>
+				</div>
 
-				<section>
-					<div>
-						<div style="min-height: 20px; font-size:14px;">
-							<label>　{{roomCtrl.otherTyping}}　</label>
-						</div>
-					    <div class="row">
-							<div id="editor" class="col s12" style="height: 500px;"></div>
-						</div>
+				<div class="row">
+					<div style="min-height: 20px; font-size:14px;">
+						<label>　{{roomCtrl.otherTyping}}　</label>
 					</div>
-				</section>
+				    <div class="row">
+						<div id="editor" class="col s12" style="height: 500px;"></div>
+					</div>
+				</div>
 
-				<section>
-                    <div class="row">
-                        <ul class="collapsible" data-collapsible="accordion">
-                            <li>
-                                <div class="collapsible-header waves-effect hoverable" ng-click="roomCtrl.run()"><i class="material-icons prefix">play_circle_outline</i>Run</div>
+				<div class="row">
+                    <ul class="collapsible" data-collapsible="accordion">
+                        <li>
+                            <div class="collapsible-header waves-effect hoverable" ng-click="roomCtrl.run()"><i class="material-icons prefix">play_circle_outline</i>Run</div>
 
-                                <div class="collapsible-body">
-                               		<div ng-show="roomCtrl.result" style="padding: 20px;">
+                            <div class="collapsible-body">
+                           		<div ng-show="roomCtrl.result" style="padding: 20px;">
 
-                               			<h3 ng-show="roomCtrl.result.is_error" class="red-text text-accent-3">Error</h3>
+                           			<h3 ng-show="roomCtrl.result.is_error" class="red-text text-accent-3">Error</h3>
 
-										<h3 ng-hide="roomCtrl.result.is_error" class="blue-text text-accent-3">Success</h3>
+									<h3 ng-hide="roomCtrl.result.is_error" class="blue-text text-accent-3">Success</h3>
 
-										<pre class="grey-text text-darken-4">{{roomCtrl.result.output}}</pre>
-                               		</div>
+									<pre class="grey-text text-darken-4">{{roomCtrl.result.output}}</pre>
+                           		</div>
 
-									<div ng-show="roomCtrl.searchResult" style="padding: 20px;">
-										<h3 class="green-text text-accent-4">Recommendation</h3>
+								<div ng-show="roomCtrl.searchResult" style="padding: 20px;">
+									<h3 class="green-text text-accent-4">Recommendation</h3>
 
-										<h4 class="grey-text text-darken-4">{{roomCtrl.searchResult.title}}</h3>
+									<h4 class="grey-text text-darken-4">{{roomCtrl.searchResult.title}}</h3>
 
-										<a class="grey-text text-darken-4" href="{{roomCtrl.searchResult.url}}" target="_blank">{{roomCtrl.searchResult.url}}</a>
-									</div>
+									<a class="grey-text text-darken-4" href="{{roomCtrl.searchResult.url}}" target="_blank">{{roomCtrl.searchResult.url}}</a>
+								</div>
 
-                                </div>
+                            </div>
 
-                            </li>
-                        </ul>
-                    </div>
-                </section>
+                        </li>
+                    </ul>
+                </div>
 
 			</div>
 
