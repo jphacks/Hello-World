@@ -20,9 +20,9 @@ def search_with_google(lang, code, data):
       - target_url: URL
     """
     #検索用クエリの抽出
-    data = [line.strip() for line in data.split('\n')]
+    data = [line.strip() for line in data.split('\\n')]
     error_status = " ".join([sentence for sentence in data if 'Error' in sentence])
-    query = " ".join([word for word in error_status.split() if word not in " ".join(code.split()).split()])
+    query = " ".join([word for word in error_status.split() if word not in " ".join(code.split('\\n')).split()])
 
     #エラーの名前の抽出
     error_name = " ".join([word for word in error_status.split() if 'Error' in word])
