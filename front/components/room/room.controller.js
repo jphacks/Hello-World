@@ -83,15 +83,15 @@ export default class roomController {
     });
 
     this.editor.on("change",(event)=>{
-      console.log("誰かが変更をした")
+      console.log("change event happend.")
       $timeout.cancel(this.amILastAndNeedToSync);
       //ここはつまり、自分がたたいて、変更が起こったら送るということ
       if(this.isFromMe){
+        console.log("I did change.")
         this.amILastAndNeedToSync = this.$timeout(()=>{
           //Syncを実行するよ
           this.Sync();
         },3000);
-
         this.room.send({
           "name" : this.name,
           "theme" : this.theme,
@@ -99,6 +99,7 @@ export default class roomController {
           "event" : event
         });
       }else{
+        console.log("Other did change.")
         this.otherTyping = "Other user is typing now..";
         setTimeout(()=>{
           this.otherTyping = " ";
@@ -184,6 +185,11 @@ export default class roomController {
             */
             this.room.on('data', (data) => {
               console.log(data.src + "からもらったデータ：",data)
+              //syncデータが来た！
+              if(data.data.sync){
+                console.log("#Synced!")
+                this.editor.setValue(data.data.sync.content);
+              }
               //eventがあるとしたら、送った人が何かを叩いたということ。
               if(data.data.event){
                 if(data.data.event.action === "insert"){
@@ -263,7 +269,13 @@ export default class roomController {
   };
 
   Sync(){
-    console.log("SYNC!")
+    console.log("SYNC!");
+    this.room.send({
+      "sync" : {
+        "content" : this.editor.getValue(),
+        "time" : Date.now()
+      }
+    });
   };
 
   //file load機能
