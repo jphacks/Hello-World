@@ -29,7 +29,7 @@ export default class roomController {
     this.amILastAndNeedToSync = null;
 
     //sync intever
-    this.syncIntever = 2000;
+    this.syncIntever = 1000;
 
     //現在のmember数
     this.roomMember = 1;
