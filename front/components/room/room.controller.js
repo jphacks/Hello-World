@@ -83,10 +83,10 @@ export default class roomController {
     });
 
     this.editor.on("change",(event)=>{
-      console.log("change")
+      console.log("誰かが変更をした")
+      $timeout.cancel(this.amILastAndNeedToSync);
       //ここはつまり、自分がたたいて、変更が起こったら送るということ
       if(this.isFromMe){
-
         this.amILastAndNeedToSync = this.$timeout(()=>{
           //Syncを実行するよ
           this.Sync();
@@ -100,7 +100,6 @@ export default class roomController {
         });
       }else{
         this.otherTyping = "Other user is typing now..";
-        $timeout.cancel(this.amILastAndNeedToSync);
         setTimeout(()=>{
           this.otherTyping = " ";
         },600);
