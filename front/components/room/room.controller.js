@@ -31,6 +31,9 @@ export default class roomController {
     //sync intever
     this.syncIntever = 1000;
 
+    //my cursor row
+    this.myCursorRow = 0;
+
     //現在のmember数
     this.roomMember = 1;
 
@@ -87,26 +90,34 @@ export default class roomController {
 
     this.editor.on("change",(event)=>{
       console.log("change event happend.")
+      //一旦今は更新いらないです
       $timeout.cancel(this.amILastAndNeedToSync);
-      //ここはつまり、自分がたたいて、変更が起こったら送るということ
-      if(this.isFromMe){
-        console.log("I did change.")
+      //しかし以下の条件なら必要ですね
+      if(this.otherCursorRow < this.myCursorRow){
         this.amILastAndNeedToSync = this.$timeout(()=>{
           //Syncを実行するよ
           this.Sync();
         },this.syncIntever);//syncを実行する基準がthis.syncIntever
+      };
+
+      //ここはつまり、自分がたたいて、変更が起こったら送るということ
+      if(this.isFromMe){
+        console.log("I did change.")
+        //自分のカーサの更新
+        this.myCursorRow = this.editor.getCursorPosition().row;
         this.room.send({
           "name" : this.name,
           "theme" : this.theme,
           "modeNum" : this.modeNum(),
-          "event" : event
+          "event" : event,
+          "cursorRow" : this.myCursorRow
         });
       }else{
         console.log("Other did change.")
         this.otherTyping = "Other user is typing now..";
         setTimeout(()=>{
           this.otherTyping = " ";
-        },600);
+        },1000);
       }
     });
 
@@ -204,7 +215,13 @@ export default class roomController {
                 this.$timeout(()=>{
                   this.synced = " ";
                 },this.syncIntever);
-              }
+              };
+
+              //相手のカーサ位置情報更新
+              if(data.data.cursorRow){
+                this.otherCursorRow = data.data.cursorRow;
+              };
+
               //eventがあるとしたら、送った人が何かを叩いたということ。
               if(data.data.event){
                 if(data.data.event.action === "insert"){
