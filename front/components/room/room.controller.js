@@ -28,6 +28,9 @@ export default class roomController {
     //自分が最後の編集者でありSyncする必要ってあるのか(この変数にはPromiseが入る)
     this.amILastAndNeedToSync = null;
 
+    //sync intever
+    this.syncIntever = 2000;
+
     //現在のmember数
     this.roomMember = 1;
 
@@ -91,7 +94,7 @@ export default class roomController {
         this.amILastAndNeedToSync = this.$timeout(()=>{
           //Syncを実行するよ
           this.Sync();
-        },1500);//syncを実行する基準がこの1500
+        },this.syncIntever);//syncを実行する基準がthis.syncIntever
         this.room.send({
           "name" : this.name,
           "theme" : this.theme,
@@ -195,7 +198,7 @@ export default class roomController {
                 this.synced = "Synced at " + data.data.sync.time;
                 this.$timeout(()=>{
                   this.synced = " ";
-                },1500);
+                },this.syncIntever);
               }
               //eventがあるとしたら、送った人が何かを叩いたということ。
               if(data.data.event){
@@ -277,11 +280,11 @@ export default class roomController {
 
   Sync(){
     console.log("SYNC!");
-    this.time = Date.now();
+    this.time = new Date().toString();
     this.synced = "Synced at " + this.time;
     this.$timeout(()=>{
       this.synced = " ";
-    },1500);
+    },this.syncIntever);
     this.room.send({
       "sync" : {
         "content" : this.editor.getValue(),

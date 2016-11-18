@@ -50,7 +50,14 @@
 
 				<div class="row">
 					<div class="col s12" style="min-height: 20px; height:20px; font-size:12px;">
-						<label style="color: black; left: 10px;">　{{roomCtrl.otherTyping}}　</label> <label style="color: red; right: 10px;">　{{roomCtrl.synced}}　</label>
+						<div class="row">
+							<div class="col s6" style="color: black; left: 10px;">
+							{{roomCtrl.otherTyping}}
+							</div> 
+							<div class="col s6" style="color: red; right: 10px;">
+							{{roomCtrl.synced}}
+							</div>
+						</div>
 					</div>
 				    <div id="editor" class="col s12" style="height: 500px;"></div>
 				</div>
