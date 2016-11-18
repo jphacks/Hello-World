@@ -29,7 +29,7 @@ export default class roomController {
     this.amILastAndNeedToSync = null;
 
     //sync intever
-    this.syncIntever = 3000;
+    this.syncIntever = 2000;
 
     //my cursor row
     this.myCursorRow = 0;
