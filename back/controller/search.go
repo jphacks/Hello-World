@@ -23,15 +23,12 @@ type Page struct {
 func (s *Searcher) Search(c *gin.Context) {
 	var request Searcher
 	c.BindJSON(&request)
-	request.Language = `"""` + request.Language + `"""`
-	request.Code = `"""` + request.Code + `"""`
-	request.Output = `"""` + request.Output + `"""`
-	output, err := exec.Command("python", "search.py", request.Language, request.Code, request.Output).Output()
+	result, err := exec.Command("python", "search.py", request.Language, request.Code, request.Output).CombinedOutput()
 	if err != nil {
 		fmt.Println("ERROR!!!: ", err)
 	}
 	var response Page
-	response.Title, response.URL = strings.Split(string(output), "\n")[0], strings.Split(string(output), "\n")[1]
+	response.Title, response.URL = strings.Split(string(result), "\n")[0], strings.Split(string(result), "\n")[1]
 	c.JSON(http.StatusOK, gin.H{
 		"title": response.Title,
 		"url":   response.URL,
