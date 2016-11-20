@@ -2,6 +2,9 @@
 
 ## 製品概要
 
+### 紹介動画(click to play)
+[![Hello World - product promotion video](helloworld.png)](https://www.youtube.com/watch?v=jlAdEIYJsI0 "Hello World - product promotion video")
+
 ### Education + Technology = Edu Tech
 
 ### 背景（製品開発のきっかけ、課題等）
